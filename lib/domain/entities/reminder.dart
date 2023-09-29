@@ -11,9 +11,9 @@ class Reminder {
   final TimeOfDay time;
   final Set<SelectedDay> days;
   final DateTime beginDate;
-  final List<DateTime> remindersDate;
+  final List<DateTime>? remindersDate;
   final int lenghtBetweenReminder;
-  final int reminderType;
+  final ReminderType reminderType;
   final int whenInMonth;
 
   const Reminder({
@@ -23,7 +23,7 @@ class Reminder {
     required this.lenghtBetweenReminder,
     required this.days,
     required this.whenInMonth,
-    required this.remindersDate,
+    this.remindersDate,
     required this.time,
     required this.uuid,
     required this.createAt,
@@ -36,14 +36,30 @@ class Reminder {
     return ReminderSend(
         description: description,
         beginDate: beginDate.toString(),
-        reminderType: reminderType,
+        reminderType: reminderType.index,
         lenghtBetweenReminder: lenghtBetweenReminder,
-        days: days.toString(),
+        days: days.join(","),
         whenInMonth: whenInMonth,
-        remindersDate: remindersDate.map((e) => e.toString()).toList(),
-        time: time.toString(),
+        remindersDate: remindersDate!.join(","),
+        time: "${time.hour}:${time.minute}",
         uuid: uuid,
         createAt: createAt.toString(),
         reminderEnable: reminderEnable == false ? 0 : 1);
   }
+
+  // used to calculate the next reminders dates before seeding to database
+
+  Reminder.withCalculatedDates(
+      Reminder original, List<DateTime> calculatedDates)
+      : description = original.description,
+        beginDate = original.beginDate,
+        createAt = original.createAt,
+        days = original.days,
+        lenghtBetweenReminder = original.lenghtBetweenReminder,
+        reminderEnable = original.reminderEnable,
+        reminderType = original.reminderType,
+        remindersDate = calculatedDates,
+        time = original.time,
+        uuid = original.uuid,
+        whenInMonth = original.whenInMonth;
 }
