@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:recurring_alarm/core/constant.dart';
 import 'package:recurring_alarm/domain/entities/reminder.dart';
 import 'package:recurring_alarm/localization/string_hardcoded.dart';
@@ -14,10 +15,18 @@ TimeOfDay formatTime(String time) {
   return TimeOfDay(hour: hours, minute: minutes);
 }
 
+String formatTimeToString(TimeOfDay time) {
+  return '${time.hour}:${time.minute}';
+}
+
 //  parse string DateTime to DateTime
 
 DateTime formatDate(String date) {
   return DateTime.parse(date);
+}
+
+String formatDatetoString(DateTime date) {
+  return DateFormat.yMMMd().format(date);
 }
 
 //  parse a list of DateTime string to DateTime list
@@ -27,13 +36,7 @@ List<DateTime> formatMultipleDates(List<String> dates) {
 }
 
 List<String> formatDaysToList(String days) {
-  final list = days
-      .replaceAll('}', "")
-      .replaceAll("SelectedDay.", "")
-      .trim()
-      .split(', ');
-
-  list.removeAt(0); // remove nothing days
+  final list = days.split(',');
 
   // add maj for first letter
   final capitalizedDays = list.map((day) {

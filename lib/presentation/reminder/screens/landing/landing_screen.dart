@@ -13,7 +13,9 @@ class LandingScreen extends ConsumerWidget {
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-          onPressed: () {}, // * Open Add Reminder
+          onPressed: () => ref
+              .read(reminderViewModel.notifier)
+              .openAddReminder(context), // * Open Add Reminder
           child: const Icon(
             Icons.add,
             color: Colors.white,

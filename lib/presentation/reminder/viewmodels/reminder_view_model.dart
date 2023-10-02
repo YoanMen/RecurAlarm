@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:go_router/go_router.dart';
 import 'package:recurring_alarm/core/constant.dart';
 import 'package:recurring_alarm/domain/entities/reminder.dart';
 import 'package:recurring_alarm/domain/usecases/reminder_usecase.dart';
+import 'package:recurring_alarm/presentation/reminder/screens/adding/adding_screen.dart';
 import 'package:recurring_alarm/presentation/reminder/viewmodels/reminder_state.dart';
 import 'package:uuid/uuid.dart';
 
@@ -25,6 +25,66 @@ class ReminderViewModel extends StateNotifier<ReminderState> {
 
   final ReminderUsecase _reminderUsecase;
 
+  String updateText(String text) {
+    state = state.copyWith(description: text);
+    return state.description;
+  }
+
+  void setReminderType(ReminderType type) {
+    state = state.copyWith(reminderType: type, lenghtBetweenReminder: 0);
+  }
+
+  void setDaysSelected(selectedDays) {
+    state = state.copyWith(daysSelected: selectedDays);
+    print(selectedDays);
+  }
+
+  void setlenghtSelected(int lenghtSelected) {
+    state = state.copyWith(lenghtBetweenReminder: lenghtSelected);
+  }
+
+  void setWhenMounthSelected(int whenMounthSelected) {
+    state = state.copyWith(whenInMonth: whenMounthSelected);
+  }
+
+  void setDateSelected(DateTime beginDate) {
+    state = state.copyWith(beginDate: beginDate);
+  }
+
+  void setTimeSelected(TimeOfDay timeReminder) {
+    state = state.copyWith(time: timeReminder);
+  }
+
+  void checkIfvalidate(BuildContext context) {
+    if (state.description.trim().isEmpty) {
+      Fluttertoast.showToast(
+        msg: "Vous devez entrer une description pour votre tâche.",
+      );
+
+      return;
+    } else if (state.daysSelected.length <= 1 &&
+        state.reminderType != ReminderType.daily) {
+      Fluttertoast.showToast(
+        msg: "Vous devez au moins sélectionner un jour.",
+      );
+      return;
+    } else if (state.beginDate == null) {
+      Fluttertoast.showToast(
+        msg: "Vous devez mettre une date de début à votre tâche",
+      );
+      return;
+    } else if (state.time == null) {
+      Fluttertoast.showToast(
+        msg: "Vous devez mettre une heure de rappel à votre tâche",
+      );
+      return;
+    }
+  }
+
+  void eraseAll() {
+    state = state.initial();
+  }
+
   void deleteAll() async {
     state = state.copyWith(loading: true);
 
@@ -35,6 +95,11 @@ class ReminderViewModel extends StateNotifier<ReminderState> {
     } catch (e) {
       Fluttertoast.showToast(msg: "pas reussi $e");
     }
+  }
+
+  void openAddReminder(BuildContext context) {
+    eraseAll();
+    showReminderBottomSheet(context);
   }
 
   void fetchAllReminders() async {
