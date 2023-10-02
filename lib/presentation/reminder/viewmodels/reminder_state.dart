@@ -8,7 +8,7 @@ import 'package:recurring_alarm/domain/entities/reminder.dart';
 class ReminderState {
   final String description;
   final ReminderType reminderType;
-  final Set<SelectedDay> daysSelected;
+  final List<int> daysSelected;
   final int lenghtBetweenReminder;
   final int whenInMonth;
   final DateTime? beginDate;
@@ -35,7 +35,7 @@ class ReminderState {
   ReminderState copyWith({
     String? description,
     ReminderType? reminderType,
-    Set<SelectedDay>? daysSelected,
+    List<int>? daysSelected,
     int? lenghtBetweenReminder,
     int? whenInMonth,
     DateTime? beginDate,
@@ -72,7 +72,7 @@ class ReminderState {
         description: "",
         reminderType: ReminderType.daily,
         whenInMonth: 0,
-        daysSelected: const <SelectedDay>{SelectedDay.nothing},
+        daysSelected: const [0],
         lenghtBetweenReminder: 0,
         beginDate: null,
         time: null,
@@ -87,7 +87,7 @@ class ReminderState {
 
     return other.description == description &&
         other.reminderType == reminderType &&
-        setEquals(other.daysSelected, daysSelected) &&
+        other.daysSelected == daysSelected &&
         other.lenghtBetweenReminder == lenghtBetweenReminder &&
         other.whenInMonth == whenInMonth &&
         other.beginDate == beginDate &&

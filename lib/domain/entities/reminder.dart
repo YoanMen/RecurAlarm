@@ -9,12 +9,12 @@ class Reminder {
   final DateTime createAt;
   final String description;
   final TimeOfDay time;
-  final Set<SelectedDay> days;
+  final List<int> days;
   final DateTime beginDate;
   final List<DateTime>? remindersDate;
   final int lenghtBetweenReminder;
   final ReminderType reminderType;
-  final int whenInMonth;
+  final SelectedWhenInMonth whenInMonth;
 
   const Reminder({
     required this.description,
@@ -39,7 +39,7 @@ class Reminder {
         reminderType: reminderType.index,
         lenghtBetweenReminder: lenghtBetweenReminder,
         days: days.join(","),
-        whenInMonth: whenInMonth,
+        whenInMonth: whenInMonth.index,
         remindersDate: remindersDate!.join(","),
         time: "${time.hour}:${time.minute}",
         uuid: uuid,

@@ -6,18 +6,13 @@ enum ReminderType {
   monthly,
 }
 
-enum SelectedDay {
-  nothing,
-  monday,
-  tuesday,
-  wednesday,
-  thursday,
-  friday,
-  saturday,
-  sunday,
+enum SelectedWhenInMonth {
+  begin,
+  middle,
+  end,
 }
 
-// converts the index to a number of weeks between recalls
+// converts the index to a number of day between recalls
 const Map<int, int> weeklDayCount = {
   0: 7,
   1: 14,
@@ -25,16 +20,16 @@ const Map<int, int> weeklDayCount = {
 };
 
 // converts the index to a number of months between recalls
-const Map<int, int> monthDayCount = {
+const Map<int, int> monthCount = {
   0: 1,
   1: 3,
   2: 6,
   3: 12,
 };
 
-// convert the whenInMonth index to a specific day of the month
-const Map<int, int> whenInMonth = {
-  0: 7,
-  1: 21,
-  2: 28,
+// convert  to a specific day of the month
+const Map<String, int> whenInMonth = {
+  "begin": 7,
+  "middle": 14,
+  "end": 22,
 };

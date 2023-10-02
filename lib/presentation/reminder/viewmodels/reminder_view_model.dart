@@ -11,9 +11,7 @@ import 'package:uuid/uuid.dart';
 final reminderViewModel =
     StateNotifierProvider<ReminderViewModel, ReminderState>((ref) {
   return ReminderViewModel(
-      const ReminderState(
-          daysSelected: <SelectedDay>{SelectedDay.nothing},
-          reminders: AsyncValue.data([])),
+      const ReminderState(daysSelected: [0], reminders: AsyncValue.data([])),
       ref.read(reminderUsecaseProvider));
 });
 
@@ -68,7 +66,7 @@ class ReminderViewModel extends StateNotifier<ReminderState> {
         reminderType: state.reminderType,
         time: state.time!,
         uuid: const Uuid().v1(),
-        whenInMonth: state.whenInMonth);
+        whenInMonth: SelectedWhenInMonth.values[state.whenInMonth]);
 
     try {
       await _reminderUsecase.addReminder(newReminder);

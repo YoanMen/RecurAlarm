@@ -1,202 +1,129 @@
-import 'package:intl/intl.dart';
-import 'package:recurring_alarm/core/common/formatting_utils.dart';
+import 'package:flutter/material.dart';
 import 'package:recurring_alarm/core/constant.dart';
 import 'package:recurring_alarm/domain/entities/reminder.dart';
 
 Future<List<DateTime>> calculateNextReminder(Reminder reminder) async {
   switch (reminder.reminderType) {
     case ReminderType.daily:
-      return calculDailyReminders(reminder);
+      return calculateDailyReminders(reminder);
     case ReminderType.weekly:
       return calculateWeeklyReminders(reminder);
     case ReminderType.monthly:
-      return calculMonthReminders(reminder);
+      return calculateMonthlyReminders(reminder);
   }
 }
 
-List<DateTime> calculDailyReminders(Reminder reminder) {
-  var currentTime = DateTime.now();
-  final reminderDateTime = DateTime(currentTime.year, currentTime.month,
-      currentTime.day, reminder.time.hour, reminder.time.minute);
+List<DateTime> calculateDailyReminders(Reminder reminder) {
+  var reminderDateTime = DateTime(
+    reminder.beginDate.year,
+    reminder.beginDate.month,
+    reminder.beginDate.day,
+    reminder.time.hour,
+    reminder.time.minute,
+  );
 
-  if (reminderDateTime.isAfter(currentTime)) {
-    return [reminderDateTime];
+  while (reminderDateTime.isBefore(DateTime.now())) {
+    reminderDateTime = reminderDateTime.add(const Duration(days: 1));
+  }
+
+  return (reminderDateTime.isAfter(DateTime.now()))
+      ? [reminderDateTime]
+      : [
+          DateTime(
+            reminder.beginDate.year,
+            reminder.beginDate.month,
+            reminder.beginDate.day + 1,
+            reminder.time.hour,
+            reminder.time.minute,
+          ),
+        ];
+}
+
+Future<List<DateTime>> calculateWeeklyReminders(Reminder reminder) async {
+  List<DateTime> dates = [];
+
+  DateTime dateToStartSearch = DateTime(reminder.beginDate.year,
+      reminder.beginDate.month, reminder.beginDate.day);
+
+  if (dateToStartSearch.isAfter(DateTime.now())) {
+    DateTime endOfWeekDate = await fetchNextWeek(dateToStartSearch);
+
+    DateTime searchDate = endOfWeekDate.add(const Duration(days: -7));
+
+    dates = searchValidDates(searchDate, reminder);
   } else {
-    return [
-      DateTime(currentTime.year, currentTime.month, (currentTime.day + 1),
-          reminder.time.hour, reminder.time.minute)
-    ];
+    DateTime currentDate = DateTime(reminder.beginDate.year,
+        reminder.beginDate.month, reminder.beginDate.day);
+
+    while (currentDate.isBefore(DateTime.now())) {
+      currentDate = DateUtils.addDaysToDate(
+          currentDate, weeklDayCount[reminder.lenghtBetweenReminder]!);
+    }
+
+    DateTime searchDate = await fetchNextWeek(currentDate);
+
+    dates = searchValidDates(searchDate, reminder);
   }
+  return dates;
 }
 
-Future<List<DateTime>> calculateWeeklyReminders(
-  Reminder reminder,
-) async {
-  var days = formatDaysToList(reminder.days.toString());
+Future<List<DateTime>> calculateMonthlyReminders(Reminder reminder) async {
+  List<DateTime> dates = [];
+  DateTime dateToStartSearch = DateTime(reminder.beginDate.year,
+      reminder.beginDate.month, whenInMonth[reminder.whenInMonth.name]!);
 
-  var beginDate = reminder.beginDate;
+  if (dateToStartSearch.isAfter(DateTime.now())) {
+    DateTime endOfWeekDate = await fetchNextWeek(dateToStartSearch);
 
-  final currentWeek = <DateTime>[];
-  var nextWeekDate = await fetchNextWeek(beginDate);
+    DateTime searchDate = endOfWeekDate.add(const Duration(days: -7));
 
-  for (var day in days) {
-    for (var i = 0; i < 7; i++) {
-      final reminderDateTime = DateTime(beginDate.year, beginDate.month,
-          (beginDate.day + i), reminder.time.hour, reminder.time.minute);
-
-      if (day == DateFormat('EEEE').format(reminderDateTime) &&
-          reminderDateTime.isAfter(DateTime.now()) &&
-          (reminderDateTime.isBefore(nextWeekDate))) {
-        currentWeek.add(reminderDateTime);
-      }
-    }
-  }
-
-  if (currentWeek.isEmpty) {
-    return await calculForNextWeeks(reminder, nextWeekDate);
-
-    // fetch date for spacing selected;
+    dates = searchValidDates(searchDate, reminder);
   } else {
-    return currentWeek;
-  }
-}
+    DateTime currentDate = DateTime(reminder.beginDate.year,
+        reminder.beginDate.month, whenInMonth[reminder.whenInMonth.name]!);
 
-Future<List<DateTime>> calculForNextWeeks(
-    Reminder reminder, DateTime beginWeekDate) async {
-  var days = formatDaysToList(reminder.days.toString());
+    while (currentDate.isBefore(DateTime.now())) {
+      currentDate = DateUtils.addMonthsToMonthDate(
+          currentDate, monthCount[reminder.lenghtBetweenReminder]!);
 
-  var beginDate = beginWeekDate
-      .add(Duration(days: weeklDayCount[reminder.lenghtBetweenReminder]!));
-  final currentWeek = <DateTime>[];
-  var nextWeekDate = await fetchNextWeek(beginDate);
-
-  // Set to begin Week
-  var nextDate =
-      DateTime(nextWeekDate.year, nextWeekDate.month, nextWeekDate.day - 7);
-
-  for (var day in days) {
-    for (var i = 0; i < 7; i++) {
-      final reminderDateTime = DateTime(nextDate.year, nextDate.month,
-          (nextDate.day + i), reminder.time.hour, reminder.time.minute);
-      if (day == DateFormat('EEEE').format(reminderDateTime) &&
-          reminderDateTime.isAfter(DateTime.now()) &&
-          (reminderDateTime.isBefore(nextWeekDate))) {
-        currentWeek.add(reminderDateTime);
-      }
+      currentDate = DateTime(currentDate.year, currentDate.month,
+          whenInMonth[reminder.whenInMonth.name]!);
     }
+
+    DateTime searchDate = await fetchNextWeek(currentDate);
+
+    dates = searchValidDates(searchDate, reminder);
   }
-
-  return currentWeek;
-}
-
-Future<List<DateTime>> calculMonthReminders(
-  Reminder reminder,
-) async {
-  var days = formatDaysToList(reminder.days.toString());
-
-  var beginDate = DateTime(reminder.beginDate.year, reminder.beginDate.month,
-      whenInMonth[reminder.whenInMonth]!);
-
-  final currentWeek = <DateTime>[];
-  var nextWeekDate = await fetchNextWeek(beginDate);
-
-  var nextDate =
-      DateTime(nextWeekDate.year, nextWeekDate.month, nextWeekDate.day - 7);
-  for (var day in days) {
-    for (var i = 0; i < 7; i++) {
-      final reminderDateTime = DateTime(nextDate.year, nextDate.month,
-          (nextDate.day + i), reminder.time.hour, reminder.time.minute);
-
-      if (day == DateFormat('EEEE').format(reminderDateTime)) {
-        if (reminderDateTime.isAfter(DateTime.now()) &&
-            (reminderDateTime.isBefore(nextWeekDate))) {
-          if (beginDate.month != nextWeekDate.month) {
-            // is not the same mounth
-
-            DateTime changeWeek;
-
-            if (beginDate.month < nextWeekDate.month) {
-              // Remove one week to stay in the selected month
-              // otherwise add one week to go to the selected month
-              changeWeek = reminderDateTime.add(const Duration(days: -7));
-            } else {
-              changeWeek = reminderDateTime.add(const Duration(days: 7));
-            }
-
-            currentWeek.add(changeWeek);
-          } else {
-            // is the same Week
-            currentWeek.add(reminderDateTime);
-          }
-        }
-      }
-    }
-  }
-
-  if (currentWeek.isEmpty) {
-    // No date for this month, next month
-    return await calculForNextMonth(reminder, nextWeekDate);
-
-    // fetch date for spacing selected;
-  } else {
-    return currentWeek;
-  }
-}
-
-Future<List<DateTime>> calculForNextMonth(
-    Reminder reminder, DateTime beginWeekDate) async {
-  var days = formatDaysToList(reminder.days.toString());
-
-  var beginDate = DateTime(
-      beginWeekDate.year,
-      beginWeekDate.month + monthDayCount[reminder.lenghtBetweenReminder]!,
-      beginWeekDate.day);
-  final currentWeek = <DateTime>[];
-  var nextWeekDate = await fetchNextWeek(beginDate);
-
-  // Set to begin Week
-  var nextDate =
-      DateTime(nextWeekDate.year, nextWeekDate.month, nextWeekDate.day - 7);
-  for (var day in days) {
-    for (var i = 0; i < 7; i++) {
-      final reminderDateTime = DateTime(nextDate.year, nextDate.month,
-          (nextDate.day + i), reminder.time.hour, reminder.time.minute);
-
-      if (day == DateFormat('EEEE').format(reminderDateTime)) {
-        if (reminderDateTime.isAfter(DateTime.now()) &&
-            (reminderDateTime.isBefore(nextWeekDate))) {
-          if (beginDate.month != nextWeekDate.month) {
-            // is not the same mounth
-
-            DateTime changeWeek;
-
-            if (beginDate.month < nextWeekDate.month) {
-              // Remove one week to stay in the selected month
-              // otherwise add one week to go to the selected month
-              changeWeek = reminderDateTime.add(const Duration(days: -7));
-            } else {
-              changeWeek = reminderDateTime.add(const Duration(days: 7));
-            }
-
-            currentWeek.add(changeWeek);
-          } else {
-            // is the same week
-            currentWeek.add(reminderDateTime);
-          }
-        }
-      }
-    }
-  }
-
-  return currentWeek;
+  return dates;
 }
 
 Future<DateTime> fetchNextWeek(DateTime beginDate) async {
-  DateTime mondayDate = beginDate;
+  DateTime endWeekDate = beginDate;
 
-  // looks for the end of the week
-  while (DateFormat('EEEE').format(mondayDate) != "Monday") {
-    mondayDate = mondayDate.add(const Duration(days: 1));
+  while (endWeekDate.weekday != 7) {
+    endWeekDate = endWeekDate.add(const Duration(days: 1));
   }
-  return mondayDate;
+
+  return endWeekDate;
+}
+
+List<DateTime> searchValidDates(DateTime searchDate, Reminder reminder) {
+  List<DateTime> dates = [];
+
+  for (var day in reminder.days) {
+    for (var i = 1; i <= 7; i++) {
+      final reminderDateTime = DateTime(
+        searchDate.year,
+        searchDate.month,
+        searchDate.day + i,
+        reminder.time.hour,
+        reminder.time.minute,
+      );
+      if (day == i) {
+        dates.add(reminderDateTime);
+      }
+    }
+  }
+
+  return dates;
 }

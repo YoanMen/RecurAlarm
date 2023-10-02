@@ -26,21 +26,6 @@ List<DateTime> formatMultipleDates(List<String> dates) {
   return dates.map((e) => DateTime.parse(e)).toList();
 }
 
-// Converts a string of days ("monday, friday")
-// to the Set<SelectedDay> corresponding to its day.
-
-Set<SelectedDay> formatDaysToSelectedDays(String days) {
-  List<String> selectedDaysList = days.split(',');
-
-  Set<SelectedDay> selectedDays = selectedDaysList.map((day) {
-    return SelectedDay.values.firstWhere((e) {
-      return e.toString() == day;
-    });
-  }).toSet();
-
-  return selectedDays;
-}
-
 List<String> formatDaysToList(String days) {
   final list = days
       .replaceAll('}', "")
@@ -84,58 +69,58 @@ String lenghtBettewenReminding(Reminder reminder) {
       switch (reminder.lenghtBetweenReminder) {
         case 0:
           switch (reminder.whenInMonth) {
-            case 0:
+            case SelectedWhenInMonth.begin:
               text = "All the beginnings of the month".hardcoded;
               break;
 
-            case 1:
+            case SelectedWhenInMonth.middle:
               text = "Every mid month".hardcoded;
               break;
 
-            case 2:
+            case SelectedWhenInMonth.end:
               text = "Every end of the month".hardcoded;
               break;
           }
 
         case 1:
           switch (reminder.whenInMonth) {
-            case 0:
+            case SelectedWhenInMonth.begin:
               text = "Beginning of the month, every three months".hardcoded;
               break;
 
-            case 1:
+            case SelectedWhenInMonth.middle:
               text = "Middle of the month, every three months".hardcoded;
               break;
 
-            case 2:
+            case SelectedWhenInMonth.end:
               text = "End of the month, every three months".hardcoded;
               break;
           }
         case 2:
           switch (reminder.whenInMonth) {
-            case 0:
+            case SelectedWhenInMonth.begin:
               text = "Beginning of the month, every nine months".hardcoded;
               break;
 
-            case 1:
+            case SelectedWhenInMonth.middle:
               text = "Middle of the month, every nine months".hardcoded;
               break;
 
-            case 2:
+            case SelectedWhenInMonth.end:
               text = "End of the month, every nine months".hardcoded;
               break;
           }
         case 3:
           switch (reminder.whenInMonth) {
-            case 0:
+            case SelectedWhenInMonth.begin:
               text = "Beginning of the month, twelve nine months".hardcoded;
               break;
 
-            case 1:
+            case SelectedWhenInMonth.middle:
               text = "Middle of the month, every twelve months".hardcoded;
               break;
 
-            case 2:
+            case SelectedWhenInMonth.end:
               text = "End of the month, every twelve months".hardcoded;
               break;
           }
