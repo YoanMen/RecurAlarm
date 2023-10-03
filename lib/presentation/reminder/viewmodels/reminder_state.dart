@@ -17,6 +17,7 @@ class ReminderState {
   final AsyncValue<List<Reminder>> reminders;
   final bool loading;
   final bool editingMode;
+  final String validatorErrorText;
 
   const ReminderState({
     this.description = "",
@@ -30,6 +31,7 @@ class ReminderState {
     this.editingMode = false,
     required this.reminders,
     this.loading = false,
+    this.validatorErrorText = "",
   });
 
   ReminderState copyWith({
@@ -48,6 +50,7 @@ class ReminderState {
     AsyncValue<List<Reminder>>? reminders,
     bool? loading,
     bool? editingMode,
+    String? validatorErrorText,
   }) {
     return ReminderState(
         description: description ?? this.description,
@@ -61,7 +64,8 @@ class ReminderState {
         time: time ?? this.time,
         reminders: reminders ?? this.reminders,
         loading: loading ?? this.loading,
-        editingMode: editingMode ?? this.editingMode);
+        editingMode: editingMode ?? this.editingMode,
+        validatorErrorText: validatorErrorText ?? this.validatorErrorText);
   }
 
   ReminderState initial({
@@ -78,7 +82,8 @@ class ReminderState {
         time: null,
         remindersDate: null,
         reminders: reminders ?? this.reminders,
-        loading: loading ?? this.loading);
+        loading: loading ?? this.loading,
+        validatorErrorText: '');
   }
 
   @override
@@ -95,7 +100,8 @@ class ReminderState {
         other.time == time &&
         other.reminders == reminders &&
         other.loading == loading &&
-        other.editingMode == editingMode;
+        other.editingMode == editingMode &&
+        other.validatorErrorText == validatorErrorText;
   }
 
   @override
@@ -110,11 +116,12 @@ class ReminderState {
         time.hashCode ^
         reminders.hashCode ^
         loading.hashCode ^
-        editingMode.hashCode;
+        editingMode.hashCode ^
+        validatorErrorText.hashCode;
   }
 
   @override
   String toString() {
-    return 'ReminderFlowState(description: $description, reminderType: $reminderType, daysSelected: $daysSelected, lenghtBetweenReminder: $lenghtBetweenReminder, whenInMonth: $whenInMonth, beginDate: $beginDate, remindersDate: $remindersDate, timeReminder: $time, reminders: $reminders, loading: $loading, editingMode: $editingMode)';
+    return 'ReminderFlowState(description: $description, reminderType: $reminderType, daysSelected: $daysSelected, lenghtBetweenReminder: $lenghtBetweenReminder, whenInMonth: $whenInMonth, beginDate: $beginDate, remindersDate: $remindersDate, timeReminder: $time, reminders: $reminders, loading: $loading, editingMode: $editingMode, validatorErrorText: $validatorErrorText)';
   }
 }

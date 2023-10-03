@@ -42,6 +42,8 @@ class MonthlyWidget extends ConsumerWidget {
               ),
             ],
             onSelectionChanged: (Set<int> newSelection) {
+              FocusScope.of(context).unfocus();
+
               reminderProviderRead.setWhenMounthSelected(newSelection.first);
             },
             selected: <int>{reminderProviderWatch.whenInMonth}),

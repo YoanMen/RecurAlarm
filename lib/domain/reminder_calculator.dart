@@ -122,7 +122,6 @@ Future<DateTime> fetchNextWeek(DateTime beginDate) async {
     endWeekDate = endWeekDate.add(const Duration(days: 1));
   }
 
-  print(endWeekDate);
   return endWeekDate;
 }
 

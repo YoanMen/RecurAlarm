@@ -56,25 +56,27 @@ class ReminderViewModel extends StateNotifier<ReminderState> {
 
   void checkIfvalidate(BuildContext context) {
     if (state.description.trim().isEmpty) {
-      Fluttertoast.showToast(
-        msg: "Vous devez entrer une description pour votre tâche.",
-      );
+      state = state.copyWith(
+          validatorErrorText:
+              "Vous devez entrer une description pour votre tâche.");
 
       return;
     } else if (state.daysSelected.length <= 1 &&
         state.reminderType != ReminderType.daily) {
-      Fluttertoast.showToast(
-        msg: "Vous devez au moins sélectionner un jour.",
+      state = state.copyWith(
+        validatorErrorText: "Vous devez au moins sélectionner un jour.",
       );
       return;
     } else if (state.beginDate == null) {
-      Fluttertoast.showToast(
-        msg: "Vous devez mettre une date de début à votre tâche",
+      print("ok");
+      state = state.copyWith(
+        validatorErrorText: "Vous devez mettre une date de début à votre tâche",
       );
       return;
     } else if (state.time == null) {
-      Fluttertoast.showToast(
-        msg: "Vous devez mettre une heure de rappel à votre tâche",
+      state = state.copyWith(
+        validatorErrorText:
+            "Vous devez mettre une heure de rappel à votre tâche",
       );
       return;
     }
@@ -109,16 +111,13 @@ class ReminderViewModel extends StateNotifier<ReminderState> {
       final response = await _reminderUsecase.fetchAllReminders();
 
       state = state.copyWith(reminders: AsyncValue.data(response));
-      Fluttertoast.showToast(
-          msg: "reussi nombre de rappels ${response.length}");
     } catch (e) {
       Fluttertoast.showToast(msg: "pas reussi $e");
     }
   }
 
   void addReminder(BuildContext context) async {
-    var currentContext = context;
-    state = state.copyWith(loading: true);
+    final navigator = Navigator.of(context);
 
     // get all option setting by user
     final newReminder = Reminder(
@@ -136,12 +135,11 @@ class ReminderViewModel extends StateNotifier<ReminderState> {
     try {
       await _reminderUsecase.addReminder(newReminder);
       Fluttertoast.showToast(msg: "Rappel ajouté");
+      navigator.pop();
       fetchAllReminders();
     } catch (e) {
       Fluttertoast.showToast(msg: "pas reussi $e");
     }
-
-    state = state.copyWith(loading: false);
   }
 
   void closePopup(BuildContext context) {

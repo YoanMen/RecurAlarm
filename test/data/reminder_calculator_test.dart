@@ -73,7 +73,6 @@ void main() {
         createAt: DateTime.now(),
         reminderEnable: true);
     var result = await calculateNextReminder(reminderMock);
-    print(result);
     expect(true, result[0].isAfter(DateTime.now()));
   });
 }
