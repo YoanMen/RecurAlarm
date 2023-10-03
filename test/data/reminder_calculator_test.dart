@@ -62,17 +62,18 @@ void main() {
   test("calcul date weekly with custom date", () async {
     Reminder reminderMock = Reminder(
         description: "mock description",
-        beginDate: DateTime(2023, 12, 25),
+        beginDate: DateTime(
+            DateTime.now().year, DateTime.now().month, DateTime.now().day),
         reminderType: ReminderType.weekly,
-        lenghtBetweenReminder: 1,
-        days: const [1, 7],
+        lenghtBetweenReminder: 2,
+        days: const [1, 4, 7],
         whenInMonth: SelectedWhenInMonth.values[0],
-        time: const TimeOfDay(hour: 16, minute: 30),
+        time: const TimeOfDay(hour: 8, minute: 30),
         uuid: '148dqz',
         createAt: DateTime.now(),
         reminderEnable: true);
     var result = await calculateNextReminder(reminderMock);
-
+    print(result);
     expect(true, result[0].isAfter(DateTime.now()));
   });
 }

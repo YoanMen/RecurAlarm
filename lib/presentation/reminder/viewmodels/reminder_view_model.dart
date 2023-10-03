@@ -35,8 +35,7 @@ class ReminderViewModel extends StateNotifier<ReminderState> {
   }
 
   void setDaysSelected(selectedDays) {
-    state = state.copyWith(daysSelected: selectedDays);
-    print(selectedDays);
+    state = state.copyWith(daysSelected: List<int>.from(selectedDays));
   }
 
   void setlenghtSelected(int lenghtSelected) {
@@ -79,6 +78,8 @@ class ReminderViewModel extends StateNotifier<ReminderState> {
       );
       return;
     }
+
+    addReminder(context);
   }
 
   void eraseAll() {
@@ -89,7 +90,7 @@ class ReminderViewModel extends StateNotifier<ReminderState> {
     state = state.copyWith(loading: true);
 
     try {
-      final response = await _reminderUsecase.deleteAll();
+      await _reminderUsecase.deleteAll();
 
       Fluttertoast.showToast(msg: "reminders supprimé");
     } catch (e) {
@@ -103,8 +104,7 @@ class ReminderViewModel extends StateNotifier<ReminderState> {
   }
 
   void fetchAllReminders() async {
-    state = state.copyWith(loading: true);
-
+    state = state.copyWith(reminders: const AsyncValue.loading());
     try {
       final response = await _reminderUsecase.fetchAllReminders();
 
@@ -114,13 +114,13 @@ class ReminderViewModel extends StateNotifier<ReminderState> {
     } catch (e) {
       Fluttertoast.showToast(msg: "pas reussi $e");
     }
-
-    state = state.copyWith(loading: false);
   }
 
-  void addReminder() async {
-    // get all option setting by user
+  void addReminder(BuildContext context) async {
+    var currentContext = context;
+    state = state.copyWith(loading: true);
 
+    // get all option setting by user
     final newReminder = Reminder(
         description: state.description,
         beginDate: state.beginDate!,
@@ -135,10 +135,16 @@ class ReminderViewModel extends StateNotifier<ReminderState> {
 
     try {
       await _reminderUsecase.addReminder(newReminder);
-
       Fluttertoast.showToast(msg: "Rappel ajouté");
+      fetchAllReminders();
     } catch (e) {
       Fluttertoast.showToast(msg: "pas reussi $e");
     }
+
+    state = state.copyWith(loading: false);
+  }
+
+  void closePopup(BuildContext context) {
+    Navigator.of(context).pop();
   }
 }

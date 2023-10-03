@@ -42,28 +42,46 @@ List<DateTime> calculateDailyReminders(Reminder reminder) {
 Future<List<DateTime>> calculateWeeklyReminders(Reminder reminder) async {
   List<DateTime> dates = [];
 
-  DateTime dateToStartSearch = DateTime(reminder.beginDate.year,
-      reminder.beginDate.month, reminder.beginDate.day);
+  DateTime dateToStartSearch = DateTime(
+    reminder.beginDate.year,
+    reminder.beginDate.month,
+    reminder.beginDate.day,
+  );
 
-  if (dateToStartSearch.isAfter(DateTime.now())) {
-    DateTime endOfWeekDate = await fetchNextWeek(dateToStartSearch);
+  // search in current week
 
-    DateTime searchDate = endOfWeekDate.add(const Duration(days: -7));
+  DateTime endOfWeekDate = await fetchNextWeek(dateToStartSearch);
 
-    dates = searchValidDates(searchDate, reminder);
-  } else {
-    DateTime currentDate = DateTime(reminder.beginDate.year,
-        reminder.beginDate.month, reminder.beginDate.day);
+  DateTime searchDate = endOfWeekDate.add(const Duration(days: -7));
 
-    while (currentDate.isBefore(DateTime.now())) {
-      currentDate = DateUtils.addDaysToDate(
-          currentDate, weeklDayCount[reminder.lenghtBetweenReminder]!);
+  dates = searchValidDates(searchDate, reminder);
+
+  if (dates.isEmpty) {
+    if (dateToStartSearch.isAfter(DateTime.now())) {
+      DateTime endOfWeekDate = await fetchNextWeek(dateToStartSearch);
+
+      DateTime searchDate = endOfWeekDate.add(const Duration(days: -7));
+
+      dates = searchValidDates(searchDate, reminder);
+    } else {
+      DateTime currentDate = DateTime(
+        reminder.beginDate.year,
+        reminder.beginDate.month,
+        reminder.beginDate.day,
+      );
+      while (currentDate.isBefore(DateTime.now())) {
+        currentDate = DateUtils.addDaysToDate(
+            currentDate, weeklDayCount[reminder.lenghtBetweenReminder]!);
+      }
+
+      DateTime endOfWeekDate = await fetchNextWeek(currentDate);
+
+      DateTime searchDate = endOfWeekDate.add(const Duration(days: -7));
+
+      dates = searchValidDates(searchDate, reminder);
     }
-
-    DateTime searchDate = await fetchNextWeek(currentDate);
-
-    dates = searchValidDates(searchDate, reminder);
   }
+  dates.sort();
   return dates;
 }
 
@@ -104,6 +122,7 @@ Future<DateTime> fetchNextWeek(DateTime beginDate) async {
     endWeekDate = endWeekDate.add(const Duration(days: 1));
   }
 
+  print(endWeekDate);
   return endWeekDate;
 }
 
@@ -119,7 +138,7 @@ List<DateTime> searchValidDates(DateTime searchDate, Reminder reminder) {
         reminder.time.hour,
         reminder.time.minute,
       );
-      if (day == i) {
+      if (day == i && reminderDateTime.isAfter(DateTime.now())) {
         dates.add(reminderDateTime);
       }
     }

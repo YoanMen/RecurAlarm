@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:recurring_alarm/core/common/formatting_utils.dart';
 import 'package:recurring_alarm/domain/entities/reminder.dart';
-import 'package:recurring_alarm/domain/reminder_calculator.dart';
 import 'package:recurring_alarm/presentation/reminder/viewmodels/reminder_view_model.dart';
 
 class ReminderCard extends ConsumerWidget {
@@ -26,7 +26,7 @@ class ReminderCard extends ConsumerWidget {
               Row(
                 children: [
                   Text(
-                    "${reminder.time.hour}:${reminder.time.minute}",
+                    reminder.time.format(context),
                     style: const TextStyle(
                         fontSize: 36, fontWeight: FontWeight.w500),
                   ),
@@ -51,12 +51,13 @@ class ReminderCard extends ConsumerWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Date next Reminder",
+                      Text(
+                          DateFormat.MMMEd().format(reminder.remindersDate![0]),
                           style: TextStyle(
                               color: Colors.black.withOpacity(0.40),
                               fontSize: 14)),
                       Text(
-                        _shortDayString(reminder.days.toString()),
+                        _shortDayString(reminder.days),
                         style: TextStyle(
                             color: Colors.black.withOpacity(0.40),
                             fontSize: 14),
@@ -84,41 +85,39 @@ class ReminderCard extends ConsumerWidget {
     );
   }
 
-  int _dayToIndex(String day) {
+  String _dayToString(int day) {
     switch (day) {
-      case 'mon':
-        return 0;
-      case 'tue':
-        return 1;
-      case 'wed':
-        return 2;
-      case 'thu':
-        return 3;
-      case 'fri':
-        return 4;
-      case 'sat':
-        return 5;
-      case 'sun':
-        return 6;
+      case 0:
+        return "";
+      case 1:
+        return "monday";
+      case 2:
+        return "tuesday";
+      case 3:
+        return "wedesday";
+      case 4:
+        return "thuesday";
+      case 5:
+        return "friday";
+      case 6:
+        return "saturday";
+      case 7:
+        return "sunday";
       default:
-        return -1; // Jour inconnu
+        return ""; // Jour inconnu
     }
   }
 
-  String _shortDayString(String daysSelected) {
-    var days = daysSelected
-        .split(",")
-        .map((e) => e.replaceAll("SelectedDay.", ""))
-        .toList();
-
-    if (days.length == 1) {
-      return days[0];
+  String _shortDayString(List<int> daysSelected) {
+    if (daysSelected.length == 1) {
+      return _dayToString(daysSelected[0]);
     } else {
+      daysSelected.sort();
+      daysSelected.removeAt(0);
       List<String> shortedDays =
-          days.map((day) => day.substring(0, 3)).toList();
-      shortedDays.sort((a, b) => _dayToIndex(a).compareTo(_dayToIndex(b)));
+          daysSelected.map((day) => _dayToString(day).substring(0, 3)).toList();
 
-      return shortedDays.join("., ");
+      return shortedDays.join(", ");
     }
   }
 }

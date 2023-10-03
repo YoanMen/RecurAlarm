@@ -4,10 +4,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recurring_alarm/core/common/formatting_utils.dart';
 import 'package:recurring_alarm/core/common/widgets/material_button.dart';
-import 'package:recurring_alarm/core/common/widgets/monthly_widget.dart';
-import 'package:recurring_alarm/core/common/widgets/reminder_type_selection.dart';
+import 'package:recurring_alarm/presentation/reminder/widgets/monthly_widget.dart';
+import 'package:recurring_alarm/presentation/reminder/widgets/reminder_type_selection.dart';
 import 'package:recurring_alarm/core/common/widgets/text_form_field_material.dart';
-import 'package:recurring_alarm/core/common/widgets/weekly_widget.dart';
+import 'package:recurring_alarm/presentation/reminder/widgets/weekly_widget.dart';
 import 'package:recurring_alarm/core/constant.dart';
 import 'package:recurring_alarm/localization/string_hardcoded.dart';
 import 'package:recurring_alarm/presentation/reminder/viewmodels/reminder_view_model.dart';
@@ -77,7 +77,8 @@ Future showReminderBottomSheet(BuildContext context) {
                                   initialDate:
                                       ref.read(reminderViewModel).beginDate ??
                                           DateTime.now(),
-                                  firstDate: DateTime.now(),
+                                  firstDate: DateTime(DateTime.now().year - 20,
+                                      DateTime.now().month, DateTime.now().day),
                                   lastDate:
                                       DateTime(DateTime.now().year + 100));
 

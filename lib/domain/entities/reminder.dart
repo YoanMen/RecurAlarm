@@ -30,6 +30,21 @@ class Reminder {
     required this.reminderEnable,
   });
 
+  Reminder toggleSelected() {
+    return Reminder(
+        description: description,
+        beginDate: beginDate,
+        whenInMonth: whenInMonth,
+        time: time,
+        remindersDate: remindersDate,
+        reminderType: reminderType,
+        days: days,
+        lenghtBetweenReminder: lenghtBetweenReminder,
+        reminderEnable: !reminderEnable,
+        uuid: uuid,
+        createAt: createAt);
+  }
+
   // Transform Reminder to a ReminderSend for give to a Database
 
   ReminderSend fromEntity() {
@@ -38,7 +53,8 @@ class Reminder {
         beginDate: beginDate.toString(),
         reminderType: reminderType.index,
         lenghtBetweenReminder: lenghtBetweenReminder,
-        days: days.join(","),
+        days:
+            days.toString().replaceAll("[", "").replaceAll("]", "").toString(),
         whenInMonth: whenInMonth.index,
         remindersDate: remindersDate!.join(","),
         time: "${time.hour}:${time.minute}",

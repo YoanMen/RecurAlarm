@@ -49,9 +49,9 @@ class SegmentedSelectionDays extends ConsumerWidget {
             label: FittedBox(child: Text('S'.hardcoded)),
           ),
         ],
-        selected: Set.from(ref.watch(reminderViewModel).daysSelected),
+        selected: Set.from(ref.watch(reminderViewModel).daysSelected!),
         onSelectionChanged: (newSelection) {
-          // Todo Set array viewModel
+          ref.read(reminderViewModel.notifier).setDaysSelected(newSelection);
         },
       ),
     );
