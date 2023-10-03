@@ -5,6 +5,7 @@ import 'package:recurring_alarm/core/constant.dart';
 import 'package:recurring_alarm/domain/entities/reminder.dart';
 import 'package:recurring_alarm/domain/usecases/reminder_usecase.dart';
 import 'package:recurring_alarm/presentation/reminder/screens/adding/adding_screen.dart';
+import 'package:recurring_alarm/presentation/reminder/screens/editing/editing_screen.dart';
 import 'package:recurring_alarm/presentation/reminder/viewmodels/reminder_state.dart';
 import 'package:uuid/uuid.dart';
 
@@ -20,7 +21,8 @@ class ReminderViewModel extends StateNotifier<ReminderState> {
       : super(
           state,
         ) {
-    fetchAllReminders();
+    // fetchAllReminders();
+    deleteAll();
   }
 
   final ReminderUsecase _reminderUsecase;
@@ -68,7 +70,6 @@ class ReminderViewModel extends StateNotifier<ReminderState> {
       );
       return;
     } else if (state.beginDate == null) {
-      print("ok");
       state = state.copyWith(
         validatorErrorText: "Vous devez mettre une date de début à votre tâche",
       );
@@ -81,11 +82,26 @@ class ReminderViewModel extends StateNotifier<ReminderState> {
       return;
     }
 
-    addReminder(context);
+    state.editingMode ? updateReminder(context) : addReminder(context);
   }
 
-  void eraseAll() {
+  void eraseAllReminderSetting() {
     state = state.initial();
+  }
+
+  void setEditReminderSetting(Reminder reminder) {
+    state = state.copyWith(
+        validatorErrorText: "",
+        editingMode: true,
+        reminderOnEdit: reminder,
+        beginDate: reminder.beginDate,
+        daysSelected: reminder.days,
+        description: reminder.description,
+        lenghtBetweenReminder: reminder.lenghtBetweenReminder,
+        reminderType: reminder.reminderType,
+        remindersDate: reminder.remindersDate,
+        time: reminder.time,
+        whenInMonth: reminder.whenInMonth.index);
   }
 
   void deleteAll() async {
@@ -101,8 +117,14 @@ class ReminderViewModel extends StateNotifier<ReminderState> {
   }
 
   void openAddReminder(BuildContext context) {
-    eraseAll();
-    showReminderBottomSheet(context);
+    eraseAllReminderSetting();
+    addReminderBottomSheet(context);
+  }
+
+  void openEditReminder(
+      {required BuildContext context, required Reminder reminder}) {
+    setEditReminderSetting(reminder);
+    editReminderBottomSheet(context);
   }
 
   void fetchAllReminders() async {
@@ -138,7 +160,32 @@ class ReminderViewModel extends StateNotifier<ReminderState> {
       navigator.pop();
       fetchAllReminders();
     } catch (e) {
-      Fluttertoast.showToast(msg: "pas reussi $e");
+      Fluttertoast.showToast(msg: "erreur : $e");
+    }
+  }
+
+  void updateReminder(BuildContext context) async {
+    final navigator = Navigator.of(context);
+    // get all option setting by user
+    final newReminder = Reminder(
+        description: state.description,
+        beginDate: state.beginDate!,
+        createAt: state.reminderOnEdit!.createAt,
+        days: state.daysSelected,
+        lenghtBetweenReminder: state.lenghtBetweenReminder,
+        reminderEnable: state.reminderOnEdit!.reminderEnable,
+        reminderType: state.reminderType,
+        time: state.time!,
+        uuid: state.reminderOnEdit!.uuid,
+        whenInMonth: SelectedWhenInMonth.values[state.whenInMonth]);
+
+    try {
+      await _reminderUsecase.updateReminder(newReminder);
+      Fluttertoast.showToast(msg: "Rappel modifié");
+      navigator.pop();
+      fetchAllReminders();
+    } catch (e) {
+      Fluttertoast.showToast(msg: "erreur : $e");
     }
   }
 

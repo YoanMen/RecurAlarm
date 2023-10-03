@@ -31,7 +31,7 @@ void main() {
         beginDate: DateTime(2023, 3, 2),
         reminderType: ReminderType.monthly,
         lenghtBetweenReminder: 0,
-        days: const [1, 7],
+        days: const [1],
         whenInMonth: SelectedWhenInMonth.values[2],
         time: const TimeOfDay(hour: 16, minute: 30),
         uuid: '148dqz',
@@ -39,22 +39,25 @@ void main() {
         reminderEnable: true);
 
     var result = await calculateNextReminder(reminderMock);
+
+    print(result);
     expect(true, result[0].isAfter(DateTime.now()));
   });
 
   test("calcul date for begin month with custom date", () async {
     Reminder reminderMock = Reminder(
         description: "mock description",
-        beginDate: DateTime(2023, 10, 10),
+        beginDate: DateTime(2023, 10, 3),
         reminderType: ReminderType.monthly,
         lenghtBetweenReminder: 1,
-        days: const [1, 7],
+        days: const [0, 1],
         whenInMonth: SelectedWhenInMonth.values[0],
         time: const TimeOfDay(hour: 16, minute: 30),
         uuid: '148dqz',
         createAt: DateTime.now(),
         reminderEnable: true);
     var result = await calculateNextReminder(reminderMock);
+    print(result);
 
     expect(true, result[0].isAfter(DateTime.now()));
   });

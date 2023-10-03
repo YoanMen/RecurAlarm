@@ -9,7 +9,6 @@ class ReminderCard extends ConsumerWidget {
   const ReminderCard({Key? key, required this.reminder}) : super(key: key);
 
   final Reminder reminder;
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return SizedBox(
@@ -32,7 +31,9 @@ class ReminderCard extends ConsumerWidget {
                   ),
                   const Spacer(),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () => ref
+                        .read(reminderViewModel.notifier)
+                        .openEditReminder(context: context, reminder: reminder),
                     icon: const Icon(
                       Icons.edit,
                       size: 24,
@@ -109,15 +110,21 @@ class ReminderCard extends ConsumerWidget {
   }
 
   String _shortDayString(List<int> daysSelected) {
-    if (daysSelected.length == 1) {
-      return _dayToString(daysSelected[0]);
-    } else {
+    if (daysSelected.length == 2) {
       daysSelected.sort();
-      daysSelected.removeAt(0);
-      List<String> shortedDays =
-          daysSelected.map((day) => _dayToString(day).substring(0, 3)).toList();
-
-      return shortedDays.join(", ");
+      return _dayToString(daysSelected[1]);
     }
+
+    daysSelected.sort();
+
+    List<String> dayNames = daysSelected.map((day) {
+      if (day == 0) {
+        return "";
+      }
+      return _dayToString(day).substring(0, 3);
+    }).toList();
+
+    // Rejoindre la liste triée en une seule chaîne séparée par des virgules
+    return dayNames.join(", ").substring(1).trim();
   }
 }

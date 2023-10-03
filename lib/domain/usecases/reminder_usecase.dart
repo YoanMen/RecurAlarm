@@ -30,14 +30,25 @@ class ReminderUsecase {
 
   Future addReminder(Reminder newReminder) async {
     try {
-      print('begin date ${newReminder.beginDate}');
-
       List<DateTime> calculatedDates = await calculateNextReminder(newReminder);
 
       Reminder reminder =
           Reminder.withCalculatedDates(newReminder, calculatedDates);
       final reminderSend = reminder.fromEntity();
       await _reminderlocalDdbProvider.addReminder(reminderSend);
+    } catch (e) {
+      throw Failure(message: e.toString());
+    }
+  }
+
+  Future updateReminder(Reminder newReminder) async {
+    try {
+      List<DateTime> calculatedDates = await calculateNextReminder(newReminder);
+      Reminder reminder =
+          Reminder.withCalculatedDates(newReminder, calculatedDates);
+
+      final reminderSend = reminder.fromEntity();
+      await _reminderlocalDdbProvider.updateReminder(reminderSend);
     } catch (e) {
       throw Failure(message: e.toString());
     }

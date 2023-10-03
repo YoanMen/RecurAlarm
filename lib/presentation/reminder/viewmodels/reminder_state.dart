@@ -6,18 +6,21 @@ import 'package:recurring_alarm/domain/entities/reminder.dart';
 
 @immutable
 class ReminderState {
-  final String description;
-  final ReminderType reminderType;
-  final List<int> daysSelected;
-  final int lenghtBetweenReminder;
-  final int whenInMonth;
-  final DateTime? beginDate;
-  final List<DateTime>? remindersDate;
-  final TimeOfDay? time;
-  final AsyncValue<List<Reminder>> reminders;
+  // UI State
   final bool loading;
   final bool editingMode;
   final String validatorErrorText;
+  final AsyncValue<List<Reminder>> reminders;
+  // Reminder state
+  final String description;
+  final DateTime? beginDate;
+  final TimeOfDay? time;
+  final List<int> daysSelected;
+  final ReminderType reminderType;
+  final List<DateTime>? remindersDate;
+  final int lenghtBetweenReminder;
+  final int whenInMonth;
+  final Reminder? reminderOnEdit;
 
   const ReminderState({
     this.description = "",
@@ -29,6 +32,7 @@ class ReminderState {
     this.remindersDate,
     this.time,
     this.editingMode = false,
+    this.reminderOnEdit,
     required this.reminders,
     this.loading = false,
     this.validatorErrorText = "",
@@ -43,14 +47,11 @@ class ReminderState {
     DateTime? beginDate,
     List<DateTime>? remindersDate,
     TimeOfDay? time,
-    List<Reminder>? passedReminder,
-    List<Reminder>? todayReminder,
-    List<Reminder>? weekReminder,
-    List<Reminder>? laterReminder,
     AsyncValue<List<Reminder>>? reminders,
     bool? loading,
     bool? editingMode,
     String? validatorErrorText,
+    Reminder? reminderOnEdit,
   }) {
     return ReminderState(
         description: description ?? this.description,
@@ -65,7 +66,8 @@ class ReminderState {
         reminders: reminders ?? this.reminders,
         loading: loading ?? this.loading,
         editingMode: editingMode ?? this.editingMode,
-        validatorErrorText: validatorErrorText ?? this.validatorErrorText);
+        validatorErrorText: validatorErrorText ?? this.validatorErrorText,
+        reminderOnEdit: reminderOnEdit ?? this.reminderOnEdit);
   }
 
   ReminderState initial({
@@ -81,6 +83,8 @@ class ReminderState {
         beginDate: null,
         time: null,
         remindersDate: null,
+        reminderOnEdit: null,
+        editingMode: false,
         reminders: reminders ?? this.reminders,
         loading: loading ?? this.loading,
         validatorErrorText: '');
@@ -101,7 +105,8 @@ class ReminderState {
         other.reminders == reminders &&
         other.loading == loading &&
         other.editingMode == editingMode &&
-        other.validatorErrorText == validatorErrorText;
+        other.validatorErrorText == validatorErrorText &&
+        other.reminderOnEdit == reminderOnEdit;
   }
 
   @override
@@ -117,11 +122,12 @@ class ReminderState {
         reminders.hashCode ^
         loading.hashCode ^
         editingMode.hashCode ^
-        validatorErrorText.hashCode;
+        validatorErrorText.hashCode ^
+        reminderOnEdit.hashCode;
   }
 
   @override
   String toString() {
-    return 'ReminderFlowState(description: $description, reminderType: $reminderType, daysSelected: $daysSelected, lenghtBetweenReminder: $lenghtBetweenReminder, whenInMonth: $whenInMonth, beginDate: $beginDate, remindersDate: $remindersDate, timeReminder: $time, reminders: $reminders, loading: $loading, editingMode: $editingMode, validatorErrorText: $validatorErrorText)';
+    return 'ReminderFlowState(description: $description, reminderType: $reminderType, daysSelected: $daysSelected, lenghtBetweenReminder: $lenghtBetweenReminder, whenInMonth: $whenInMonth, beginDate: $beginDate, remindersDate: $remindersDate, timeReminder: $time, reminders: $reminders, loading: $loading, editingMode: $editingMode, validatorErrorText: $validatorErrorText, reminderOnEdit: $reminderOnEdit)';
   }
 }

@@ -14,7 +14,7 @@ import 'package:recurring_alarm/localization/string_hardcoded.dart';
 import 'package:recurring_alarm/presentation/reminder/viewmodels/reminder_view_model.dart';
 import 'package:recurring_alarm/theme/palette.dart';
 
-Future showReminderBottomSheet(BuildContext context) {
+Future addReminderBottomSheet(BuildContext context) {
   return showModalBottomSheet(
     isDismissible: true,
     enableDrag: true,
@@ -145,8 +145,10 @@ Future showReminderBottomSheet(BuildContext context) {
                               child: Text(
                                 (ref.read(reminderViewModel).time == null)
                                     ? "Tap here".hardcoded
-                                    : formatTimeToString(
-                                        ref.read(reminderViewModel).time!),
+                                    : ref
+                                        .read(reminderViewModel)
+                                        .time!
+                                        .format(context),
                                 style: Theme.of(context)
                                     .textTheme
                                     .titleMedium

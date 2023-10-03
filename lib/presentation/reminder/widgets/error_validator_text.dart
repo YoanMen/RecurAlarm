@@ -11,7 +11,7 @@ class ErrorValidatorText extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: kDefaultPadding),
+      padding: const EdgeInsets.only(bottom: 6),
       child: Align(
         alignment: Alignment.centerLeft,
         child: Text(

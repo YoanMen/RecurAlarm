@@ -46,6 +46,8 @@ Future<List<DateTime>> calculateWeeklyReminders(Reminder reminder) async {
     reminder.beginDate.year,
     reminder.beginDate.month,
     reminder.beginDate.day,
+    reminder.time.hour,
+    reminder.time.minute,
   );
 
   // search in current week
@@ -87,31 +89,41 @@ Future<List<DateTime>> calculateWeeklyReminders(Reminder reminder) async {
 
 Future<List<DateTime>> calculateMonthlyReminders(Reminder reminder) async {
   List<DateTime> dates = [];
-  DateTime dateToStartSearch = DateTime(reminder.beginDate.year,
-      reminder.beginDate.month, whenInMonth[reminder.whenInMonth.name]!);
 
-  if (dateToStartSearch.isAfter(DateTime.now())) {
-    DateTime endOfWeekDate = await fetchNextWeek(dateToStartSearch);
+  DateTime dateToStartSearch = DateTime(
+    reminder.beginDate.year,
+    reminder.beginDate.month,
+    whenInMonth[reminder.whenInMonth.name]!,
+    reminder.time.hour,
+    reminder.time.minute,
+  );
 
-    DateTime searchDate = endOfWeekDate.add(const Duration(days: -7));
+  DateTime endOfWeekDate = await fetchNextWeek(dateToStartSearch);
 
-    dates = searchValidDates(searchDate, reminder);
-  } else {
-    DateTime currentDate = DateTime(reminder.beginDate.year,
-        reminder.beginDate.month, whenInMonth[reminder.whenInMonth.name]!);
+  dates = searchValidDates(endOfWeekDate, reminder);
 
-    while (currentDate.isBefore(DateTime.now())) {
-      currentDate = DateUtils.addMonthsToMonthDate(
-          currentDate, monthCount[reminder.lenghtBetweenReminder]!);
+  if (dates.isEmpty) {
+    if (dateToStartSearch.isAfter(DateTime.now())) {
+      DateTime endOfWeekDate = await fetchNextWeek(dateToStartSearch);
 
-      currentDate = DateTime(currentDate.year, currentDate.month,
-          whenInMonth[reminder.whenInMonth.name]!);
+      dates = searchValidDates(endOfWeekDate, reminder);
+    } else {
+      DateTime currentDate = DateTime(reminder.beginDate.year,
+          reminder.beginDate.month, whenInMonth[reminder.whenInMonth.name]!);
+
+      while (currentDate.isBefore(DateTime.now())) {
+        currentDate = DateUtils.addMonthsToMonthDate(
+            currentDate, monthCount[reminder.lenghtBetweenReminder]!);
+
+        currentDate = DateTime(currentDate.year, currentDate.month,
+            whenInMonth[reminder.whenInMonth.name]!);
+      }
+      DateTime searchDate = await fetchNextWeek(currentDate);
+
+      dates = searchValidDates(searchDate, reminder);
     }
-
-    DateTime searchDate = await fetchNextWeek(currentDate);
-
-    dates = searchValidDates(searchDate, reminder);
   }
+  dates.sort();
   return dates;
 }
 
@@ -137,6 +149,7 @@ List<DateTime> searchValidDates(DateTime searchDate, Reminder reminder) {
         reminder.time.hour,
         reminder.time.minute,
       );
+
       if (day == i && reminderDateTime.isAfter(DateTime.now())) {
         dates.add(reminderDateTime);
       }
