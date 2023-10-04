@@ -21,8 +21,8 @@ class ReminderViewModel extends StateNotifier<ReminderState> {
       : super(
           state,
         ) {
-    // fetchAllReminders();
-    deleteAll();
+    fetchAllReminders();
+    //deleteAll();
   }
 
   final ReminderUsecase _reminderUsecase;
@@ -102,6 +102,33 @@ class ReminderViewModel extends StateNotifier<ReminderState> {
         remindersDate: reminder.remindersDate,
         time: reminder.time,
         whenInMonth: reminder.whenInMonth.index);
+  }
+
+  void toggleSelected(Reminder reminder) async {
+    state = state.copyWith(
+      reminders: AsyncValue.data([
+        for (final oldReminder in state.reminders.asData!.value)
+          if (oldReminder == reminder)
+            reminder.toggleSelected()
+          else
+            oldReminder
+      ]),
+    );
+    // get all option setting by user
+    final newReminder = Reminder(
+        description: reminder.description,
+        beginDate: reminder.beginDate,
+        createAt: reminder.createAt,
+        days: reminder.days,
+        lenghtBetweenReminder: reminder.lenghtBetweenReminder,
+        reminderEnable: !reminder.reminderEnable,
+        reminderType: reminder.reminderType,
+        time: reminder.time,
+        uuid: reminder.uuid,
+        remindersDate: reminder.remindersDate,
+        whenInMonth: reminder.whenInMonth);
+
+    await _reminderUsecase.updateToggleReminder(newReminder);
   }
 
   void deleteAll() async {

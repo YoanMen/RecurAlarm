@@ -35,6 +35,7 @@ class ReminderUsecase {
       Reminder reminder =
           Reminder.withCalculatedDates(newReminder, calculatedDates);
       final reminderSend = reminder.fromEntity();
+
       await _reminderlocalDdbProvider.addReminder(reminderSend);
     } catch (e) {
       throw Failure(message: e.toString());
@@ -47,6 +48,15 @@ class ReminderUsecase {
       Reminder reminder =
           Reminder.withCalculatedDates(newReminder, calculatedDates);
 
+      final reminderSend = reminder.fromEntity();
+      await _reminderlocalDdbProvider.updateReminder(reminderSend);
+    } catch (e) {
+      throw Failure(message: e.toString());
+    }
+  }
+
+  Future updateToggleReminder(Reminder reminder) async {
+    try {
       final reminderSend = reminder.fromEntity();
       await _reminderlocalDdbProvider.updateReminder(reminderSend);
     } catch (e) {

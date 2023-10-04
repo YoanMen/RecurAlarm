@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:recurring_alarm/core/common/formatting_utils.dart';
 import 'package:recurring_alarm/domain/entities/reminder.dart';
 import 'package:recurring_alarm/presentation/reminder/viewmodels/reminder_view_model.dart';
+import 'package:recurring_alarm/theme/palette.dart';
 
 class ReminderCard extends ConsumerWidget {
   const ReminderCard({Key? key, required this.reminder}) : super(key: key);
@@ -30,15 +31,19 @@ class ReminderCard extends ConsumerWidget {
                         fontSize: 36, fontWeight: FontWeight.w500),
                   ),
                   const Spacer(),
-                  IconButton(
-                    onPressed: () => ref
+                  InkWell(
+                    onTap: () => ref
                         .read(reminderViewModel.notifier)
                         .openEditReminder(context: context, reminder: reminder),
-                    icon: const Icon(
-                      Icons.edit,
-                      size: 24,
+                    child: Text(
+                      "edit",
+                      style: TextStyle(
+                          color: Palette.primaryColor.withOpacity(0.80)),
                     ),
                   ),
+                  const SizedBox(
+                    width: 6,
+                  )
                 ],
               ),
               const SizedBox(
@@ -72,7 +77,9 @@ class ReminderCard extends ConsumerWidget {
                   const Spacer(),
                   Switch.adaptive(
                     value: reminder.reminderEnable,
-                    onChanged: (value) {}, // toogle activate
+                    onChanged: (value) => ref
+                        .read(reminderViewModel.notifier)
+                        .toggleSelected(reminder), // toogle activate
                   ),
                 ],
               ),
@@ -110,7 +117,9 @@ class ReminderCard extends ConsumerWidget {
   }
 
   String _shortDayString(List<int> daysSelected) {
-    if (daysSelected.length == 2) {
+    if (daysSelected.length == 1) {
+      return "";
+    } else if (daysSelected.length == 2) {
       daysSelected.sort();
       return _dayToString(daysSelected[1]);
     }
@@ -124,7 +133,6 @@ class ReminderCard extends ConsumerWidget {
       return _dayToString(day).substring(0, 3);
     }).toList();
 
-    // Rejoindre la liste triée en une seule chaîne séparée par des virgules
     return dayNames.join(", ").substring(1).trim();
   }
 }

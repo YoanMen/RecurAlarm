@@ -10,12 +10,12 @@ void main() {
         () async {
       Reminder reminderMock = Reminder(
           description: "mock desciption",
-          beginDate: DateTime(2023, 6, 10),
+          beginDate: DateTime.now(),
           reminderType: ReminderType.daily,
           lenghtBetweenReminder: 0,
           days: const [1, 7],
           whenInMonth: SelectedWhenInMonth.values[0],
-          time: const TimeOfDay(hour: 16, minute: 30),
+          time: const TimeOfDay(hour: 8, minute: 0),
           uuid: '148dqz',
           createAt: DateTime.now(),
           reminderEnable: true);
@@ -40,16 +40,15 @@ void main() {
 
     var result = await calculateNextReminder(reminderMock);
 
-    print(result);
     expect(true, result[0].isAfter(DateTime.now()));
   });
 
   test("calcul date for begin month with custom date", () async {
     Reminder reminderMock = Reminder(
         description: "mock description",
-        beginDate: DateTime(2023, 10, 3),
+        beginDate: DateTime(2024, 1, 20),
         reminderType: ReminderType.monthly,
-        lenghtBetweenReminder: 1,
+        lenghtBetweenReminder: 0,
         days: const [0, 1],
         whenInMonth: SelectedWhenInMonth.values[0],
         time: const TimeOfDay(hour: 16, minute: 30),
@@ -57,7 +56,6 @@ void main() {
         createAt: DateTime.now(),
         reminderEnable: true);
     var result = await calculateNextReminder(reminderMock);
-    print(result);
 
     expect(true, result[0].isAfter(DateTime.now()));
   });
@@ -68,14 +66,18 @@ void main() {
         beginDate: DateTime(
             DateTime.now().year, DateTime.now().month, DateTime.now().day),
         reminderType: ReminderType.weekly,
-        lenghtBetweenReminder: 2,
-        days: const [1, 4, 7],
+        lenghtBetweenReminder: 0,
+        days: const [
+          0,
+          1,
+        ],
         whenInMonth: SelectedWhenInMonth.values[0],
         time: const TimeOfDay(hour: 8, minute: 30),
         uuid: '148dqz',
         createAt: DateTime.now(),
         reminderEnable: true);
     var result = await calculateNextReminder(reminderMock);
+
     expect(true, result[0].isAfter(DateTime.now()));
   });
 }

@@ -88,43 +88,43 @@ String lenghtBettewenReminding(Reminder reminder) {
         case 1:
           switch (reminder.whenInMonth) {
             case SelectedWhenInMonth.begin:
-              text = "Beginning of the month, every three months".hardcoded;
+              text = "Beginning, every three months".hardcoded;
               break;
 
             case SelectedWhenInMonth.middle:
-              text = "Middle of the month, every three months".hardcoded;
+              text = "Middle, every three months".hardcoded;
               break;
 
             case SelectedWhenInMonth.end:
-              text = "End of the month, every three months".hardcoded;
+              text = "End, every three months".hardcoded;
               break;
           }
         case 2:
           switch (reminder.whenInMonth) {
             case SelectedWhenInMonth.begin:
-              text = "Beginning of the month, every nine months".hardcoded;
+              text = "Beginning, every nine months".hardcoded;
               break;
 
             case SelectedWhenInMonth.middle:
-              text = "Middle of the month, every nine months".hardcoded;
+              text = "Middle, every nine months".hardcoded;
               break;
 
             case SelectedWhenInMonth.end:
-              text = "End of the month, every nine months".hardcoded;
+              text = "End, every nine months".hardcoded;
               break;
           }
         case 3:
           switch (reminder.whenInMonth) {
             case SelectedWhenInMonth.begin:
-              text = "Beginning of the month, twelve nine months".hardcoded;
+              text = "Beginning, twelve nine months".hardcoded;
               break;
 
             case SelectedWhenInMonth.middle:
-              text = "Middle of the month, every twelve months".hardcoded;
+              text = "Middle, every twelve months".hardcoded;
               break;
 
             case SelectedWhenInMonth.end:
-              text = "End of the month, every twelve months".hardcoded;
+              text = "End, every twelve months".hardcoded;
               break;
           }
       }
