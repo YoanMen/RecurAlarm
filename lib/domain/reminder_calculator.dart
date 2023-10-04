@@ -50,16 +50,15 @@ Future<List<DateTime>> calculateWeeklyReminders(Reminder reminder) async {
     reminder.time.minute,
   );
 
-  // search a valid date in a week if begin date is after current date
-  if (dateToStartSearch.isAfter(DateTime.now())) {
-    DateTime endOfWeekDate = await fetchNextWeek(dateToStartSearch);
+  // search a valid date in a week
+  DateTime endOfWeekDate = await fetchNextWeek(dateToStartSearch);
 
-    // use - 7 days for searching in begin of week.
-    dates =
-        searchValidDates(endOfWeekDate.add(const Duration(days: -7)), reminder);
-  }
+  // use - 7 days for searching in begin of week.
+  dates =
+      searchValidDates(endOfWeekDate.add(const Duration(days: -7)), reminder);
+
   if (dates.isEmpty) {
-    // if no dates founded in week dates or begin date is before DateTime.now
+    // if no dates founded in week date of begin search
     // add week and search valid dates
 
     DateTime currentDate = DateTime(reminder.beginDate.year,

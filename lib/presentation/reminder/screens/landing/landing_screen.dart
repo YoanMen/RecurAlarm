@@ -30,15 +30,23 @@ class LandingScreen extends ConsumerWidget {
       ),
       body: reminderProviderWatch.reminders.when(
         data: (reminder) {
-          if (reminder.isNotEmpty) {
-            return ListView.builder(
-              padding: const EdgeInsets.only(bottom: 80),
-              itemCount: reminder.length,
-              itemBuilder: (context, index) =>
-                  ReminderCard(reminder: reminder[index]),
-            );
-          }
-          return const Center(child: Text("No reminders"));
+          return Stack(
+            children: [
+              (reminder.isNotEmpty)
+                  ? ListView.builder(
+                      padding: const EdgeInsets.only(bottom: 80),
+                      itemCount: reminder.length,
+                      itemBuilder: (context, index) =>
+                          ReminderCard(reminder: reminder[index]),
+                    )
+                  : const Center(child: Text("No reminders")),
+              if (reminderProviderWatch.loading)
+                const Align(
+                  alignment: Alignment.topCenter,
+                  child: LinearProgressIndicator(),
+                ),
+            ],
+          );
         },
         error: (error, stackTrace) => Center(child: Text(error.toString())),
         loading: () => const Align(

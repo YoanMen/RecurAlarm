@@ -30,6 +30,6 @@ const Map<int, int> monthCount = {
 // convert  to a specific day of the month
 const Map<String, int> whenInMonth = {
   "begin": 1,
-  "middle": 12,
+  "middle": 11,
   "end": 22,
 };

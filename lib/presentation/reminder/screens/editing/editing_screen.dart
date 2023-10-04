@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recurring_alarm/core/common/formatting_utils.dart';
+import 'package:recurring_alarm/core/common/widgets/confirmation_pop_up.dart';
 import 'package:recurring_alarm/core/common/widgets/material_button.dart';
 import 'package:recurring_alarm/presentation/reminder/widgets/error_validator_text.dart';
 import 'package:recurring_alarm/presentation/reminder/widgets/monthly_widget.dart';
@@ -45,7 +46,20 @@ Future editReminderBottomSheet(BuildContext context) {
                       ),
                       const Spacer(),
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () => confirmatiomPopUp(
+                            context: context,
+                            ref: ref,
+                            confirmButton: () {
+                              _closeEdit(context);
+                              ref
+                                  .read(reminderViewModel.notifier)
+                                  .removeReminder(ref
+                                      .watch(reminderViewModel)
+                                      .reminderOnEdit!);
+                              Navigator.of(context).pop();
+                            },
+                            content: "Do you want delete this reminder ?",
+                            title: "Delete Reminder"),
                         icon: const Icon(Icons.delete),
                       )
                     ],
@@ -206,4 +220,8 @@ Future editReminderBottomSheet(BuildContext context) {
       );
     },
   );
+}
+
+void _closeEdit(BuildContext context) {
+  Navigator.of(context).pop();
 }

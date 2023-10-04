@@ -59,19 +59,19 @@ class MonthlyWidget extends ConsumerWidget {
             segments: const [
               ButtonSegment(
                 value: 0,
-                label: FittedBox(child: Text('1 mois')),
+                label: FittedBox(child: Text('1 month')),
               ),
               ButtonSegment(
                 value: 1,
-                label: FittedBox(child: Text('3 mois')),
+                label: FittedBox(child: Text('3 month')),
               ),
               ButtonSegment(
                 value: 2,
-                label: FittedBox(child: Text('6 mois')),
+                label: FittedBox(child: Text('6 month')),
               ),
               ButtonSegment(
                 value: 3,
-                label: FittedBox(child: Text('12 mois')),
+                label: FittedBox(child: Text('12 month')),
               ),
             ],
             onSelectionChanged: (Set<int> newSelection) {

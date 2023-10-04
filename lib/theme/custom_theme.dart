@@ -14,6 +14,10 @@ class CustomTheme {
           elevation: 0,
           backgroundColor: Palette.scaffoldColor,
         ),
+        dialogTheme: const DialogTheme(
+          elevation: 0,
+          backgroundColor: Palette.scaffoldColor,
+        ),
         datePickerTheme: const DatePickerThemeData(
             elevation: 0,
             backgroundColor: Palette.scaffoldColor,

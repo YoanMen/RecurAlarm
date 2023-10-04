@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:recurring_alarm/core/constant.dart';
 import 'package:recurring_alarm/domain/entities/reminder.dart';
+import 'package:recurring_alarm/domain/notification_manager.dart';
 import 'package:recurring_alarm/domain/usecases/reminder_usecase.dart';
 import 'package:recurring_alarm/presentation/reminder/screens/adding/adding_screen.dart';
 import 'package:recurring_alarm/presentation/reminder/screens/editing/editing_screen.dart';
@@ -104,6 +105,17 @@ class ReminderViewModel extends StateNotifier<ReminderState> {
         whenInMonth: reminder.whenInMonth.index);
   }
 
+  void removeReminder(Reminder reminder) async {
+    try {
+      await _reminderUsecase.removeReminder(reminder);
+      Fluttertoast.showToast(msg: "reminder delete");
+      fetchAllReminders();
+    } catch (e) {
+      Fluttertoast.showToast(msg: "error: $e");
+      state = state.copyWith(loading: false);
+    }
+  }
+
   void toggleSelected(Reminder reminder) async {
     state = state.copyWith(
       reminders: AsyncValue.data([
@@ -132,15 +144,20 @@ class ReminderViewModel extends StateNotifier<ReminderState> {
   }
 
   void deleteAll() async {
-    state = state.copyWith(loading: true);
+    // state = state.copyWith(loading: true);
 
-    try {
-      await _reminderUsecase.deleteAll();
+    // try {
+    //   await _reminderUsecase.deleteAll();
 
-      Fluttertoast.showToast(msg: "reminders supprimé");
-    } catch (e) {
-      Fluttertoast.showToast(msg: "pas reussi $e");
-    }
+    //   Fluttertoast.showToast(msg: "reminders supprimé");
+    // } catch (e) {
+    //   Fluttertoast.showToast(msg: "pas reussi $e");
+    // }
+
+    // fetchAllReminders();
+    // await Future.delayed(const Duration(milliseconds: 600));
+
+    // state = state.copyWith(loading: false);
   }
 
   void openAddReminder(BuildContext context) {
@@ -155,7 +172,7 @@ class ReminderViewModel extends StateNotifier<ReminderState> {
   }
 
   void fetchAllReminders() async {
-    state = state.copyWith(reminders: const AsyncValue.loading());
+    state = state.copyWith(loading: true);
     try {
       final response = await _reminderUsecase.fetchAllReminders();
 
@@ -163,6 +180,8 @@ class ReminderViewModel extends StateNotifier<ReminderState> {
     } catch (e) {
       Fluttertoast.showToast(msg: "pas reussi $e");
     }
+    await Future.delayed(const Duration(milliseconds: 600));
+    state = state.copyWith(loading: false);
   }
 
   void addReminder(BuildContext context) async {

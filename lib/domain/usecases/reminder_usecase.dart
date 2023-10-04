@@ -64,6 +64,15 @@ class ReminderUsecase {
     }
   }
 
+  Future removeReminder(Reminder reminder) async {
+    try {
+      final reminderSend = reminder.fromEntity();
+      await _reminderlocalDdbProvider.removeReminder(reminderSend);
+    } catch (e) {
+      throw Failure(message: e.toString());
+    }
+  }
+
   Future<List<DateTime>> calculNextReminder(
       {required Reminder reminder}) async {
     List<DateTime> nextReminderList = [];
