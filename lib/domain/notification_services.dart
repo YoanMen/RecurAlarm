@@ -2,7 +2,10 @@ import 'dart:math';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:recurring_alarm/domain/entities/notification_reminder.dart';
+import 'package:recurring_alarm/presentation/reminder/viewmodels/reminder_view_model.dart';
 
 class NotificationServices {
   static Future<void> initializeNotification() async {
@@ -34,11 +37,11 @@ class NotificationServices {
           content: NotificationContent(
             groupKey: reminder.uuid.toString(),
             id: -1,
-            channelKey: 'flutter_schedule_app_channel',
-            title: "You have a reminder !",
+            channelKey: 'recurring_alarm_app_channel',
+            title: DateFormat.Hm().format(reminder.date),
             body: reminder.task,
             category: NotificationCategory.Alarm,
-            notificationLayout: NotificationLayout.BigText,
+            notificationLayout: NotificationLayout.Default,
             locked: true,
             wakeUpScreen: true,
             actionType: ActionType.KeepOnTop,
@@ -58,13 +61,12 @@ class NotificationServices {
             timeZone: await AwesomeNotifications().getLocalTimeZoneIdentifier(),
           ),
         )
-        .then((value) => print(
+        .then((value) => debugPrint(
             'notification create for ${reminder.time} at ${reminder.date.day}/${reminder.date.month}/${reminder.date.year} '));
   }
 
   static Future<void> cancelScheduledNotifications(int id) async {
-    print("cancel notification for $id");
-    //await AwesomeNotifications().cancelSchedule(id);
+    debugPrint("cancel notification for $id");
     await AwesomeNotifications().cancelNotificationsByGroupKey(id.toString());
   }
 }

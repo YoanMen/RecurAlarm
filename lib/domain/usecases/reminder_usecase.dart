@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recurring_alarm/core/failure.dart';
 import 'package:recurring_alarm/data/local/local_database.dart';
@@ -52,7 +53,6 @@ class ReminderUsecase {
 
       final reminderSend = reminder.fromEntity();
       await _reminderlocalDdbProvider.updateReminder(reminderSend);
-
       await manageNotification(reminder);
     } catch (e) {
       throw Failure(message: e.toString());
@@ -82,11 +82,12 @@ class ReminderUsecase {
               time: reminder.time),
         );
 
-        print("notification activate for $element __ id = ${reminder.uuid}");
+        debugPrint(
+            "notification activate for $element __ id = ${reminder.uuid}");
       } else {
         await NotificationServices.cancelScheduledNotifications(reminder.uuid);
 
-        print("notification desactiver ${reminder.uuid}");
+        debugPrint("notification desactiver ${reminder.uuid}");
       }
     }
   }
