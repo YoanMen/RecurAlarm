@@ -16,7 +16,7 @@ void main() {
           days: const [1, 7],
           whenInMonth: SelectedWhenInMonth.values[0],
           time: const TimeOfDay(hour: 8, minute: 0),
-          uuid: '148dqz',
+          uuid: 1151511,
           createAt: DateTime.now(),
           reminderEnable: true);
 
@@ -34,7 +34,7 @@ void main() {
         days: const [1],
         whenInMonth: SelectedWhenInMonth.values[2],
         time: const TimeOfDay(hour: 16, minute: 30),
-        uuid: '148dqz',
+        uuid: 5151,
         createAt: DateTime.now(),
         reminderEnable: true);
 
@@ -52,7 +52,7 @@ void main() {
         days: const [0, 1],
         whenInMonth: SelectedWhenInMonth.values[0],
         time: const TimeOfDay(hour: 16, minute: 30),
-        uuid: '148dqz',
+        uuid: 51515,
         createAt: DateTime.now(),
         reminderEnable: true);
     var result = await calculateNextReminder(reminderMock);
@@ -73,7 +73,7 @@ void main() {
         ],
         whenInMonth: SelectedWhenInMonth.values[0],
         time: const TimeOfDay(hour: 8, minute: 30),
-        uuid: '148dqz',
+        uuid: 51511,
         createAt: DateTime.now(),
         reminderEnable: true);
     var result = await calculateNextReminder(reminderMock);

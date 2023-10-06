@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 
 class NotificationReminder {
-  final String uuid;
+  final int uuid;
+  final String task;
   final DateTime date;
   final TimeOfDay time;
 
   NotificationReminder(
-      {required this.uuid, required this.date, required this.time});
+      {required this.uuid,
+      required this.task,
+      required this.date,
+      required this.time});
 }

@@ -10,50 +10,42 @@ class LandingScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final reminderProviderWatch = ref.watch(reminderViewModel);
     final reminderProviderRead = ref.read(reminderViewModel.notifier);
-
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-          onPressed: () => ref
-              .read(reminderViewModel.notifier)
-              .openAddReminder(context), // * Open Add Reminder
-          child: const Icon(
-            Icons.add,
-            color: Colors.white,
-          )),
-      appBar: AppBar(
-        forceMaterialTransparency: true,
-        actions: [
-          IconButton(
-              onPressed: () => reminderProviderRead.deleteAll(),
-              icon: const Icon(Icons.settings))
-        ],
-      ),
-      body: reminderProviderWatch.reminders.when(
-        data: (reminder) {
-          return Stack(
-            children: [
-              (reminder.isNotEmpty)
-                  ? ListView.builder(
-                      padding: const EdgeInsets.only(bottom: 80),
-                      itemCount: reminder.length,
-                      itemBuilder: (context, index) =>
-                          ReminderCard(reminder: reminder[index]),
-                    )
-                  : const Center(child: Text("No reminders")),
-              if (reminderProviderWatch.loading)
-                const Align(
-                  alignment: Alignment.topCenter,
-                  child: LinearProgressIndicator(),
-                ),
-            ],
-          );
-        },
-        error: (error, stackTrace) => Center(child: Text(error.toString())),
-        loading: () => const Align(
-          alignment: Alignment.topCenter,
-          child: LinearProgressIndicator(),
+        floatingActionButton: FloatingActionButton(
+            onPressed: () => ref
+                .read(reminderViewModel.notifier)
+                .openAddReminder(context), // * Open Add Reminder
+            child: const Icon(
+              Icons.add,
+              color: Colors.white,
+            )),
+        appBar: AppBar(
+          forceMaterialTransparency: true,
+          actions: [
+            IconButton(onPressed: () {}, icon: const Icon(Icons.settings))
+          ],
         ),
-      ),
-    );
+        body: reminderProviderWatch.reminders.when(
+            data: (reminder) {
+              return Stack(
+                children: [
+                  (reminder.isNotEmpty || reminderProviderWatch.loading)
+                      ? ListView.builder(
+                          padding: const EdgeInsets.only(bottom: 80),
+                          itemCount: reminder.length,
+                          itemBuilder: (context, index) =>
+                              ReminderCard(reminder: reminder[index]),
+                        )
+                      : const Center(child: Text("No reminders")),
+                  if (reminderProviderWatch.loading)
+                    const Align(
+                      alignment: Alignment.topCenter,
+                      child: LinearProgressIndicator(),
+                    ),
+                ],
+              );
+            },
+            error: (error, stackTrace) => Center(child: Text(error.toString())),
+            loading: () => const SizedBox.shrink()));
   }
 }

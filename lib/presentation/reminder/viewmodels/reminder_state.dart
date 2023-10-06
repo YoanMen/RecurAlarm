@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recurring_alarm/core/constant.dart';
@@ -34,7 +33,7 @@ class ReminderState {
     this.editingMode = false,
     this.reminderOnEdit,
     required this.reminders,
-    this.loading = false,
+    this.loading = true,
     this.validatorErrorText = "",
   });
 
@@ -86,7 +85,7 @@ class ReminderState {
         reminderOnEdit: null,
         editingMode: false,
         reminders: reminders ?? this.reminders,
-        loading: loading ?? this.loading,
+        loading: true,
         validatorErrorText: '');
   }
 

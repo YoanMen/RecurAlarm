@@ -1,32 +1,42 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:recurring_alarm/core/constant.dart';
 import 'package:recurring_alarm/domain/entities/reminder.dart';
-import 'package:recurring_alarm/domain/notification_manager.dart';
 import 'package:recurring_alarm/domain/usecases/reminder_usecase.dart';
 import 'package:recurring_alarm/presentation/reminder/screens/adding/adding_screen.dart';
 import 'package:recurring_alarm/presentation/reminder/screens/editing/editing_screen.dart';
 import 'package:recurring_alarm/presentation/reminder/viewmodels/reminder_state.dart';
-import 'package:uuid/uuid.dart';
 
 final reminderViewModel =
     StateNotifierProvider<ReminderViewModel, ReminderState>((ref) {
   return ReminderViewModel(
-      const ReminderState(daysSelected: [0], reminders: AsyncValue.data([])),
-      ref.read(reminderUsecaseProvider));
+    const ReminderState(daysSelected: [0], reminders: AsyncValue.data([])),
+    ref.read(reminderUsecaseProvider),
+  );
 });
 
 class ReminderViewModel extends StateNotifier<ReminderState> {
+  final ReminderUsecase _reminderUsecase;
+
   ReminderViewModel(ReminderState state, this._reminderUsecase)
       : super(
           state,
         ) {
     fetchAllReminders();
-    //deleteAll();
+    // deleteAll();
   }
 
-  final ReminderUsecase _reminderUsecase;
+  Future refreshAll() async {
+    var reminders = await _reminderUsecase.fetchAllReminders();
+    for (var reminder in reminders) {
+      await _reminderUsecase.updateReminder(reminder);
+      var newReminders = await _reminderUsecase.fetchAllReminders();
+      state = state.copyWith(reminders: AsyncValue.data(newReminders));
+    }
+  }
 
   String updateText(String text) {
     state = state.copyWith(description: text);
@@ -144,20 +154,20 @@ class ReminderViewModel extends StateNotifier<ReminderState> {
   }
 
   void deleteAll() async {
-    // state = state.copyWith(loading: true);
+    state = state.copyWith(loading: true);
 
-    // try {
-    //   await _reminderUsecase.deleteAll();
+    try {
+      await _reminderUsecase.deleteAll();
 
-    //   Fluttertoast.showToast(msg: "reminders supprimé");
-    // } catch (e) {
-    //   Fluttertoast.showToast(msg: "pas reussi $e");
-    // }
+      Fluttertoast.showToast(msg: "reminders supprimé");
+    } catch (e) {
+      Fluttertoast.showToast(msg: "pas reussi $e");
+    }
 
-    // fetchAllReminders();
-    // await Future.delayed(const Duration(milliseconds: 600));
+    fetchAllReminders();
+    await Future.delayed(const Duration(milliseconds: 600));
 
-    // state = state.copyWith(loading: false);
+    state = state.copyWith(loading: false);
   }
 
   void openAddReminder(BuildContext context) {
@@ -187,6 +197,8 @@ class ReminderViewModel extends StateNotifier<ReminderState> {
   void addReminder(BuildContext context) async {
     final navigator = Navigator.of(context);
 
+    var uniqueId = UniqueKey();
+
     // get all option setting by user
     final newReminder = Reminder(
         description: state.description,
@@ -197,7 +209,7 @@ class ReminderViewModel extends StateNotifier<ReminderState> {
         reminderEnable: true,
         reminderType: state.reminderType,
         time: state.time!,
-        uuid: const Uuid().v1(),
+        uuid: uniqueId.hashCode,
         whenInMonth: SelectedWhenInMonth.values[state.whenInMonth]);
 
     try {

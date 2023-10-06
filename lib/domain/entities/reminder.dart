@@ -4,7 +4,7 @@ import 'package:recurring_alarm/data/local/models/reminder_send.dart';
 
 @immutable
 class Reminder {
-  final String uuid;
+  final int uuid;
   final bool reminderEnable;
   final DateTime createAt;
   final String description;

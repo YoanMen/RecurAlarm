@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 @immutable
 class ReminderSend {
-  final String uuid;
+  final int uuid;
   final int reminderEnable;
   final String createAt;
   final String description;

@@ -44,7 +44,7 @@ class ReminderResponse {
         whenInMonth: SelectedWhenInMonth.values[whenInMonth],
         remindersDate: formatMultipleDates(remindersDate.split(",")),
         time: formatTime(time),
-        uuid: uuid,
+        uuid: int.parse(uuid),
         createAt: formatDate(createAt),
         reminderEnable: reminderEnable == 0 ? false : true);
   }

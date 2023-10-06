@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:recurring_alarm/core/common/formatting_utils.dart';
 import 'package:recurring_alarm/core/common/widgets/material_button.dart';
 import 'package:recurring_alarm/presentation/reminder/widgets/error_validator_text.dart';
