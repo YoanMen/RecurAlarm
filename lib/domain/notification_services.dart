@@ -13,8 +13,8 @@ class NotificationServices {
       null,
       [
         NotificationChannel(
-          channelKey: 'flutter_schedule_app_channel',
-          channelName: 'Flutter Schedule App Channel',
+          channelKey: 'recurring_alarm_app_channel',
+          channelName: 'Recurring alarm App Channel',
           channelDescription:
               'This channel is resposible for showing Reminder App notifications.',
           importance: NotificationImportance.Max,

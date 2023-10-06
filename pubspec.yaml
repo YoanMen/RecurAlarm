@@ -8,10 +8,10 @@ environment:
 
 dependencies:
   awesome_notifications: ^0.8.2
+  shared_preferences: ^2.2.1
+  workmanager: ^0.5.2
   flutter:
     sdk: flutter
-  flutter_background_service: ^5.0.1
-  flutter_background_service_android: ^6.0.1
   flutter_riverpod: ^2.4.1
   fluttertoast: ^8.2.2
   go_router: ^11.1.2
