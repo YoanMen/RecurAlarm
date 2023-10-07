@@ -40,7 +40,7 @@ class NotificationServices {
             channelKey: 'recurring_alarm_app_channel',
             title: DateFormat.Hm().format(reminder.date),
             body: reminder.task,
-            category: NotificationCategory.Alarm,
+            category: NotificationCategory.Reminder,
             notificationLayout: NotificationLayout.Default,
             locked: true,
             wakeUpScreen: true,

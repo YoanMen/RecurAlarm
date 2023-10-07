@@ -92,6 +92,30 @@ class ReminderUsecase {
     }
   }
 
+  Future updatesReminders() async {
+    final currentTime = DateTime.now();
+    final reminders = await fetchAllReminders();
+    final remindersToUpdate = <Reminder>[];
+    for (var reminder in reminders) {
+      if (reminder.remindersDate != null) {
+        bool allDatesPassed = false;
+        for (var i = 0; i < reminder.remindersDate!.length; i++) {
+          if (reminder.remindersDate![i].isBefore(currentTime)) {
+            allDatesPassed = true;
+            break;
+          }
+        }
+
+        if (allDatesPassed) {
+          remindersToUpdate.add(reminder);
+        }
+      }
+    }
+    for (var reminderToUpdate in remindersToUpdate) {
+      await updateReminder(reminderToUpdate);
+    }
+  }
+
   Future removeReminder(Reminder reminder) async {
     try {
       final reminderSend = reminder.fromEntity();

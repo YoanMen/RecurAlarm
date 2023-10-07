@@ -25,10 +25,15 @@ class ReminderCard extends ConsumerWidget {
             children: [
               Row(
                 children: [
-                  Text(
-                    reminder.time.format(context),
-                    style: const TextStyle(
-                        fontSize: 36, fontWeight: FontWeight.w500),
+                  GestureDetector(
+                    onTap: () => ref
+                        .read(reminderViewModel.notifier)
+                        .openEditReminder(context: context, reminder: reminder),
+                    child: Text(
+                      reminder.time.format(context),
+                      style: const TextStyle(
+                          fontSize: 36, fontWeight: FontWeight.w500),
+                    ),
                   ),
                   const Spacer(),
                   InkWell(
@@ -36,7 +41,7 @@ class ReminderCard extends ConsumerWidget {
                         .read(reminderViewModel.notifier)
                         .openEditReminder(context: context, reminder: reminder),
                     child: Text(
-                      "edit",
+                      "Tap to edit",
                       style: TextStyle(
                           color: Palette.primaryColor.withOpacity(0.80)),
                     ),
@@ -46,8 +51,22 @@ class ReminderCard extends ConsumerWidget {
                   )
                 ],
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(DateFormat.MMMEd().format(reminder.remindersDate![0]),
+                      style: TextStyle(
+                          color: Colors.black.withOpacity(0.40), fontSize: 14)),
+                  if (reminder.days.length > 1)
+                    Text(
+                      _shortDayString(reminder.days),
+                      style: TextStyle(
+                          color: Colors.black.withOpacity(0.40), fontSize: 14),
+                    ),
+                ],
+              ),
               const SizedBox(
-                width: 6,
+                height: 6,
               ),
               Text(
                 reminder.description,
@@ -57,17 +76,6 @@ class ReminderCard extends ConsumerWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                          DateFormat.MMMEd().format(reminder.remindersDate![0]),
-                          style: TextStyle(
-                              color: Colors.black.withOpacity(0.40),
-                              fontSize: 14)),
-                      Text(
-                        _shortDayString(reminder.days),
-                        style: TextStyle(
-                            color: Colors.black.withOpacity(0.40),
-                            fontSize: 14),
-                      ),
                       Text(lenghtBettewenReminding(reminder),
                           style: TextStyle(
                               color: Colors.black.withOpacity(0.40),

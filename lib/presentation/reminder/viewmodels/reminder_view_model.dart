@@ -26,30 +26,11 @@ class ReminderViewModel extends StateNotifier<ReminderState> {
           state,
         ) {
     fetchAllReminders();
+    //initializeReminders();
   }
 
   Future initializeReminders() async {
-    final currentTime = DateTime.now();
-    final reminders = await _reminderUsecase.fetchAllReminders();
-    final remindersToUpdate = <Reminder>[];
-    for (var reminder in reminders) {
-      if (reminder.remindersDate != null) {
-        bool allDatesPassed = false;
-        for (var i = 0; i < reminder.remindersDate!.length; i++) {
-          if (reminder.remindersDate![i].isBefore(currentTime)) {
-            allDatesPassed = true;
-            break;
-          }
-        }
-
-        if (allDatesPassed) {
-          remindersToUpdate.add(reminder);
-        }
-      }
-    }
-    for (var reminderToUpdate in remindersToUpdate) {
-      await _reminderUsecase.updateReminder(reminderToUpdate);
-    }
+    await _reminderUsecase.updatesReminders();
 
     fetchAllReminders();
   }
