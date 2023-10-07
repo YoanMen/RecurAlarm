@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:recurring_alarm/localization/string_hardcoded.dart';
 import 'package:recurring_alarm/presentation/reminder/viewmodels/reminder_view_model.dart';
 import 'package:recurring_alarm/presentation/reminder/widgets/landing/reminder_card.dart';
 
@@ -9,12 +10,10 @@ class LandingScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final reminderProviderWatch = ref.watch(reminderViewModel);
-    final reminderProviderRead = ref.read(reminderViewModel.notifier);
     return Scaffold(
         floatingActionButton: FloatingActionButton(
-            onPressed: () => ref
-                .read(reminderViewModel.notifier)
-                .openAddReminder(context), // * Open Add Reminder
+            onPressed: () =>
+                ref.read(reminderViewModel.notifier).openAddReminder(context),
             child: const Icon(
               Icons.add,
               color: Colors.white,
@@ -36,7 +35,7 @@ class LandingScreen extends ConsumerWidget {
                           itemBuilder: (context, index) =>
                               ReminderCard(reminder: reminder[index]),
                         )
-                      : const Center(child: Text("No reminders")),
+                      : Center(child: Text("No reminders".hardcoded)),
                   if (reminderProviderWatch.loading)
                     const Align(
                       alignment: Alignment.topCenter,

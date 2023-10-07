@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:recurring_alarm/core/common/formatting_utils.dart';
 import 'package:recurring_alarm/domain/entities/reminder.dart';
+import 'package:recurring_alarm/localization/string_hardcoded.dart';
 import 'package:recurring_alarm/presentation/reminder/viewmodels/reminder_view_model.dart';
 import 'package:recurring_alarm/theme/palette.dart';
 
@@ -41,7 +42,7 @@ class ReminderCard extends ConsumerWidget {
                         .read(reminderViewModel.notifier)
                         .openEditReminder(context: context, reminder: reminder),
                     child: Text(
-                      "Tap to edit",
+                      "Tap to edit".hardcoded,
                       style: TextStyle(
                           color: Palette.primaryColor.withOpacity(0.80)),
                     ),
@@ -103,22 +104,20 @@ class ReminderCard extends ConsumerWidget {
 
   String _dayToString(int day) {
     switch (day) {
-      case 0:
-        return "";
       case 1:
-        return "monday";
+        return "monday".hardcoded;
       case 2:
-        return "tuesday";
+        return "tuesday".hardcoded;
       case 3:
-        return "wedesday";
+        return "wedesday".hardcoded;
       case 4:
-        return "thuesday";
+        return "thuesday".hardcoded;
       case 5:
-        return "friday";
+        return "friday".hardcoded;
       case 6:
-        return "saturday";
+        return "saturday".hardcoded;
       case 7:
-        return "sunday";
+        return "sunday".hardcoded;
       default:
         return ""; // Jour inconnu
     }

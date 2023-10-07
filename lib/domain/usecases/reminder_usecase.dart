@@ -1,10 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recurring_alarm/core/failure.dart';
 import 'package:recurring_alarm/data/local/local_database.dart';
 import 'package:recurring_alarm/domain/entities/notification_reminder.dart';
 import 'package:recurring_alarm/domain/entities/reminder.dart';
-import 'package:recurring_alarm/domain/notification_services.dart';
+import 'package:recurring_alarm/services/notification_services.dart';
 import 'package:recurring_alarm/domain/reminder_calculator.dart';
 
 final reminderUsecaseProvider = Provider<ReminderUsecase>((ref) {
@@ -81,13 +80,8 @@ class ReminderUsecase {
               date: element,
               time: reminder.time),
         );
-
-        debugPrint(
-            "notification activate for $element __ id = ${reminder.uuid}");
       } else {
         await NotificationServices.cancelScheduledNotifications(reminder.uuid);
-
-        debugPrint("notification desactiver ${reminder.uuid}");
       }
     }
   }

@@ -1,4 +1,3 @@
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,7 +10,7 @@ import 'package:recurring_alarm/presentation/reminder/screens/editing/editing_sc
 import 'package:recurring_alarm/presentation/reminder/viewmodels/reminder_state.dart';
 
 final reminderViewModel =
-    StateNotifierProvider<ReminderViewModel, ReminderState>((ref) {
+    StateNotifierProvider.autoDispose<ReminderViewModel, ReminderState>((ref) {
   return ReminderViewModel(
     const ReminderState(daysSelected: [0], reminders: AsyncValue.data([])),
     ref.read(reminderUsecaseProvider),
@@ -25,8 +24,7 @@ class ReminderViewModel extends StateNotifier<ReminderState> {
       : super(
           state,
         ) {
-    fetchAllReminders();
-    //initializeReminders();
+    initializeReminders();
   }
 
   Future initializeReminders() async {

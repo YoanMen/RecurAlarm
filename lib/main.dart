@@ -1,7 +1,7 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:recurring_alarm/domain/notification_services.dart';
+import 'package:recurring_alarm/services/notification_services.dart';
 import 'package:recurring_alarm/domain/usecases/reminder_usecase.dart';
 import 'package:recurring_alarm/routing/app_routes.dart';
 import 'package:recurring_alarm/theme/custom_theme.dart';
@@ -58,18 +58,13 @@ class MainApp extends StatelessWidget {
 }
 
 void initWorkManager() async {
-  try {
-    print('iniside try,,,,,,,,,,,catch workmanager block');
-    Workmanager()
-        .initialize(callbackDispatcher, isInDebugMode: true)
-        .then((_) async {
-      await Workmanager().registerPeriodicTask(
-        simplePeriodicTask,
-        simplePeriodicTask,
-        initialDelay: const Duration(seconds: 10),
-      );
-    });
-  } catch (e) {
-    print('Exception in register work manager');
-  }
+  Workmanager()
+      .initialize(callbackDispatcher, isInDebugMode: true)
+      .then((_) async {
+    await Workmanager().registerPeriodicTask(
+      simplePeriodicTask,
+      simplePeriodicTask,
+      initialDelay: const Duration(seconds: 10),
+    );
+  });
 }

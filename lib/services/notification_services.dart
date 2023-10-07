@@ -1,11 +1,8 @@
-import 'dart:math';
+import 'package:flutter/material.dart';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:recurring_alarm/domain/entities/notification_reminder.dart';
-import 'package:recurring_alarm/presentation/reminder/viewmodels/reminder_view_model.dart';
 
 class NotificationServices {
   static Future<void> initializeNotification() async {
