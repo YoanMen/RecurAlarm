@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:recurring_alarm/localization/string_hardcoded.dart';
 import 'package:recurring_alarm/presentation/reminder/viewmodels/reminder_view_model.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 List<int> selectedDays = [];
 
@@ -22,31 +21,38 @@ class SegmentedSelectionDays extends ConsumerWidget {
         segments: [
           ButtonSegment(
             value: 1,
-            label: FittedBox(child: Text('M'.hardcoded)),
+            label: FittedBox(
+                child: Text(AppLocalizations.of(context)!.monday_letter)),
           ),
           ButtonSegment(
             value: 2,
-            label: FittedBox(child: Text('T'.hardcoded)),
+            label: FittedBox(
+                child: Text(AppLocalizations.of(context)!.tuesday_letter)),
           ),
           ButtonSegment(
             value: 3,
-            label: FittedBox(child: Text('W'.hardcoded)),
+            label: FittedBox(
+                child: Text(AppLocalizations.of(context)!.wednesday_letter)),
           ),
           ButtonSegment(
             value: 4,
-            label: FittedBox(child: Text('T'.hardcoded)),
+            label: FittedBox(
+                child: Text(AppLocalizations.of(context)!.thursday_letter)),
           ),
           ButtonSegment(
             value: 5,
-            label: FittedBox(child: Text('F'.hardcoded)),
+            label: FittedBox(
+                child: Text(AppLocalizations.of(context)!.friday_letter)),
           ),
           ButtonSegment(
             value: 6,
-            label: FittedBox(child: Text('S'.hardcoded)),
+            label: FittedBox(
+                child: Text(AppLocalizations.of(context)!.saturday_letter)),
           ),
           ButtonSegment(
             value: 7,
-            label: FittedBox(child: Text('S'.hardcoded)),
+            label: FittedBox(
+                child: Text(AppLocalizations.of(context)!.sunday_letter)),
           ),
         ],
         selected: Set.from(ref.watch(reminderViewModel).daysSelected),

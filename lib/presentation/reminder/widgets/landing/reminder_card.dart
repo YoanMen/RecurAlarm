@@ -6,6 +6,7 @@ import 'package:recurring_alarm/domain/entities/reminder.dart';
 import 'package:recurring_alarm/localization/string_hardcoded.dart';
 import 'package:recurring_alarm/presentation/reminder/viewmodels/reminder_view_model.dart';
 import 'package:recurring_alarm/theme/palette.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ReminderCard extends ConsumerWidget {
   const ReminderCard({Key? key, required this.reminder}) : super(key: key);
@@ -42,7 +43,7 @@ class ReminderCard extends ConsumerWidget {
                         .read(reminderViewModel.notifier)
                         .openEditReminder(context: context, reminder: reminder),
                     child: Text(
-                      "Tap to edit".hardcoded,
+                      AppLocalizations.of(context)!.tapToEdit,
                       style: TextStyle(
                           color: Palette.primaryColor.withOpacity(0.80)),
                     ),
@@ -55,12 +56,14 @@ class ReminderCard extends ConsumerWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(DateFormat.MMMEd().format(reminder.remindersDate![0]),
+                  Text(
+                      DateFormat.MMMEd(AppLocalizations.of(context)!.localeName)
+                          .format(reminder.remindersDate![0]),
                       style: TextStyle(
                           color: Colors.black.withOpacity(0.40), fontSize: 14)),
                   if (reminder.days.length > 1)
                     Text(
-                      _shortDayString(reminder.days),
+                      _shortDayString(reminder.days, context),
                       style: TextStyle(
                           color: Colors.black.withOpacity(0.40), fontSize: 14),
                     ),
@@ -77,7 +80,7 @@ class ReminderCard extends ConsumerWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(lenghtBettewenReminding(reminder),
+                      Text(lenghtBettewenReminding(reminder, context),
                           style: TextStyle(
                               color: Colors.black.withOpacity(0.40),
                               fontSize: 14)),
@@ -102,33 +105,33 @@ class ReminderCard extends ConsumerWidget {
     );
   }
 
-  String _dayToString(int day) {
+  String _dayToString(int day, BuildContext context) {
     switch (day) {
       case 1:
-        return "monday".hardcoded;
+        return AppLocalizations.of(context)!.monday;
       case 2:
-        return "tuesday".hardcoded;
+        return AppLocalizations.of(context)!.tuesday;
       case 3:
-        return "wedesday".hardcoded;
+        return AppLocalizations.of(context)!.wednesday;
       case 4:
-        return "thuesday".hardcoded;
+        return AppLocalizations.of(context)!.thursday;
       case 5:
-        return "friday".hardcoded;
+        return AppLocalizations.of(context)!.friday;
       case 6:
-        return "saturday".hardcoded;
+        return AppLocalizations.of(context)!.saturday;
       case 7:
-        return "sunday".hardcoded;
+        return AppLocalizations.of(context)!.sunday;
       default:
         return ""; // Jour inconnu
     }
   }
 
-  String _shortDayString(List<int> daysSelected) {
+  String _shortDayString(List<int> daysSelected, BuildContext context) {
     if (daysSelected.length == 1) {
       return "";
     } else if (daysSelected.length == 2) {
       daysSelected.sort();
-      return _dayToString(daysSelected[1]);
+      return _dayToString(daysSelected[1], context);
     }
 
     daysSelected.sort();
@@ -137,7 +140,10 @@ class ReminderCard extends ConsumerWidget {
       if (day == 0) {
         return "";
       }
-      return _dayToString(day).substring(0, 3);
+      return _dayToString(day, context).substring(
+        0,
+        3,
+      );
     }).toList();
 
     return dayNames.join(", ").substring(1).trim();

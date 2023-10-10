@@ -8,6 +8,7 @@ import 'package:recurring_alarm/domain/usecases/reminder_usecase.dart';
 import 'package:recurring_alarm/presentation/reminder/screens/adding/adding_screen.dart';
 import 'package:recurring_alarm/presentation/reminder/screens/editing/editing_screen.dart';
 import 'package:recurring_alarm/presentation/reminder/viewmodels/reminder_state.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 final reminderViewModel =
     StateNotifierProvider.autoDispose<ReminderViewModel, ReminderState>((ref) {
@@ -65,25 +66,23 @@ class ReminderViewModel extends StateNotifier<ReminderState> {
   void checkIfvalidate(BuildContext context) {
     if (state.description.trim().isEmpty) {
       state = state.copyWith(
-          validatorErrorText:
-              "Vous devez entrer une description pour votre tâche.");
+          validatorErrorText: AppLocalizations.of(context)!.noText);
 
       return;
     } else if (state.daysSelected.length <= 1 &&
         state.reminderType != ReminderType.daily) {
       state = state.copyWith(
-        validatorErrorText: "Vous devez au moins sélectionner un jour.",
+        validatorErrorText: AppLocalizations.of(context)!.noDays,
       );
       return;
     } else if (state.beginDate == null) {
       state = state.copyWith(
-        validatorErrorText: "Vous devez mettre une date de début à votre tâche",
+        validatorErrorText: AppLocalizations.of(context)!.noDate,
       );
       return;
     } else if (state.time == null) {
       state = state.copyWith(
-        validatorErrorText:
-            "Vous devez mettre une heure de rappel à votre tâche",
+        validatorErrorText: AppLocalizations.of(context)!.noTime,
       );
       return;
     }
@@ -110,10 +109,12 @@ class ReminderViewModel extends StateNotifier<ReminderState> {
         whenInMonth: reminder.whenInMonth.index);
   }
 
-  void removeReminder(Reminder reminder) async {
+  void removeReminder(Reminder reminder, BuildContext context) async {
     try {
       await _reminderUsecase.removeReminder(reminder);
-      Fluttertoast.showToast(msg: "reminder delete");
+      if (!context.mounted) return;
+      Fluttertoast.showToast(msg: AppLocalizations.of(context)!.reminderDelete);
+
       fetchAllReminders();
     } catch (e) {
       Fluttertoast.showToast(msg: "error: $e");
@@ -148,23 +149,6 @@ class ReminderViewModel extends StateNotifier<ReminderState> {
     await _reminderUsecase.updateToggleReminder(newReminder);
   }
 
-  void deleteAll() async {
-    state = state.copyWith(loading: true);
-
-    try {
-      await _reminderUsecase.deleteAll();
-
-      Fluttertoast.showToast(msg: "reminders supprimé");
-    } catch (e) {
-      Fluttertoast.showToast(msg: "pas reussi $e");
-    }
-
-    fetchAllReminders();
-    await Future.delayed(const Duration(milliseconds: 600));
-
-    state = state.copyWith(loading: false);
-  }
-
   void openAddReminder(BuildContext context) {
     eraseAllReminderSetting();
     addReminderBottomSheet(context);
@@ -183,7 +167,7 @@ class ReminderViewModel extends StateNotifier<ReminderState> {
 
       state = state.copyWith(reminders: AsyncValue.data(response));
     } catch (e) {
-      Fluttertoast.showToast(msg: "pas reussi $e");
+      Fluttertoast.showToast(msg: "error $e");
     }
     await Future.delayed(const Duration(milliseconds: 600));
     state = state.copyWith(loading: false);
@@ -209,11 +193,12 @@ class ReminderViewModel extends StateNotifier<ReminderState> {
 
     try {
       await _reminderUsecase.addReminder(newReminder);
-      Fluttertoast.showToast(msg: "Rappel ajouté");
+      if (!context.mounted) return;
+      Fluttertoast.showToast(msg: AppLocalizations.of(context)!.reminderAdded);
       navigator.pop();
       fetchAllReminders();
     } catch (e) {
-      Fluttertoast.showToast(msg: "erreur : $e");
+      Fluttertoast.showToast(msg: "error : $e");
     }
   }
 
@@ -234,9 +219,11 @@ class ReminderViewModel extends StateNotifier<ReminderState> {
 
     try {
       await _reminderUsecase.updateReminder(newReminder);
-      Fluttertoast.showToast(msg: "Rappel modifié");
       navigator.pop();
       fetchAllReminders();
+      if (!context.mounted) return;
+      Fluttertoast.showToast(
+          msg: AppLocalizations.of(context)!.reminderUpdated);
     } catch (e) {
       Fluttertoast.showToast(msg: "erreur : $e");
     }

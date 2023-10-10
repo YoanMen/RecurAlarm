@@ -1,17 +1,17 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:recurring_alarm/core/common/formatting_utils.dart';
 import 'package:recurring_alarm/core/common/widgets/material_button.dart';
 import 'package:recurring_alarm/presentation/reminder/widgets/error_validator_text.dart';
 import 'package:recurring_alarm/presentation/reminder/widgets/monthly_widget.dart';
 import 'package:recurring_alarm/presentation/reminder/widgets/reminder_type_selection.dart';
 import 'package:recurring_alarm/core/common/widgets/text_form_field_material.dart';
+import 'package:recurring_alarm/presentation/reminder/widgets/select_date.dart';
+import 'package:recurring_alarm/presentation/reminder/widgets/select_time.dart';
 import 'package:recurring_alarm/presentation/reminder/widgets/weekly_widget.dart';
 import 'package:recurring_alarm/core/constant.dart';
-import 'package:recurring_alarm/localization/string_hardcoded.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:recurring_alarm/presentation/reminder/viewmodels/reminder_view_model.dart';
-import 'package:recurring_alarm/theme/palette.dart';
 
 Future addReminderBottomSheet(BuildContext context) {
   return showModalBottomSheet(
@@ -37,7 +37,7 @@ Future addReminderBottomSheet(BuildContext context) {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      "New reminder".hardcoded,
+                      AppLocalizations.of(context)!.newReminder,
                       style: Theme.of(context).textTheme.headlineSmall,
                     ),
                   ),
@@ -49,7 +49,7 @@ Future addReminderBottomSheet(BuildContext context) {
                   TextFormFieldMaterial(
                     onChanged: (value) =>
                         reminderViewModelRead.updateText(value!),
-                    labelText: "Task".hardcoded,
+                    labelText: AppLocalizations.of(context)!.task,
                     initialValue: reminderViewModelWatch.description,
                     maxLength: 80,
                   ),
@@ -67,94 +67,11 @@ Future addReminderBottomSheet(BuildContext context) {
                       const SizedBox(
                         height: kDefaultPadding,
                       ),
-                      Row(
-                        children: [
-                          Text(
-                            "Begin date",
-                            style: Theme.of(context).textTheme.titleMedium,
-                          ),
-                          const Spacer(),
-                          GestureDetector(
-                              onTap: () async {
-                                FocusScope.of(context).unfocus();
-
-                                final dateSelected = await showDatePicker(
-                                    context: context,
-                                    initialDate:
-                                        ref.read(reminderViewModel).beginDate ??
-                                            DateTime.now(),
-                                    firstDate: DateTime(
-                                        DateTime.now().year - 20,
-                                        DateTime.now().month,
-                                        DateTime.now().day),
-                                    lastDate:
-                                        DateTime(DateTime.now().year + 100));
-
-                                if (dateSelected != null) {
-                                  reminderViewModelRead
-                                      .setDateSelected(dateSelected);
-                                }
-                              },
-                              child: Text(
-                                (reminderViewModelWatch.beginDate != null)
-                                    ? formatDatetoString(
-                                        ref.read(reminderViewModel).beginDate!)
-                                    : "Tap here".hardcoded,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleMedium
-                                    ?.copyWith(color: Palette.primaryColor),
-                              ))
-                        ],
-                      ),
+                      const SelectDate(),
                       const SizedBox(
                         height: kDefaultPadding,
                       ),
-                      Row(
-                        children: [
-                          Text(
-                            "Reminder time",
-                            style: Theme.of(context).textTheme.titleMedium,
-                          ),
-                          const Spacer(),
-                          GestureDetector(
-                              onTap: () async {
-                                FocusScope.of(context).unfocus();
-
-                                final timeSelected = await showTimePicker(
-                                    builder:
-                                        (BuildContext context, Widget? child) {
-                                      return MediaQuery(
-                                        data: MediaQuery.of(context).copyWith(
-                                            alwaysUse24HourFormat: true),
-                                        child: child!,
-                                      );
-                                    },
-                                    context: context,
-                                    initialTime: ref
-                                            .read(reminderViewModel)
-                                            .time ??
-                                        const TimeOfDay(hour: 8, minute: 0));
-
-                                if (timeSelected != null) {
-                                  reminderViewModelRead
-                                      .setTimeSelected(timeSelected);
-                                }
-                              },
-                              child: Text(
-                                (ref.read(reminderViewModel).time == null)
-                                    ? "Tap here".hardcoded
-                                    : ref
-                                        .read(reminderViewModel)
-                                        .time!
-                                        .format(context),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleMedium
-                                    ?.copyWith(color: Palette.primaryColor),
-                              ))
-                        ],
-                      ),
+                      const SelectTime(),
                       const SizedBox(
                         height: kDefaultPadding,
                       ),
@@ -166,7 +83,7 @@ Future addReminderBottomSheet(BuildContext context) {
                             SizedBox(
                               width: 100,
                               child: ButtonMaterial.blue(
-                                child: const Text("Add"),
+                                child: Text(AppLocalizations.of(context)!.add),
                                 onPressed: () => reminderViewModelRead
                                     .checkIfvalidate(context),
                               ),
@@ -177,7 +94,8 @@ Future addReminderBottomSheet(BuildContext context) {
                             SizedBox(
                               width: 100,
                               child: ButtonMaterial.transparent(
-                                child: const Text("Cancel"),
+                                child:
+                                    Text(AppLocalizations.of(context)!.cancel),
                                 onPressed: () => Navigator.of(context).pop(),
                               ),
                             ),

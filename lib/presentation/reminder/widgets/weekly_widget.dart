@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recurring_alarm/presentation/reminder/widgets/segmented_selection_days.dart';
 import 'package:recurring_alarm/core/constant.dart';
 import 'package:recurring_alarm/presentation/reminder/viewmodels/reminder_view_model.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class WeeklyWidget extends ConsumerWidget {
   const WeeklyWidget({
@@ -27,18 +28,21 @@ class WeeklyWidget extends ConsumerWidget {
         child: SegmentedButton(
             emptySelectionAllowed: false,
             showSelectedIcon: false,
-            segments: const [
+            segments: [
               ButtonSegment(
                 value: 0,
-                label: FittedBox(child: Text("Every week")),
+                label: FittedBox(
+                    child: Text(AppLocalizations.of(context)!.oneWeek)),
               ),
               ButtonSegment(
                 value: 1,
-                label: FittedBox(child: Text("Two weeks")),
+                label: FittedBox(
+                    child: Text(AppLocalizations.of(context)!.twoWeeks)),
               ),
               ButtonSegment(
                 value: 2,
-                label: FittedBox(child: Text('Three weeks')),
+                label: FittedBox(
+                    child: Text(AppLocalizations.of(context)!.treeWeeks)),
               ),
             ],
             onSelectionChanged: (Set<int> newSelection) {

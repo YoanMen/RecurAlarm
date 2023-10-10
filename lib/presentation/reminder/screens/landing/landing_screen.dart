@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:recurring_alarm/localization/string_hardcoded.dart';
 import 'package:recurring_alarm/presentation/reminder/viewmodels/reminder_view_model.dart';
 import 'package:recurring_alarm/presentation/reminder/widgets/landing/reminder_card.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LandingScreen extends ConsumerWidget {
   const LandingScreen({Key? key}) : super(key: key);
@@ -18,30 +18,28 @@ class LandingScreen extends ConsumerWidget {
               Icons.add,
               color: Colors.white,
             )),
-        appBar: AppBar(
-          forceMaterialTransparency: true,
-          actions: [
-            IconButton(onPressed: () {}, icon: const Icon(Icons.settings))
-          ],
-        ),
         body: reminderProviderWatch.reminders.when(
             data: (reminder) {
-              return Stack(
-                children: [
-                  (reminder.isNotEmpty || reminderProviderWatch.loading)
-                      ? ListView.builder(
-                          padding: const EdgeInsets.only(bottom: 80),
-                          itemCount: reminder.length,
-                          itemBuilder: (context, index) =>
-                              ReminderCard(reminder: reminder[index]),
-                        )
-                      : Center(child: Text("No reminders".hardcoded)),
-                  if (reminderProviderWatch.loading)
-                    const Align(
-                      alignment: Alignment.topCenter,
-                      child: LinearProgressIndicator(),
-                    ),
-                ],
+              return SafeArea(
+                child: Stack(
+                  children: [
+                    (reminder.isNotEmpty || reminderProviderWatch.loading)
+                        ? ListView.builder(
+                            padding: const EdgeInsets.only(bottom: 80, top: 20),
+                            itemCount: reminder.length,
+                            itemBuilder: (context, index) =>
+                                ReminderCard(reminder: reminder[index]),
+                          )
+                        : Center(
+                            child: Text(
+                                AppLocalizations.of(context)!.noReminders)),
+                    if (reminderProviderWatch.loading)
+                      const Align(
+                        alignment: Alignment.topCenter,
+                        child: LinearProgressIndicator(),
+                      ),
+                  ],
+                ),
               );
             },
             error: (error, stackTrace) => Center(child: Text(error.toString())),

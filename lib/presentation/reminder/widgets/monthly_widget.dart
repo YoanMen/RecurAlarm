@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recurring_alarm/presentation/reminder/widgets/segmented_selection_days.dart';
 import 'package:recurring_alarm/core/constant.dart';
 import 'package:recurring_alarm/presentation/reminder/viewmodels/reminder_view_model.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MonthlyWidget extends ConsumerWidget {
   const MonthlyWidget({
@@ -27,18 +28,21 @@ class MonthlyWidget extends ConsumerWidget {
         child: SegmentedButton(
             emptySelectionAllowed: false,
             showSelectedIcon: false,
-            segments: const [
+            segments: [
               ButtonSegment(
                 value: 0,
-                label: FittedBox(child: Text("Beginning")),
+                label:
+                    FittedBox(child: Text(AppLocalizations.of(context)!.begin)),
               ),
               ButtonSegment(
                 value: 1,
-                label: FittedBox(child: Text('Middle')),
+                label: FittedBox(
+                    child: Text(AppLocalizations.of(context)!.middle)),
               ),
               ButtonSegment(
                 value: 2,
-                label: FittedBox(child: Text("End")),
+                label:
+                    FittedBox(child: Text(AppLocalizations.of(context)!.end)),
               ),
             ],
             onSelectionChanged: (Set<int> newSelection) {
@@ -56,22 +60,26 @@ class MonthlyWidget extends ConsumerWidget {
         child: SegmentedButton(
             emptySelectionAllowed: false,
             showSelectedIcon: false,
-            segments: const [
+            segments: [
               ButtonSegment(
                 value: 0,
-                label: FittedBox(child: Text('1 month')),
+                label: FittedBox(
+                    child: Text(AppLocalizations.of(context)!.oneMonth)),
               ),
               ButtonSegment(
                 value: 1,
-                label: FittedBox(child: Text('3 month')),
+                label: FittedBox(
+                    child: Text(AppLocalizations.of(context)!.treeMonth)),
               ),
               ButtonSegment(
                 value: 2,
-                label: FittedBox(child: Text('6 month')),
+                label: FittedBox(
+                    child: Text(AppLocalizations.of(context)!.sixMonth)),
               ),
               ButtonSegment(
                 value: 3,
-                label: FittedBox(child: Text('12 month')),
+                label: FittedBox(
+                    child: Text(AppLocalizations.of(context)!.twelveMonth)),
               ),
             ],
             onSelectionChanged: (Set<int> newSelection) {

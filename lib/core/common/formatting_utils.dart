@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:recurring_alarm/core/constant.dart';
 import 'package:recurring_alarm/domain/entities/reminder.dart';
-import 'package:recurring_alarm/localization/string_hardcoded.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 // format a string type '08:30' to a TimeOfDay
 
 TimeOfDay formatTime(String time) {
@@ -15,18 +14,13 @@ TimeOfDay formatTime(String time) {
   return TimeOfDay(hour: hours, minute: minutes);
 }
 
-String formatTimeToString(TimeOfDay time) {
-  return '${time.hour}:${time.minute}';
-}
-
-//  parse string DateTime to DateTime
-
 DateTime formatDate(String date) {
   return DateTime.parse(date);
 }
 
-String formatDatetoString(DateTime date) {
-  return DateFormat.yMMMd().format(date);
+String formatDatetoString(DateTime date, BuildContext context) {
+  return DateFormat.yMMMd(AppLocalizations.of(context)!.localeName)
+      .format(date);
 }
 
 //  parse a list of DateTime string to DateTime list
@@ -49,23 +43,23 @@ List<String> formatDaysToList(String days) {
   return capitalizedDays;
 }
 
-String lenghtBettewenReminding(Reminder reminder) {
+String lenghtBettewenReminding(Reminder reminder, BuildContext context) {
   String text = "";
   switch (reminder.reminderType) {
     case ReminderType.daily:
-      text = "Every days".hardcoded;
+      text = AppLocalizations.of(context)!.everyDays;
       break;
     case ReminderType.weekly:
       switch (reminder.lenghtBetweenReminder) {
         case 0:
-          text = "Every week".hardcoded;
+          text = AppLocalizations.of(context)!.everyWeek;
           break;
         case 1:
-          text = "Every two weeks".hardcoded;
+          text = AppLocalizations.of(context)!.everyTwoWeeks;
           break;
 
         case 2:
-          text = "Every three weeks".hardcoded;
+          text = AppLocalizations.of(context)!.everyThreeWeeks;
           break;
       }
     case ReminderType.monthly:
@@ -73,58 +67,58 @@ String lenghtBettewenReminding(Reminder reminder) {
         case 0:
           switch (reminder.whenInMonth) {
             case SelectedWhenInMonth.begin:
-              text = "All the beginnings of the month".hardcoded;
+              text = AppLocalizations.of(context)!.allBeginMonth;
               break;
 
             case SelectedWhenInMonth.middle:
-              text = "Every mid month".hardcoded;
+              text = AppLocalizations.of(context)!.everyMidMonth;
               break;
 
             case SelectedWhenInMonth.end:
-              text = "Every end of the month".hardcoded;
+              text = AppLocalizations.of(context)!.everyEndMonth;
               break;
           }
 
         case 1:
           switch (reminder.whenInMonth) {
             case SelectedWhenInMonth.begin:
-              text = "Beginning, every three months".hardcoded;
+              text = AppLocalizations.of(context)!.beginThreeMonth;
               break;
 
             case SelectedWhenInMonth.middle:
-              text = "Middle, every three months".hardcoded;
+              text = AppLocalizations.of(context)!.midThreeMonth;
               break;
 
             case SelectedWhenInMonth.end:
-              text = "End, every three months".hardcoded;
+              text = AppLocalizations.of(context)!.endThreeMonth;
               break;
           }
         case 2:
           switch (reminder.whenInMonth) {
             case SelectedWhenInMonth.begin:
-              text = "Beginning, every nine months".hardcoded;
+              text = AppLocalizations.of(context)!.beginNineMonth;
               break;
 
             case SelectedWhenInMonth.middle:
-              text = "Middle, every nine months".hardcoded;
+              text = AppLocalizations.of(context)!.midNineMonth;
               break;
 
             case SelectedWhenInMonth.end:
-              text = "End, every nine months".hardcoded;
+              text = AppLocalizations.of(context)!.endNineMonth;
               break;
           }
         case 3:
           switch (reminder.whenInMonth) {
             case SelectedWhenInMonth.begin:
-              text = "Beginning, twelve nine months".hardcoded;
+              text = AppLocalizations.of(context)!.beginTwelveMonth;
               break;
 
             case SelectedWhenInMonth.middle:
-              text = "Middle, every twelve months".hardcoded;
+              text = AppLocalizations.of(context)!.midTwelveMonth;
               break;
 
             case SelectedWhenInMonth.end:
-              text = "End, every twelve months".hardcoded;
+              text = AppLocalizations.of(context)!.endTwelveMonth;
               break;
           }
       }

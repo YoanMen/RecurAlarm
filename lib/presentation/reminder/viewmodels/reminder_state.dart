@@ -85,7 +85,7 @@ class ReminderState {
         reminderOnEdit: null,
         editingMode: false,
         reminders: reminders ?? this.reminders,
-        loading: true,
+        loading: false,
         validatorErrorText: '');
   }
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recurring_alarm/core/constant.dart';
 import 'package:recurring_alarm/presentation/reminder/viewmodels/reminder_view_model.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ReminderTypeSelection extends ConsumerWidget {
   const ReminderTypeSelection({
@@ -15,18 +16,21 @@ class ReminderTypeSelection extends ConsumerWidget {
       child: SegmentedButton(
           emptySelectionAllowed: false,
           showSelectedIcon: false,
-          segments: const [
+          segments: [
             ButtonSegment(
               value: ReminderType.daily,
-              label: FittedBox(child: Text('Daily')),
+              label:
+                  FittedBox(child: Text(AppLocalizations.of(context)!.daily)),
             ),
             ButtonSegment(
               value: ReminderType.weekly,
-              label: FittedBox(child: Text('Weekly')),
+              label:
+                  FittedBox(child: Text(AppLocalizations.of(context)!.weekly)),
             ),
             ButtonSegment(
               value: ReminderType.monthly,
-              label: FittedBox(child: Text('Monthly')),
+              label:
+                  FittedBox(child: Text(AppLocalizations.of(context)!.monthly)),
             ),
           ],
           onSelectionChanged: (Set<ReminderType> newSelection) {
