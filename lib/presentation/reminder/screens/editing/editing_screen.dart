@@ -108,7 +108,7 @@ Future editReminderBottomSheet(BuildContext context) {
                             SizedBox(
                               width: 100,
                               child: ButtonMaterial.blue(
-                                child: const Text("Save"),
+                                child: Text(AppLocalizations.of(context)!.save),
                                 onPressed: () => reminderViewModelRead
                                     .checkIfvalidate(context),
                               ),

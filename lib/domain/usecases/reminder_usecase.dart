@@ -92,15 +92,15 @@ class ReminderUsecase {
     final remindersToUpdate = <Reminder>[];
     for (var reminder in reminders) {
       if (reminder.remindersDate != null) {
-        bool allDatesPassed = false;
+        bool needUpdate = false;
         for (var i = 0; i < reminder.remindersDate!.length; i++) {
           if (reminder.remindersDate![i].isBefore(currentTime)) {
-            allDatesPassed = true;
+            needUpdate = true;
             break;
           }
         }
 
-        if (allDatesPassed) {
+        if (needUpdate) {
           remindersToUpdate.add(reminder);
         }
       }

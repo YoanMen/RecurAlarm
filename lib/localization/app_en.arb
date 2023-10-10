@@ -63,5 +63,6 @@
     "noTime": "You must enter a reminder time for your task",
     "reminderAdded": "Reminder added",
     "reminderDelete": "Reminder delete",
-    "reminderUpdated": "Reminder updated"
+    "reminderUpdated": "Reminder updated",
+    "save": "Save"
 }

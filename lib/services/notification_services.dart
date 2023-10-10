@@ -38,7 +38,7 @@ class NotificationServices {
             body: reminder.task,
             category: NotificationCategory.Reminder,
             notificationLayout: NotificationLayout.Default,
-            locked: true,
+            locked: false,
             wakeUpScreen: true,
             actionType: ActionType.KeepOnTop,
             autoDismissible: false,

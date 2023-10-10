@@ -23,8 +23,7 @@ class SelectTime extends ConsumerWidget {
               final timeSelected = await showTimePicker(
                   builder: (BuildContext context, Widget? child) {
                     return MediaQuery(
-                      data: MediaQuery.of(context)
-                          .copyWith(alwaysUse24HourFormat: true),
+                      data: MediaQuery.of(context),
                       child: child!,
                     );
                   },
@@ -39,7 +38,7 @@ class SelectTime extends ConsumerWidget {
               }
             },
             child: Text(
-              (ref.read(reminderViewModel).time == null)
+              (ref.watch(reminderViewModel).time == null)
                   ? AppLocalizations.of(context)!.tapHere
                   : ref.read(reminderViewModel).time!.format(context),
               style: Theme.of(context)

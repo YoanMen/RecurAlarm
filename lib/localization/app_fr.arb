@@ -63,5 +63,6 @@
     "noTime": "Vous devez mettre une heure de rappel à votre tâche",
     "reminderAdded": "Rappel ajouté",
     "reminderDelete": "Rappel supprimé",
-    "reminderUpdated": "Rappel modifié"
+    "reminderUpdated": "Rappel modifié",
+    "save": "Valider"
 }

@@ -57,7 +57,8 @@ class ReminderCard extends ConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                      DateFormat.MMMEd(AppLocalizations.of(context)!.localeName)
+                      DateFormat.yMMMEd(
+                              AppLocalizations.of(context)!.localeName)
                           .format(reminder.remindersDate![0]),
                       style: TextStyle(
                           color: Colors.black.withOpacity(0.40), fontSize: 14)),
