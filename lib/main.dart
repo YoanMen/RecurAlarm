@@ -72,6 +72,7 @@ void initWorkManager() async {
     await Workmanager().registerPeriodicTask(
       simplePeriodicTask,
       simplePeriodicTask,
+      frequency: const Duration(hours: 3),
       initialDelay: const Duration(seconds: 10),
     );
   });

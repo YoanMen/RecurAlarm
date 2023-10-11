@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:recurring_alarm/core/common/formatting_utils.dart';
+import 'package:recurring_alarm/core/constant.dart';
 import 'package:recurring_alarm/domain/entities/reminder.dart';
 import 'package:recurring_alarm/localization/string_hardcoded.dart';
 import 'package:recurring_alarm/presentation/reminder/viewmodels/reminder_view_model.dart';
@@ -62,7 +63,7 @@ class ReminderCard extends ConsumerWidget {
                           .format(reminder.remindersDate![0]),
                       style: TextStyle(
                           color: Colors.black.withOpacity(0.40), fontSize: 14)),
-                  if (reminder.days.length > 1)
+                  if (reminder.reminderType != ReminderType.daily)
                     Text(
                       _shortDayString(reminder.days, context),
                       style: TextStyle(

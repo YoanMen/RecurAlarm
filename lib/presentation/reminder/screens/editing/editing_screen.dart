@@ -19,7 +19,6 @@ Future editReminderBottomSheet(BuildContext context) {
     isDismissible: true,
     enableDrag: true,
     isScrollControlled: true,
-    useSafeArea: true,
     context: context,
     builder: (BuildContext context) {
       return Consumer(
@@ -27,83 +26,86 @@ Future editReminderBottomSheet(BuildContext context) {
           final reminderViewModelWatch = ref.watch(reminderViewModel);
           final reminderViewModelRead = ref.read(reminderViewModel.notifier);
 
-          return SingleChildScrollView(
-            child: Container(
-              height: 700,
+          return Container(
+              height: MediaQuery.of(context).size.height / 1.3,
               width: double.infinity,
               padding: const EdgeInsets.only(
-                  left: 24, right: 24, top: kDefaultPadding),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          AppLocalizations.of(context)!.editReminder,
-                          style: Theme.of(context).textTheme.headlineSmall,
+                  left: 24, right: 24, top: 24, bottom: 10),
+              child: CustomScrollView(
+                slivers: [
+                  SliverFillRemaining(
+                    hasScrollBody: false,
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                AppLocalizations.of(context)!.editReminder,
+                                style:
+                                    Theme.of(context).textTheme.headlineSmall,
+                              ),
+                            ),
+                            const Spacer(),
+                            IconButton(
+                              onPressed: () => confirmatiomPopUp(
+                                  context: context,
+                                  ref: ref,
+                                  confirmButton: () {
+                                    _closeEdit(context);
+                                    ref
+                                        .read(reminderViewModel.notifier)
+                                        .removeReminder(
+                                            ref
+                                                .watch(reminderViewModel)
+                                                .reminderOnEdit!,
+                                            context);
+                                    Navigator.of(context).pop();
+                                  },
+                                  content: AppLocalizations.of(context)!
+                                      .confirmDelete,
+                                  title: AppLocalizations.of(context)!
+                                      .deleteReminder),
+                              icon: const Icon(Icons.delete),
+                            )
+                          ],
                         ),
-                      ),
-                      const Spacer(),
-                      IconButton(
-                        onPressed: () => confirmatiomPopUp(
-                            context: context,
-                            ref: ref,
-                            confirmButton: () {
-                              _closeEdit(context);
-                              ref
-                                  .read(reminderViewModel.notifier)
-                                  .removeReminder(
-                                      ref
-                                          .watch(reminderViewModel)
-                                          .reminderOnEdit!,
-                                      context);
-                              Navigator.of(context).pop();
-                            },
-                            content: "Do you want delete this reminder ?",
-                            title: "Delete Reminder"),
-                        icon: const Icon(Icons.delete),
-                      )
-                    ],
-                  ),
-                  const SizedBox(
-                    height: kDefaultPadding,
-                  ),
-                  if (reminderViewModelWatch.validatorErrorText.isNotEmpty)
-                    const ErrorValidatorText(),
-                  TextFormFieldMaterial(
-                    onChanged: (value) =>
-                        reminderViewModelRead.updateText(value!),
-                    labelText: AppLocalizations.of(context)!.task,
-                    initialValue: reminderViewModelWatch.description,
-                    maxLength: 80,
-                  ),
-                  const SizedBox(
-                    height: kDefaultPadding,
-                  ),
-                  const ReminderTypeSelection(),
-                  switch (ref.watch(reminderViewModel).reminderType) {
-                    ReminderType.daily => const SizedBox.shrink(),
-                    ReminderType.weekly => const WeeklyWidget(),
-                    ReminderType.monthly => const MonthlyWidget(),
-                  },
-                  Expanded(
-                    child: Column(children: [
-                      const SizedBox(
-                        height: kDefaultPadding,
-                      ),
-                      const SelectDate(),
-                      const SizedBox(
-                        height: kDefaultPadding,
-                      ),
-                      const SelectTime(),
-                      const SizedBox(
-                        height: kDefaultPadding,
-                      ),
-                      const Spacer(),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Row(
+                        const SizedBox(
+                          height: kDefaultPadding,
+                        ),
+                        if (reminderViewModelWatch
+                            .validatorErrorText.isNotEmpty)
+                          const ErrorValidatorText(),
+                        TextFormFieldMaterial(
+                          onChanged: (value) =>
+                              reminderViewModelRead.updateText(value!),
+                          labelText: AppLocalizations.of(context)!.task,
+                          initialValue: reminderViewModelWatch.description,
+                          maxLength: 80,
+                        ),
+                        const SizedBox(
+                          height: kDefaultPadding,
+                        ),
+                        const ReminderTypeSelection(),
+                        switch (ref.watch(reminderViewModel).reminderType) {
+                          ReminderType.daily => const SizedBox.shrink(),
+                          ReminderType.weekly => const WeeklyWidget(),
+                          ReminderType.monthly => const MonthlyWidget(),
+                        },
+                        const SizedBox(
+                          height: kDefaultPadding,
+                        ),
+                        const SelectDate(),
+                        const SizedBox(
+                          height: kDefaultPadding,
+                        ),
+                        const SelectTime(),
+                        const SizedBox(
+                          height: kDefaultPadding,
+                        ),
+                        const Spacer(),
+                        Row(
                           children: [
                             SizedBox(
                               width: 100,
@@ -125,17 +127,12 @@ Future editReminderBottomSheet(BuildContext context) {
                               ),
                             ),
                           ],
-                        ),
-                      ),
-                      const SizedBox(
-                        height: kDefaultPadding,
-                      ),
-                    ]),
+                        )
+                      ],
+                    ),
                   )
                 ],
-              ),
-            ),
-          );
+              ));
         },
       );
     },

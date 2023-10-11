@@ -18,7 +18,6 @@ Future addReminderBottomSheet(BuildContext context) {
     isDismissible: true,
     enableDrag: true,
     isScrollControlled: true,
-    useSafeArea: true,
     context: context,
     builder: (BuildContext context) {
       return Consumer(
@@ -26,64 +25,64 @@ Future addReminderBottomSheet(BuildContext context) {
           final reminderViewModelWatch = ref.watch(reminderViewModel);
           final reminderViewModelRead = ref.read(reminderViewModel.notifier);
 
-          return SingleChildScrollView(
-            child: Container(
-              height: 700,
+          return Container(
+              height: MediaQuery.of(context).size.height / 1.3,
               width: double.infinity,
               padding: const EdgeInsets.only(
-                  left: 24, right: 24, top: kDefaultPadding),
-              child: Column(
-                children: [
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      AppLocalizations.of(context)!.newReminder,
-                      style: Theme.of(context).textTheme.headlineSmall,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: kDefaultPadding,
-                  ),
-                  if (reminderViewModelWatch.validatorErrorText.isNotEmpty)
-                    const ErrorValidatorText(),
-                  TextFormFieldMaterial(
-                    onChanged: (value) =>
-                        reminderViewModelRead.updateText(value!),
-                    labelText: AppLocalizations.of(context)!.task,
-                    initialValue: reminderViewModelWatch.description,
-                    maxLength: 80,
-                  ),
-                  const SizedBox(
-                    height: kDefaultPadding,
-                  ),
-                  const ReminderTypeSelection(),
-                  switch (ref.watch(reminderViewModel).reminderType) {
-                    ReminderType.daily => const SizedBox.shrink(),
-                    ReminderType.weekly => const WeeklyWidget(),
-                    ReminderType.monthly => const MonthlyWidget(),
-                  },
-                  Expanded(
-                    child: Column(children: [
-                      const SizedBox(
-                        height: kDefaultPadding,
-                      ),
-                      const SelectDate(),
-                      const SizedBox(
-                        height: kDefaultPadding,
-                      ),
-                      const SelectTime(),
-                      const SizedBox(
-                        height: kDefaultPadding,
-                      ),
-                      const Spacer(),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Row(
+                  left: 24, right: 24, top: 24, bottom: 10),
+              child: CustomScrollView(
+                slivers: [
+                  SliverFillRemaining(
+                    hasScrollBody: false,
+                    child: Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            AppLocalizations.of(context)!.newReminder,
+                            style: Theme.of(context).textTheme.headlineSmall,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: kDefaultPadding,
+                        ),
+                        if (reminderViewModelWatch
+                            .validatorErrorText.isNotEmpty)
+                          const ErrorValidatorText(),
+                        TextFormFieldMaterial(
+                          onChanged: (value) =>
+                              reminderViewModelRead.updateText(value!),
+                          labelText: AppLocalizations.of(context)!.task,
+                          initialValue: reminderViewModelWatch.description,
+                          maxLength: 80,
+                        ),
+                        const SizedBox(
+                          height: kDefaultPadding,
+                        ),
+                        const ReminderTypeSelection(),
+                        switch (ref.watch(reminderViewModel).reminderType) {
+                          ReminderType.daily => const SizedBox.shrink(),
+                          ReminderType.weekly => const WeeklyWidget(),
+                          ReminderType.monthly => const MonthlyWidget(),
+                        },
+                        const SizedBox(
+                          height: kDefaultPadding,
+                        ),
+                        const SelectDate(),
+                        const SizedBox(
+                          height: kDefaultPadding,
+                        ),
+                        const SelectTime(),
+                        const SizedBox(
+                          height: kDefaultPadding,
+                        ),
+                        const Spacer(),
+                        Row(
                           children: [
                             SizedBox(
                               width: 100,
                               child: ButtonMaterial.blue(
-                                child: Text(AppLocalizations.of(context)!.add),
+                                child: Text(AppLocalizations.of(context)!.save),
                                 onPressed: () => reminderViewModelRead
                                     .checkIfvalidate(context),
                               ),
@@ -100,17 +99,12 @@ Future addReminderBottomSheet(BuildContext context) {
                               ),
                             ),
                           ],
-                        ),
-                      ),
-                      const SizedBox(
-                        height: kDefaultPadding,
-                      ),
-                    ]),
+                        )
+                      ],
+                    ),
                   )
                 ],
-              ),
-            ),
-          );
+              ));
         },
       );
     },
