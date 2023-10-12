@@ -25,7 +25,7 @@ class ReminderViewModel extends StateNotifier<ReminderState> {
       : super(
           state,
         ) {
-    fetchAllReminders();
+    initializeReminders();
   }
 
   Future initializeReminders() async {
