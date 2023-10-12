@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recurring_alarm/core/failure.dart';
 import 'package:recurring_alarm/data/local/local_database.dart';
@@ -58,8 +59,12 @@ class ReminderUsecase {
     }
   }
 
-  Future updateToggleReminder(Reminder reminder) async {
+  Future updateToggleReminder(Reminder newReminder) async {
     try {
+      List<DateTime> calculatedDates = await calculateNextReminder(newReminder);
+      Reminder reminder =
+          Reminder.withCalculatedDates(newReminder, calculatedDates);
+
       final reminderSend = reminder.fromEntity();
       await _reminderlocalDdbProvider.updateReminder(reminderSend);
       await NotificationServices.cancelScheduledNotifications(reminder.uuid);
@@ -108,6 +113,8 @@ class ReminderUsecase {
     for (var reminderToUpdate in remindersToUpdate) {
       await updateReminder(reminderToUpdate);
     }
+
+    debugPrint("updated reminders");
   }
 
   Future removeReminder(Reminder reminder) async {

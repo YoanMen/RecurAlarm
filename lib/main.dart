@@ -2,6 +2,9 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:recurring_alarm/core/failure.dart';
+import 'package:recurring_alarm/data/local/local_database.dart';
+import 'package:recurring_alarm/domain/entities/reminder.dart';
 import 'package:recurring_alarm/services/notification_services.dart';
 import 'package:recurring_alarm/domain/usecases/reminder_usecase.dart';
 import 'package:recurring_alarm/routing/app_routes.dart';
@@ -11,18 +14,59 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 const simplePeriodicTask = "service.updatereminders.simplePeriodicTask";
 
+Future _updatesReminders() async {
+  debugPrint("Update remindersdzdzd");
+  ReminderUsecase useCase = ReminderUsecase(SqlfLite());
+
+  final currentTime = DateTime.now();
+  final reminders = await useCase.fetchAllReminders();
+  final remindersToUpdate = <Reminder>[];
+
+  for (var reminder in reminders) {
+    if (reminder.remindersDate != null) {
+      bool needUpdate = false;
+      for (var i = 0; i < reminder.remindersDate!.length; i++) {
+        debugPrint(reminder.remindersDate![i].toString());
+        if (reminder.remindersDate![i].isBefore(currentTime)) {
+          needUpdate = true;
+          break;
+        }
+      }
+
+      if (needUpdate) {
+        remindersToUpdate.add(reminder);
+      }
+    }
+  }
+  for (var reminderToUpdate in remindersToUpdate) {
+    await useCase.updateReminder(reminderToUpdate);
+
+    try {
+      List<DateTime> calculatedDates = [
+        DateTime.now().add(const Duration(seconds: 10))
+      ];
+      Reminder reminder =
+          Reminder.withCalculatedDates(reminderToUpdate, calculatedDates);
+
+      final reminderSend = reminder.fromEntity();
+      await SqlfLite().updateReminder(reminderSend);
+      await useCase.manageNotification(reminder);
+
+      debugPrint("${remindersToUpdate.length} Reminders updates");
+    } catch (e) {
+      throw Failure(message: e.toString());
+    }
+  }
+}
+
 @pragma('vm:entry-point')
 void callbackDispatcher() {
   Workmanager().executeTask((taskName, inputData) async {
     try {
       //add code execution
-      debugPrint("Task");
+      debugPrint(" _____Task_______ ");
 
-      final container = ProviderContainer();
-      final reminderUsecase = container.read(reminderUsecaseProvider);
-
-      await reminderUsecase.updatesReminders();
-      container.dispose();
+      await _updatesReminders();
     } catch (err) {
       debugPrint(err.toString());
       throw Exception(err);
@@ -70,10 +114,9 @@ void initWorkManager() async {
       .initialize(callbackDispatcher, isInDebugMode: false)
       .then((_) async {
     await Workmanager().registerPeriodicTask(
-      simplePeriodicTask,
+      "UpdateReminders",
       simplePeriodicTask,
       frequency: const Duration(hours: 3),
-      initialDelay: const Duration(seconds: 10),
     );
   });
 }

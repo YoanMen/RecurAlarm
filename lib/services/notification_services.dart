@@ -36,7 +36,7 @@ class NotificationServices {
             channelKey: 'recurring_alarm_app_channel',
             title: DateFormat.Hm().format(reminder.date),
             body: reminder.task,
-            category: NotificationCategory.Workout,
+            category: NotificationCategory.Alarm,
             notificationLayout: NotificationLayout.Default,
             locked: false,
             wakeUpScreen: true,
