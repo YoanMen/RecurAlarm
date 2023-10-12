@@ -67,7 +67,6 @@ class ReminderUsecase {
 
       final reminderSend = reminder.fromEntity();
       await _reminderlocalDdbProvider.updateReminder(reminderSend);
-      await NotificationServices.cancelScheduledNotifications(reminder.uuid);
 
       await manageNotification(reminder);
     } catch (e) {

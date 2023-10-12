@@ -25,7 +25,7 @@ class ReminderViewModel extends StateNotifier<ReminderState> {
       : super(
           state,
         ) {
-    initializeReminders();
+    fetchAllReminders();
   }
 
   Future initializeReminders() async {
@@ -164,6 +164,10 @@ class ReminderViewModel extends StateNotifier<ReminderState> {
     state = state.copyWith(loading: true);
     try {
       final response = await _reminderUsecase.fetchAllReminders();
+
+      // arrange list by dates
+      response.sort((a, b) =>
+          a.remindersDate!.toString().compareTo(b.remindersDate.toString()));
 
       state = state.copyWith(reminders: AsyncValue.data(response));
     } catch (e) {
