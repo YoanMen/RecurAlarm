@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:recurring_alarm/core/common/formatting_utils.dart';
 import 'package:recurring_alarm/core/constant.dart';
 import 'package:recurring_alarm/domain/entities/reminder.dart';
-import 'package:recurring_alarm/localization/string_hardcoded.dart';
 import 'package:recurring_alarm/presentation/reminder/viewmodels/reminder_view_model.dart';
 import 'package:recurring_alarm/theme/palette.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -57,10 +56,7 @@ class ReminderCard extends ConsumerWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                      DateFormat.yMMMEd(
-                              AppLocalizations.of(context)!.localeName)
-                          .format(reminder.remindersDate![0]),
+                  Text(_dateNextReminder(reminder, context),
                       style: TextStyle(
                           color: Colors.black.withOpacity(0.40), fontSize: 14)),
                   if (reminder.reminderType != ReminderType.daily)
@@ -150,4 +146,24 @@ class ReminderCard extends ConsumerWidget {
 
     return dayNames.join(", ").substring(1).trim();
   }
+}
+
+String _dateNextReminder(Reminder reminder, BuildContext context) {
+  String nearestDate = '';
+  DateTime currentDay =
+      DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+  DateTime reminderDate = DateTime(reminder.remindersDate![0].year,
+      reminder.remindersDate![0].month, reminder.remindersDate![0].day);
+
+  if (reminderDate.isAtSameMomentAs(currentDay)) {
+    nearestDate = AppLocalizations.of(context)!.today;
+  } else if (reminderDate
+      .isAtSameMomentAs(currentDay.add(const Duration(days: 1)))) {
+    nearestDate = AppLocalizations.of(context)!.tomorrow;
+  } else {
+    nearestDate = DateFormat.yMMMEd(AppLocalizations.of(context)!.localeName)
+        .format(reminder.remindersDate![0]);
+  }
+
+  return nearestDate;
 }

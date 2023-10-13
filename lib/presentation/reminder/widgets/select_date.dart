@@ -21,8 +21,6 @@ class SelectDate extends ConsumerWidget {
         const Spacer(),
         GestureDetector(
             onTap: () async {
-              FocusScope.of(context).unfocus();
-
               final dateSelected = await showDatePicker(
                   context: context,
                   initialDate:

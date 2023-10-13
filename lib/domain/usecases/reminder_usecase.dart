@@ -84,6 +84,8 @@ class ReminderUsecase {
               date: element,
               time: reminder.time),
         );
+
+        debugPrint("___ Notification created for ${reminder.uuid} at $element");
       } else {
         await NotificationServices.cancelScheduledNotifications(reminder.uuid);
       }

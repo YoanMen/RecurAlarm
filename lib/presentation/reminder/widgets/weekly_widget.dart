@@ -46,8 +46,6 @@ class WeeklyWidget extends ConsumerWidget {
               ),
             ],
             onSelectionChanged: (Set<int> newSelection) {
-              FocusScope.of(context).unfocus();
-
               reminderProviderRead.setlenghtSelected(newSelection.first);
             },
             selected: <int>{reminderProviderWatch.lenghtBetweenReminder}),

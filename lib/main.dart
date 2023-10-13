@@ -29,7 +29,6 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await NotificationServices.initializeNotification();
 
-  Workmanager().cancelAll();
   initWorkManager();
 
   runApp(const ProviderScope(child: MainApp()));

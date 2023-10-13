@@ -64,5 +64,7 @@
     "reminderAdded": "Reminder added",
     "reminderDelete": "Reminder delete",
     "reminderUpdated": "Reminder updated",
-    "save": "Save"
+    "save": "Save",
+    "today": "Today",
+    "tomorrow": "Tomorrow"
 }

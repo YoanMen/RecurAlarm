@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:recurring_alarm/core/failure.dart';
 import 'package:recurring_alarm/data/local/local_database.dart';
 import 'package:recurring_alarm/domain/entities/reminder.dart';
+import 'package:recurring_alarm/domain/reminder_calculator.dart';
 import 'package:recurring_alarm/domain/usecases/reminder_usecase.dart';
 
 Future backgroudUpdateReminders() async {
-  debugPrint("Update remindersdzdzd");
+  debugPrint("__Update__");
   ReminderUsecase useCase = ReminderUsecase(SqlfLite());
 
   final currentTime = DateTime.now();
@@ -28,19 +29,23 @@ Future backgroudUpdateReminders() async {
       }
     }
   }
+
   for (var reminderToUpdate in remindersToUpdate) {
     await useCase.updateReminder(reminderToUpdate);
 
     try {
-      List<DateTime> calculatedDates = [
-        DateTime.now().add(const Duration(seconds: 10))
-      ];
+      List<DateTime> calculatedDates =
+          await calculateNextReminder(reminderToUpdate);
+
       Reminder reminder =
           Reminder.withCalculatedDates(reminderToUpdate, calculatedDates);
 
       final reminderSend = reminder.fromEntity();
       await SqlfLite().updateReminder(reminderSend);
       await useCase.manageNotification(reminder);
+
+      debugPrint(
+          "__Background update finished for ${remindersToUpdate.length}");
     } catch (e) {
       throw Failure(message: e.toString());
     }

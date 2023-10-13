@@ -34,7 +34,6 @@ class ReminderTypeSelection extends ConsumerWidget {
             ),
           ],
           onSelectionChanged: (Set<ReminderType> newSelection) {
-            FocusScope.of(context).unfocus();
             ref
                 .read(reminderViewModel.notifier)
                 .setReminderType(newSelection.first);

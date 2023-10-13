@@ -64,5 +64,7 @@
     "reminderAdded": "Rappel ajouté",
     "reminderDelete": "Rappel supprimé",
     "reminderUpdated": "Rappel modifié",
-    "save": "Valider"
+    "save": "Valider",
+    "today": "Aujourd'hui",
+    "tomorrow": "Demain"
 }

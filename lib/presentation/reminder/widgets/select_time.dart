@@ -18,8 +18,6 @@ class SelectTime extends ConsumerWidget {
         const Spacer(),
         GestureDetector(
             onTap: () async {
-              FocusScope.of(context).unfocus();
-
               final timeSelected = await showTimePicker(
                   builder: (BuildContext context, Widget? child) {
                     return MediaQuery(
