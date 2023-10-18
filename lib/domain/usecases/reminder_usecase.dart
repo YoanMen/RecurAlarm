@@ -77,17 +77,18 @@ class ReminderUsecase {
   Future manageNotification(Reminder reminder) async {
     for (var element in reminder.remindersDate!) {
       if (reminder.reminderEnable) {
+        // CREATE NOTIFICATION
         NotificationServices.scheduleNotification(
-          reminder: NotificationReminder(
-              uuid: reminder.uuid,
-              task: reminder.description,
-              date: element,
-              time: reminder.time),
-        );
+            reminder: NotificationReminder(
+                uuid: reminder.uuid,
+                task: reminder.description,
+                date: element,
+                time: reminder.time),
+            id: reminder.remindersDate!.indexOf(element));
 
         debugPrint("___ Notification created for ${reminder.uuid} at $element");
       } else {
-        await NotificationServices.cancelScheduledNotifications(reminder.uuid);
+        NotificationServices.cancelScheduledNotifications(reminder.uuid);
       }
     }
   }

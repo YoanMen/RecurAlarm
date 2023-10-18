@@ -25,8 +25,7 @@ class ReminderViewModel extends StateNotifier<ReminderState> {
       : super(
           state,
         ) {
-    fetchAllReminders();
-    // initializeReminders();
+    initializeReminders();
   }
 
   Future initializeReminders() async {
@@ -161,7 +160,7 @@ class ReminderViewModel extends StateNotifier<ReminderState> {
     editReminderBottomSheet(context);
   }
 
-  void fetchAllReminders() async {
+  Future fetchAllReminders() async {
     state = state.copyWith(loading: true);
     try {
       final response = await _reminderUsecase.fetchAllReminders();

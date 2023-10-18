@@ -82,7 +82,7 @@ Future addReminderBottomSheet(BuildContext context) {
                             SizedBox(
                               width: 100,
                               child: ButtonMaterial.blue(
-                                child: Text(AppLocalizations.of(context)!.save),
+                                child: Text(AppLocalizations.of(context)!.add),
                                 onPressed: () => reminderViewModelRead
                                     .checkIfvalidate(context),
                               ),

@@ -5,6 +5,21 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      appBar:
+          AppBar(leading: const BackButton(), title: const Text("Settings")),
+      body: Column(children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text("DESC OPTIO "),
+            Switch.adaptive(
+              value: true,
+              onChanged: (value) {}, // toogle activate
+            ),
+          ],
+        )
+      ]),
+    );
   }
 }

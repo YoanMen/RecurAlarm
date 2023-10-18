@@ -15,7 +15,6 @@ class ReminderCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return SizedBox(
-      width: double.infinity,
       child: Card(
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
         child: Padding(

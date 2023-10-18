@@ -34,7 +34,6 @@ class ReminderResponse {
 
   // used to convert response to reminder
   Reminder toEntity() {
-    print(remindersDate);
     return Reminder(
         description: description,
         beginDate: formatDate(beginDate),
