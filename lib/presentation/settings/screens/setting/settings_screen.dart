@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:recurring_alarm/core/common/widgets/material_button.dart';
 import 'package:recurring_alarm/core/constant.dart';
 import 'package:recurring_alarm/presentation/reminder/widgets/settings/setting_container.dart';
 
@@ -13,15 +14,17 @@ class SettingsScreen extends StatelessWidget {
       body: const Padding(
         padding: EdgeInsets.all(kDefaultPadding),
         child: Column(children: [
-          SettingContainer(settingText: "Setting 1", value: true),
-          SettingContainer(settingText: "Setting 2", value: true),
-          SettingContainer(settingText: "Setting 3", value: true),
+          SettingContainer(
+              settingText:
+                  "Etre notifier la veille des notifications du lendemain",
+              value: true),
+          SettingContainer(settingText: "Mode sombre", value: false),
+          SettingContainer(
+              settingText: "Notification en mode alarme", value: true),
           Spacer(),
-          Text("v0.01"),
+          Text("Reccuring Alarm - v0.01"),
         ]),
       ),
     );
   }
 }
-
-test(bool) {}
