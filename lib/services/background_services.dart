@@ -1,3 +1,6 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:recurring_alarm/core/failure.dart';
 import 'package:recurring_alarm/data/local/local_database.dart';
 import 'package:recurring_alarm/domain/entities/reminder.dart';
@@ -7,11 +10,13 @@ import 'package:recurring_alarm/services/notification_services.dart';
 
 class BackgroundService {
   Future updateReminders() async {
+    initializeDateFormatting();
     await NotificationServices.initializeNotification();
+
     ReminderUsecase useCase = ReminderUsecase(SqlfLite());
-    print("update");
 
     final currentTime = DateTime.now();
+
     final reminders = await useCase.fetchAllReminders();
     final remindersToUpdate = <Reminder>[];
 
@@ -31,9 +36,9 @@ class BackgroundService {
       }
     }
 
-    for (var reminderToUpdate in remindersToUpdate) {
-      await useCase.updateReminder(reminderToUpdate);
+    if (remindersToUpdate.isEmpty) return;
 
+    for (var reminderToUpdate in remindersToUpdate) {
       try {
         List<DateTime> calculatedDates =
             await calculateNextReminder(reminderToUpdate);

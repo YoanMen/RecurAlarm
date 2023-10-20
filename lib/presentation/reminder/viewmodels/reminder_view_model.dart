@@ -29,7 +29,7 @@ class ReminderViewModel extends StateNotifier<ReminderState> {
   }
 
   Future initializeReminders() async {
-    await _reminderUsecase.updatesReminders();
+    // await _reminderUsecase.updatesReminders();
 
     fetchAllReminders();
   }

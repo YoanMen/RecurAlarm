@@ -2,8 +2,6 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:recurring_alarm/domain/usecases/reminder_usecase.dart';
-import 'package:recurring_alarm/presentation/reminder/viewmodels/reminder_view_model.dart';
 import 'package:recurring_alarm/services/notification_services.dart';
 import 'package:recurring_alarm/routing/app_routes.dart';
 import 'package:recurring_alarm/services/background_services.dart';
@@ -29,6 +27,8 @@ void callbackDispatcher() {
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await NotificationServices.initializeNotification();
+
+  Workmanager().cancelAll();
   initWorkManager();
 
   runApp(const ProviderScope(child: MainApp()));

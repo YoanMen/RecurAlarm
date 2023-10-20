@@ -13,6 +13,11 @@ class LandingScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final reminderProviderWatch = ref.watch(reminderViewModel);
     return Scaffold(
+        appBar: AppBar(title: const Text("Reminders"), actions: [
+          IconButton(
+              onPressed: () => context.pushNamed(AppRoute.settings.name),
+              icon: const Icon(Icons.settings)),
+        ]),
         floatingActionButton: FloatingActionButton(
             onPressed: () =>
                 ref.read(reminderViewModel.notifier).openAddReminder(context),
@@ -26,29 +31,11 @@ class LandingScreen extends ConsumerWidget {
                 child: Stack(
                   children: [
                     (reminder.isNotEmpty || reminderProviderWatch.loading)
-                        ? RefreshIndicator(
-                            onRefresh: () async {
-                              await ref
-                                  .read(reminderViewModel.notifier)
-                                  .initializeReminders();
-                            },
-                            child: ListView.builder(
-                              padding:
-                                  const EdgeInsets.only(bottom: 80, top: 0),
-                              itemCount: reminder.length + 1,
-                              itemBuilder: (context, index) => (index == 0)
-                                  ? Padding(
-                                      padding: const EdgeInsets.only(right: 16),
-                                      child: Align(
-                                        alignment: Alignment.centerRight,
-                                        child: IconButton(
-                                            onPressed: () => context.pushNamed(
-                                                AppRoute.settings.name),
-                                            icon: const Icon(Icons.settings)),
-                                      ),
-                                    )
-                                  : ReminderCard(reminder: reminder[index - 1]),
-                            ),
+                        ? ListView.builder(
+                            padding: const EdgeInsets.only(bottom: 80, top: 0),
+                            itemCount: reminder.length,
+                            itemBuilder: (context, index) =>
+                                ReminderCard(reminder: reminder[index]),
                           )
                         : Center(
                             child: Text(

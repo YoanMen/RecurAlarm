@@ -75,15 +75,16 @@ class ReminderUsecase {
   }
 
   Future manageNotification(Reminder reminder) async {
+    print("set notification");
     for (var element in reminder.remindersDate!) {
       if (reminder.reminderEnable) {
         // CREATE NOTIFICATION
+
+        print("date of notification = $element");
+
         NotificationServices.scheduleNotification(
             reminder: NotificationReminder(
-                uuid: reminder.uuid,
-                task: reminder.description,
-                date: element,
-                time: reminder.time),
+                uuid: reminder.uuid, task: reminder.description, date: element),
             id: reminder.remindersDate!.indexOf(element));
 
         debugPrint("___ Notification created for ${reminder.uuid} at $element");

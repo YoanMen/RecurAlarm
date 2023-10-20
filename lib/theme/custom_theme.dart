@@ -18,6 +18,7 @@ class CustomTheme {
           elevation: 0,
           backgroundColor: Palette.scaffoldColor,
         ),
+        appBarTheme: const AppBarTheme(backgroundColor: Colors.transparent),
         datePickerTheme: const DatePickerThemeData(
             elevation: 0,
             backgroundColor: Palette.scaffoldColor,
