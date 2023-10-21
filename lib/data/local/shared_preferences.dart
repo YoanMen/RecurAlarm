@@ -6,15 +6,14 @@ final sharedPreferencesManager = Provider<SharedPreferencesManager>((ref) {
 });
 
 class SharedPreferencesManager {
-  Future<bool?> loadSettings(String settingName) async {
+  Future<bool?> loadBoolSettings(String settingName) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     return prefs.getBool(settingName);
   }
 
-  Future saveSettings(String settingName, bool value) async {
+  Future saveBoolSettings(String settingName, bool value) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-
     await prefs.setBool(settingName, value);
   }
 }

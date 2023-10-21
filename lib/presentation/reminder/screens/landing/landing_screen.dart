@@ -13,7 +13,7 @@ class LandingScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final reminderProviderWatch = ref.watch(reminderViewModel);
     return Scaffold(
-        appBar: AppBar(title: const Text("Reminders"), actions: [
+        appBar: AppBar(actions: [
           IconButton(
               onPressed: () => context.pushNamed(AppRoute.settings.name),
               icon: const Icon(Icons.settings)),

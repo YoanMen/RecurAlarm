@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recurring_alarm/core/constant.dart';
+import 'package:recurring_alarm/presentation/settings/viewmodel/settings_viewmodel.dart';
 
-class SettingContainer extends StatelessWidget {
+class SettingContainer extends ConsumerWidget {
   const SettingContainer({
     Key? key,
+    required this.settingName,
     required this.settingText,
     required this.value,
   }) : super(key: key);
 
+  final String settingName;
   final String settingText;
   final bool value;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return SizedBox(
       width: double.infinity,
       child: Row(
@@ -27,7 +31,11 @@ class SettingContainer extends StatelessWidget {
           ),
           Switch.adaptive(
             value: value,
-            onChanged: (e) {},
+            onChanged: (e) {
+              ref
+                  .read(settingViewModel.notifier)
+                  .saveBoolSetting(settingName, value);
+            },
           )
         ],
       ),

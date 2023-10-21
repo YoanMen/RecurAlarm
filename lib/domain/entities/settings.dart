@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:recurring_alarm/domain/entities/bool_setting.dart';
 
 @immutable
 class Settings {
-  final bool notifiedTomorrow;
-  final bool darkMode;
-  final bool alarmMode;
+  final BoolSetting notifiedTomorrow;
+  final BoolSetting darkMode;
+  final BoolSetting alarmMode;
 
   const Settings(
       {required this.notifiedTomorrow,
