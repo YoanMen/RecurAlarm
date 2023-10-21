@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:recurring_alarm/core/common/widgets/material_button.dart';
 import 'package:recurring_alarm/core/constant.dart';
 import 'package:recurring_alarm/presentation/reminder/widgets/settings/setting_container.dart';
 
