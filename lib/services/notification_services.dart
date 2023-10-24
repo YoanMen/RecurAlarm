@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:intl/intl.dart';
+import 'package:recurring_alarm/data/local/shared_preferences.dart';
 import 'package:recurring_alarm/domain/entities/notification_reminder.dart';
 
 class NotificationServices {
   static Future<void> initializeNotification() async {
     await AwesomeNotifications().initialize(
-      null,
+      "resource://drawable/ic_reminder_notification",
       [
         NotificationChannel(
           channelKey: 'recurring_alarm_app_channel',
@@ -19,6 +20,9 @@ class NotificationServices {
           defaultColor: Colors.transparent,
           locked: true,
           enableVibration: true,
+          onlyAlertOnce:
+              await SharedPreferencesManager().loadBoolSettings("alarmMode") ??
+                  true,
           playSound: true,
         ),
       ],
@@ -27,6 +31,9 @@ class NotificationServices {
 
   static Future<void> scheduleNotification(
       {required NotificationReminder reminder, required int id}) async {
+    bool isAlarm =
+        await SharedPreferencesManager().loadBoolSettings("alarmMode") ?? true;
+
     await AwesomeNotifications().createNotification(
         content: NotificationContent(
           groupKey: reminder.uuid.toString(),
@@ -34,15 +41,16 @@ class NotificationServices {
           channelKey: 'recurring_alarm_app_channel',
           title: "${DateFormat.jm().format(reminder.date)} reminder",
           body: reminder.task,
-          category: NotificationCategory.Alarm,
+          category: isAlarm
+              ? NotificationCategory.Alarm
+              : NotificationCategory.Reminder,
           notificationLayout: NotificationLayout.Default,
-          locked: false,
+          locked: isAlarm ? true : false,
           wakeUpScreen: true,
           actionType: ActionType.KeepOnTop,
           autoDismissible: false,
           fullScreenIntent: true,
           backgroundColor: Colors.transparent,
-          payload: {'uuid': 'notificationDelivred'},
         ),
         schedule: NotificationCalendar(
           minute: reminder.date.minute,
@@ -54,8 +62,16 @@ class NotificationServices {
           preciseAlarm: true,
           allowWhileIdle: true,
         ),
+        actionButtons: [
+          NotificationActionButton(
+              key: "clear-input",
+              label: "CLEAR",
+              showInCompactView: true,
+              actionType: ActionType.DismissAction)
+        ],
         localizations: {
           "fr-fr": NotificationLocalization(
+            buttonLabels: {"clear-input": "EFFACER"},
             title: "${DateFormat.Hm("fr").format(reminder.date)} rappel",
           ),
         }).then(

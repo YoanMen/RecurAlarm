@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recurring_alarm/core/constant.dart';
+import 'package:recurring_alarm/presentation/reminder/viewmodels/reminder_view_model.dart';
 import 'package:recurring_alarm/presentation/reminder/widgets/settings/setting_container.dart';
 import 'package:recurring_alarm/presentation/settings/viewmodel/settings_viewmodel.dart';
 
@@ -18,17 +19,20 @@ class SettingsScreen extends ConsumerWidget {
           SettingContainer(
               settingName: ref.read(settingViewModel).notifiedTomorrow.name,
               settingText:
-                  "Etre notifier la veille des notifications du lendemain",
+                  "Advance notice of the following day's notifications",
               value: ref.watch(settingViewModel).notifiedTomorrow.value),
           SettingContainer(
               settingName: ref.read(settingViewModel).darkMode.name,
-              settingText: "Mode sombre",
+              settingText: "Dark mode",
               value: ref.watch(settingViewModel).darkMode.value),
           SettingContainer(
               settingName: ref.read(settingViewModel).alarmMode.name,
-              settingText: "Notification en mode alarme",
+              settingText: "Alarm mode notification",
               value: ref.watch(settingViewModel).alarmMode.value),
           const Spacer(),
+          TextButton(
+              onPressed: () => ref.read(reminderViewModel.notifier).clearAll(),
+              child: const Text("Clear Reminders")),
           const Text("Reccuring Alarm - v0.01"),
         ]),
       ),

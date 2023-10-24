@@ -28,6 +28,11 @@ class ReminderViewModel extends StateNotifier<ReminderState> {
     initializeReminders();
   }
 
+  Future clearAll() async {
+    await _reminderUsecase.deleteAll();
+    Fluttertoast.showToast(msg: "delete all reminders ddb");
+  }
+
   Future initializeReminders() async {
     // await _reminderUsecase.updatesReminders();
 
