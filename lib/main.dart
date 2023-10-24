@@ -53,7 +53,7 @@ class MainApp extends StatelessWidget {
     ], supportedLocales: const [
       Locale('en'),
       Locale('fr'),
-    ], routerConfig: router, theme: CustomTheme.lightTheme(context));
+    ], routerConfig: router, theme: CustomTheme.darkTheme(context));
   }
 }
 

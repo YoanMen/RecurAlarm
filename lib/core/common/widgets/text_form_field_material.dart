@@ -59,10 +59,8 @@ class TextFormFieldMaterial extends StatelessWidget {
       enableSuggestions: enableSuggestions,
       initialValue: initialValue,
       decoration: InputDecoration(
-          disabledBorder: const OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.black)),
-          border: const OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.black)),
+          disabledBorder: const OutlineInputBorder(borderSide: BorderSide()),
+          border: const OutlineInputBorder(borderSide: BorderSide()),
           labelText: labelText),
     );
   }

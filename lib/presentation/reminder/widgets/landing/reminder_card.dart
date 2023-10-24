@@ -55,14 +55,15 @@ class ReminderCard extends ConsumerWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(_dateNextReminder(reminder, context),
-                      style: TextStyle(
-                          color: Colors.black.withOpacity(0.40), fontSize: 14)),
+                  Opacity(
+                    opacity: 0.40,
+                    child: Text(_dateNextReminder(reminder, context),
+                        style: const TextStyle(fontSize: 14)),
+                  ),
                   if (reminder.reminderType != ReminderType.daily)
                     Text(
                       _shortDayString(reminder.days, context),
-                      style: TextStyle(
-                          color: Colors.black.withOpacity(0.40), fontSize: 14),
+                      style: const TextStyle(fontSize: 14),
                     ),
                 ],
               ),
@@ -77,10 +78,11 @@ class ReminderCard extends ConsumerWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(lenghtBettewenReminding(reminder, context),
-                          style: TextStyle(
-                              color: Colors.black.withOpacity(0.40),
-                              fontSize: 14)),
+                      Opacity(
+                        opacity: 0.40,
+                        child: Text(lenghtBettewenReminding(reminder, context),
+                            style: const TextStyle(fontSize: 14)),
+                      ),
                     ],
                   ),
                   const Spacer(),

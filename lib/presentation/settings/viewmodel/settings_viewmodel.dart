@@ -55,7 +55,6 @@ class SettingsViewModel extends StateNotifier<SettingState> {
         case "darkMode":
           state = state.copyWith(darkMode: BoolSetting("darkMode", !value));
           break;
-        default:
       }
 
       await _settingUsecase.saveBoolSetting(settingName, !value);
