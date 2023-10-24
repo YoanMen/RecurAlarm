@@ -61,9 +61,12 @@ class ReminderCard extends ConsumerWidget {
                         style: const TextStyle(fontSize: 14)),
                   ),
                   if (reminder.reminderType != ReminderType.daily)
-                    Text(
-                      _shortDayString(reminder.days, context),
-                      style: const TextStyle(fontSize: 14),
+                    Opacity(
+                      opacity: 0.40,
+                      child: Text(
+                        _shortDayString(reminder.days, context),
+                        style: const TextStyle(fontSize: 14),
+                      ),
                     ),
                 ],
               ),

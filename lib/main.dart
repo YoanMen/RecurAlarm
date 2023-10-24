@@ -2,6 +2,7 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:recurring_alarm/presentation/settings/viewmodel/settings_viewmodel.dart';
 import 'package:recurring_alarm/services/notification_services.dart';
 import 'package:recurring_alarm/routing/app_routes.dart';
 import 'package:recurring_alarm/services/background_services.dart';
@@ -41,19 +42,27 @@ Future<void> main() async {
   );
 }
 
-class MainApp extends StatelessWidget {
+class MainApp extends ConsumerWidget {
   const MainApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp.router(localizationsDelegates: const [
-      AppLocalizations.delegate,
-      GlobalMaterialLocalizations.delegate,
-      GlobalWidgetsLocalizations.delegate,
-    ], supportedLocales: const [
-      Locale('en'),
-      Locale('fr'),
-    ], routerConfig: router, theme: CustomTheme.darkTheme(context));
+  Widget build(BuildContext context, WidgetRef ref) {
+    return MaterialApp.router(
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        supportedLocales: const [
+          Locale('en'),
+          Locale('fr'),
+        ],
+        routerConfig: router,
+        themeMode: ref.watch(settingViewModel).darkMode.value
+            ? ThemeMode.dark
+            : ThemeMode.light,
+        darkTheme: CustomTheme.darkTheme(context),
+        theme: CustomTheme.lightTheme(context));
   }
 }
 

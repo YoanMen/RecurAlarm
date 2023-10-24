@@ -67,7 +67,10 @@ Future editReminderBottomSheet(BuildContext context) {
                                       .confirmDelete,
                                   title: AppLocalizations.of(context)!
                                       .deleteReminder),
-                              icon: const Icon(Icons.delete),
+                              icon: Icon(
+                                Icons.delete,
+                                color: Theme.of(context).colorScheme.error,
+                              ),
                             )
                           ],
                         ),

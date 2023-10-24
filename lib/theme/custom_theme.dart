@@ -44,6 +44,18 @@ class CustomTheme {
 
   static ThemeData darkTheme(BuildContext context) {
     return ThemeData(
+        dialogBackgroundColor: Colors.white,
+        primaryColor: Colors.white,
+        segmentedButtonTheme: SegmentedButtonThemeData(
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                    (Set<MaterialState> states) {
+                  if (states.contains(MaterialState.selected)) {
+                    return Palette.primaryColor.withOpacity(0.40);
+                  }
+                  return Palette.blackColor;
+                }),
+                foregroundColor: const MaterialStatePropertyAll(Colors.white))),
         primaryTextTheme: Typography().white,
         textTheme: Typography().white,
         useMaterial3: true,
@@ -51,23 +63,29 @@ class CustomTheme {
         scaffoldBackgroundColor: Palette.blackColor,
         canvasColor: Palette.scaffoldColor,
         timePickerTheme: const TimePickerThemeData(
-          dialBackgroundColor: Colors.white,
-          hourMinuteColor: Colors.white,
-          elevation: 0,
-          backgroundColor: Palette.scaffoldColor,
+          dialTextColor: Palette.scaffoldColor,
+          entryModeIconColor: Palette.scaffoldColor,
+          dayPeriodTextColor: Palette.scaffoldColor,
+          hourMinuteTextColor: Palette.scaffoldColor,
+          dialBackgroundColor: Palette.blackColor,
+          hourMinuteColor: Palette.blackColor,
+          elevation: 1,
+          backgroundColor: Palette.blackColor,
         ),
         dialogTheme: const DialogTheme(
           elevation: 0,
-          backgroundColor: Palette.scaffoldColor,
+          backgroundColor: Palette.blackColor,
         ),
         appBarTheme: const AppBarTheme(
-            foregroundColor: Colors.white,
+            foregroundColor: Palette.scaffoldColor,
             systemOverlayStyle: SystemUiOverlayStyle.dark,
             backgroundColor: Colors.transparent),
         datePickerTheme: const DatePickerThemeData(
-            elevation: 0,
-            backgroundColor: Palette.scaffoldColor,
-            headerBackgroundColor: Colors.white),
+            headerForegroundColor: Palette.scaffoldColor,
+            elevation: 1,
+            dayForegroundColor: MaterialStatePropertyAll(Palette.scaffoldColor),
+            backgroundColor: Palette.blackColor,
+            headerBackgroundColor: Palette.blackColor),
         cardTheme: const CardTheme(elevation: 0.5, color: Palette.blackColor),
         bottomSheetTheme: const BottomSheetThemeData(
             modalBackgroundColor: Palette.blackColor,

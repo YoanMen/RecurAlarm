@@ -19,8 +19,10 @@ class ReminderTypeSelection extends ConsumerWidget {
           segments: [
             ButtonSegment(
               value: ReminderType.daily,
-              label:
-                  FittedBox(child: Text(AppLocalizations.of(context)!.daily)),
+              label: FittedBox(
+                  child: Text(
+                AppLocalizations.of(context)!.daily,
+              )),
             ),
             ButtonSegment(
               value: ReminderType.weekly,
