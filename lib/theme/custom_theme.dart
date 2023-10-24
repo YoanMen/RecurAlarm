@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:recurring_alarm/theme/palette.dart';
 
 class CustomTheme {
@@ -18,7 +19,9 @@ class CustomTheme {
           elevation: 0,
           backgroundColor: Palette.scaffoldColor,
         ),
-        appBarTheme: const AppBarTheme(backgroundColor: Colors.transparent),
+        appBarTheme: const AppBarTheme(
+            systemOverlayStyle: SystemUiOverlayStyle.dark,
+            backgroundColor: Colors.transparent),
         datePickerTheme: const DatePickerThemeData(
             elevation: 0,
             backgroundColor: Palette.scaffoldColor,
