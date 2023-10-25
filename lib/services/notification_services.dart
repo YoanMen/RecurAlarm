@@ -7,7 +7,7 @@ import 'package:recurring_alarm/domain/entities/notification_reminder.dart';
 class NotificationServices {
   static Future<void> initializeNotification() async {
     await AwesomeNotifications().initialize(
-      "resource://drawable/ic_reminder_notification",
+      "resource://drawable/notification_icon",
       [
         NotificationChannel(
           channelKey: 'recurring_alarm_app_channel',
@@ -29,6 +29,34 @@ class NotificationServices {
     );
   }
 
+  static Future<void> remindersForTomorrowNotification(
+      {required int nbReminders, required DateTime date}) async {
+    await AwesomeNotifications().createNotification(
+        content: NotificationContent(
+          groupKey: "tomorrowNotificationReminders",
+          id: 1,
+          channelKey: "recurring_alarm_app_channel",
+          body: "You have $nbReminders reminder(s) for tomorrow !",
+          category: NotificationCategory.Message,
+          notificationLayout: NotificationLayout.Default,
+          actionType: ActionType.Default,
+          backgroundColor: Colors.transparent,
+        ),
+        schedule: NotificationCalendar(
+          minute: 0,
+          hour: 20,
+          day: date.day,
+          month: date.month,
+          year: date.year,
+          allowWhileIdle: true,
+        ),
+        localizations: {
+          "fr-fr": NotificationLocalization(
+            body: "Vous avez $nbReminders rappel(s) pour demain !",
+          ),
+        });
+  }
+
   static Future<void> scheduleNotification(
       {required NotificationReminder reminder, required int id}) async {
     bool isAlarm =
@@ -39,13 +67,13 @@ class NotificationServices {
           groupKey: reminder.uuid.toString(),
           id: reminder.uuid + id,
           channelKey: 'recurring_alarm_app_channel',
-          title: "${DateFormat.jm().format(reminder.date)} reminder",
+          title: DateFormat.jm().format(reminder.date),
           body: reminder.task,
           category: isAlarm
               ? NotificationCategory.Alarm
               : NotificationCategory.Reminder,
           notificationLayout: NotificationLayout.Default,
-          locked: isAlarm ? true : false,
+          locked: true,
           wakeUpScreen: true,
           actionType: ActionType.KeepOnTop,
           autoDismissible: false,
@@ -65,20 +93,20 @@ class NotificationServices {
         actionButtons: [
           NotificationActionButton(
               key: "clear-input",
-              label: "CLEAR",
+              label: "CLEAR NOTIFICATION",
               showInCompactView: true,
               actionType: ActionType.DismissAction)
         ],
         localizations: {
           "fr-fr": NotificationLocalization(
-            buttonLabels: {"clear-input": "EFFACER"},
-            title: "${DateFormat.Hm("fr").format(reminder.date)} rappel",
+            buttonLabels: {"clear-input": "EFFACER NOTIFICATION"},
+            title: DateFormat.Hm("fr").format(reminder.date),
           ),
         }).then(
         (value) => debugPrint("Notification created for ${reminder.date}"));
   }
 
-  static Future<void> cancelScheduledNotifications(int id) async {
+  static Future<void> cancelScheduledNotifications(String id) async {
     await AwesomeNotifications().cancelNotificationsByGroupKey(id.toString());
   }
 }

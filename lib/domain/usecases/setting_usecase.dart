@@ -21,8 +21,6 @@ class SettingUsecase {
   Future saveBoolSetting(String settingName, bool value) async {
     try {
       await sharedPreferencesManager.saveBoolSettings(settingName, value);
-
-      print("saved $settingName $value");
     } catch (e) {
       throw Failure(message: "error $e");
     }

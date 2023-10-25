@@ -10,15 +10,26 @@ import 'package:recurring_alarm/theme/custom_theme.dart';
 import 'package:workmanager/workmanager.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-const simplePeriodicTask = "service.updatereminders.simplePeriodicTask";
+const updateremindersTask = "service.updatereminders.simplePeriodicTask";
+const tomorrowRemindersTask = "service.remindersfortomorrow.simplePeriodicTask";
 
 @pragma('vm:entry-point')
 void callbackDispatcher() {
   Workmanager().executeTask((taskName, inputData) async {
-    try {
-      await BackgroundService().updateReminders();
-    } catch (err) {
-      throw Exception(err);
+    if (taskName == updateremindersTask) {
+      try {
+        await BackgroundService().updateReminders();
+      } catch (err) {
+        throw Exception(err);
+      }
+    }
+
+    if (taskName == tomorrowRemindersTask) {
+      try {
+        await BackgroundService().numbersRemindersToTomorrow();
+      } catch (err) {
+        throw Exception(err);
+      }
     }
 
     return Future.value(true);
@@ -72,8 +83,13 @@ void initWorkManager() async {
       .then((_) async {
     await Workmanager().registerPeriodicTask(
       "UpdateReminders",
-      simplePeriodicTask,
+      updateremindersTask,
       frequency: const Duration(hours: 3),
+    );
+    await Workmanager().registerPeriodicTask(
+      "TomorrowReminders",
+      tomorrowRemindersTask,
+      frequency: const Duration(hours: 8),
     );
   });
 }

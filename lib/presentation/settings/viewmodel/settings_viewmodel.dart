@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:recurring_alarm/domain/entities/bool_setting.dart';
@@ -22,16 +24,18 @@ class SettingsViewModel extends StateNotifier<SettingState> {
   final SettingUsecase _settingUsecase;
 
   Future loadSettings() async {
+    var brightness =
+        SchedulerBinding.instance.platformDispatcher.platformBrightness;
+    bool isDarkMode = brightness == Brightness.dark;
+
     try {
       state = state.copyWith(
         alarmMode: BoolSetting(
             "alarmMode",
             await _settingUsecase.loadBoolSetting("alarmMode") ??
                 state.alarmMode.value),
-        darkMode: BoolSetting(
-            "darkMode",
-            await _settingUsecase.loadBoolSetting("darkMode") ??
-                state.darkMode.value),
+        darkMode: BoolSetting("darkMode",
+            await _settingUsecase.loadBoolSetting("darkMode") ?? isDarkMode),
         notifiedTomorrow: BoolSetting(
             "notifiedTomorrow",
             await _settingUsecase.loadBoolSetting("notifiedTomorrow") ??

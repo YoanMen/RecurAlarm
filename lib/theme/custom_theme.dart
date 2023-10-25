@@ -59,7 +59,8 @@ class CustomTheme {
         primaryTextTheme: Typography().white,
         textTheme: Typography().white,
         useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(seedColor: Palette.primaryColor),
+        colorScheme: ColorScheme.fromSeed(
+            seedColor: Palette.primaryColor, onSurface: Colors.white),
         scaffoldBackgroundColor: Palette.blackColor,
         canvasColor: Palette.scaffoldColor,
         timePickerTheme: const TimePickerThemeData(
@@ -78,7 +79,7 @@ class CustomTheme {
         ),
         appBarTheme: const AppBarTheme(
             foregroundColor: Palette.scaffoldColor,
-            systemOverlayStyle: SystemUiOverlayStyle.dark,
+            systemOverlayStyle: SystemUiOverlayStyle.light,
             backgroundColor: Colors.transparent),
         datePickerTheme: const DatePickerThemeData(
             headerForegroundColor: Palette.scaffoldColor,

@@ -75,12 +75,9 @@ class ReminderUsecase {
   }
 
   Future manageNotification(Reminder reminder) async {
-    print("set notification");
     for (var element in reminder.remindersDate!) {
       if (reminder.reminderEnable) {
         // CREATE NOTIFICATION
-
-        print("date of notification = $element");
 
         NotificationServices.scheduleNotification(
             reminder: NotificationReminder(
@@ -89,7 +86,8 @@ class ReminderUsecase {
 
         debugPrint("___ Notification created for ${reminder.uuid} at $element");
       } else {
-        NotificationServices.cancelScheduledNotifications(reminder.uuid);
+        NotificationServices.cancelScheduledNotifications(
+            reminder.uuid.toString());
       }
     }
   }
@@ -124,7 +122,8 @@ class ReminderUsecase {
     try {
       final reminderSend = reminder.fromEntity();
       await _reminderlocalDdbProvider.removeReminder(reminderSend);
-      await NotificationServices.cancelScheduledNotifications(reminder.uuid);
+      await NotificationServices.cancelScheduledNotifications(
+          reminder.uuid.toString());
     } catch (e) {
       throw Failure(message: e.toString());
     }

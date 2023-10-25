@@ -13,7 +13,7 @@
    
    
     <application
-        android:label="recurring_alarm"
+        android:label="RecurAlarm"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         

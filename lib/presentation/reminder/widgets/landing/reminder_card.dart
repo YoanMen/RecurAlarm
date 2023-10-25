@@ -15,92 +15,98 @@ class ReminderCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return SizedBox(
-      child: Card(
-        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 12,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  GestureDetector(
-                    onTap: () => ref
-                        .read(reminderViewModel.notifier)
-                        .openEditReminder(context: context, reminder: reminder),
-                    child: Text(
-                      reminder.time.format(context),
-                      style: const TextStyle(
-                          fontSize: 36, fontWeight: FontWeight.w500),
+      child: Opacity(
+        opacity: reminder.reminderEnable ? 1 : 0.8,
+        child: Card(
+          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 12,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () => ref
+                          .read(reminderViewModel.notifier)
+                          .openEditReminder(
+                              context: context, reminder: reminder),
+                      child: Text(
+                        reminder.time.format(context),
+                        style: const TextStyle(
+                            fontSize: 36, fontWeight: FontWeight.w500),
+                      ),
                     ),
-                  ),
-                  const Spacer(),
-                  InkWell(
-                    onTap: () => ref
-                        .read(reminderViewModel.notifier)
-                        .openEditReminder(context: context, reminder: reminder),
-                    child: Text(
-                      AppLocalizations.of(context)!.tapToEdit,
-                      style: TextStyle(
-                          color: Palette.primaryColor.withOpacity(0.80)),
+                    const Spacer(),
+                    InkWell(
+                      onTap: () => ref
+                          .read(reminderViewModel.notifier)
+                          .openEditReminder(
+                              context: context, reminder: reminder),
+                      child: Text(
+                        AppLocalizations.of(context)!.tapToEdit,
+                        style: TextStyle(
+                            color: Palette.primaryColor.withOpacity(0.80)),
+                      ),
                     ),
-                  ),
-                  const SizedBox(
-                    width: 6,
-                  )
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Opacity(
-                    opacity: 0.40,
-                    child: Text(_dateNextReminder(reminder, context),
-                        style: const TextStyle(fontSize: 14)),
-                  ),
-                  if (reminder.reminderType != ReminderType.daily)
+                    const SizedBox(
+                      width: 6,
+                    )
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
                     Opacity(
                       opacity: 0.40,
-                      child: Text(
-                        _shortDayString(reminder.days, context),
-                        style: const TextStyle(fontSize: 14),
-                      ),
+                      child: Text(_dateNextReminder(reminder, context),
+                          style: const TextStyle(fontSize: 14)),
                     ),
-                ],
-              ),
-              const SizedBox(
-                height: 6,
-              ),
-              Text(
-                reminder.description,
-              ),
-              Row(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                    if (reminder.reminderType != ReminderType.daily)
                       Opacity(
                         opacity: 0.40,
-                        child: Text(lenghtBettewenReminding(reminder, context),
-                            style: const TextStyle(fontSize: 14)),
+                        child: Text(
+                          _shortDayString(reminder.days, context),
+                          style: const TextStyle(fontSize: 14),
+                        ),
                       ),
-                    ],
-                  ),
-                  const Spacer(),
-                  Switch.adaptive(
-                    value: reminder.reminderEnable,
-                    onChanged: (value) => ref
-                        .read(reminderViewModel.notifier)
-                        .toggleSelected(reminder), // toogle activate
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 6,
-              ),
-            ],
+                  ],
+                ),
+                const SizedBox(
+                  height: 6,
+                ),
+                Text(
+                  reminder.description,
+                ),
+                Row(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Opacity(
+                          opacity: 0.40,
+                          child: Text(
+                              lenghtBettewenReminding(reminder, context),
+                              style: const TextStyle(fontSize: 14)),
+                        ),
+                      ],
+                    ),
+                    const Spacer(),
+                    Switch.adaptive(
+                      value: reminder.reminderEnable,
+                      onChanged: (value) => ref
+                          .read(reminderViewModel.notifier)
+                          .toggleSelected(reminder), // toogle activate
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 6,
+                ),
+              ],
+            ),
           ),
         ),
       ),
