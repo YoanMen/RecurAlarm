@@ -69,7 +69,7 @@ Future editReminderBottomSheet(BuildContext context) {
                                       .deleteReminder),
                               icon: Icon(
                                 Icons.delete,
-                                color: Theme.of(context).colorScheme.error,
+                                color: Theme.of(context).colorScheme.onSurface,
                               ),
                             )
                           ],

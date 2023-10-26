@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recurring_alarm/core/failure.dart';
 import 'package:recurring_alarm/data/local/local_database.dart';
@@ -83,8 +82,6 @@ class ReminderUsecase {
             reminder: NotificationReminder(
                 uuid: reminder.uuid, task: reminder.description, date: element),
             id: reminder.remindersDate!.indexOf(element));
-
-        debugPrint("___ Notification created for ${reminder.uuid} at $element");
       } else {
         NotificationServices.cancelScheduledNotifications(
             reminder.uuid.toString());
@@ -114,8 +111,6 @@ class ReminderUsecase {
     for (var reminderToUpdate in remindersToUpdate) {
       await updateReminder(reminderToUpdate);
     }
-
-    debugPrint("updated reminders");
   }
 
   Future removeReminder(Reminder reminder) async {
@@ -146,7 +141,7 @@ class ReminderUsecase {
     try {
       await _reminderlocalDdbProvider.deleteAll();
     } catch (e) {
-      throw Failure(message: 'can delette');
+      throw Failure(message: "error $e");
     }
   }
 }

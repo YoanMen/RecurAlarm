@@ -1,5 +1,8 @@
 const kDefaultPadding = 16.0;
 
+const updateremindersTask = "service.updatereminders.simplePeriodicTask";
+const tomorrowRemindersTask = "service.remindersfortomorrow.simplePeriodicTask";
+
 enum ReminderType {
   daily,
   weekly,

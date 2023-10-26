@@ -9,10 +9,11 @@ import 'package:recurring_alarm/presentation/settings/viewmodel/settings_state.d
 final settingViewModel =
     StateNotifierProvider.autoDispose<SettingsViewModel, SettingState>((ref) {
   return SettingsViewModel(
-      SettingState(
+      const SettingState(
           notifiedTomorrow: BoolSetting("notifiedTomorrow", true),
           darkMode: BoolSetting("darkMode", false),
-          alarmMode: BoolSetting("alarmMode", true)),
+          alarmMode: BoolSetting("alarmMode", true),
+          vibrate: BoolSetting("vibrate", true)),
       ref.watch(settingUsecase));
 });
 
@@ -40,6 +41,10 @@ class SettingsViewModel extends StateNotifier<SettingState> {
             "notifiedTomorrow",
             await _settingUsecase.loadBoolSetting("notifiedTomorrow") ??
                 state.notifiedTomorrow.value),
+        vibrate: BoolSetting(
+            "vibrate",
+            await _settingUsecase.loadBoolSetting("vibrate") ??
+                state.vibrate.value),
       );
     } catch (e) {
       Fluttertoast.showToast(msg: "Error to load $e");
@@ -59,6 +64,8 @@ class SettingsViewModel extends StateNotifier<SettingState> {
         case "darkMode":
           state = state.copyWith(darkMode: BoolSetting("darkMode", !value));
           break;
+        case "vibrate":
+          state = state.copyWith(vibrate: BoolSetting("vibrate", !value));
       }
 
       await _settingUsecase.saveBoolSetting(settingName, !value);

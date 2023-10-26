@@ -8,21 +8,25 @@ class SettingState {
   final BoolSetting notifiedTomorrow;
   final BoolSetting darkMode;
   final BoolSetting alarmMode;
+  final BoolSetting vibrate;
 
   const SettingState(
       {required this.notifiedTomorrow,
       required this.darkMode,
-      required this.alarmMode});
+      required this.alarmMode,
+      required this.vibrate});
 
   SettingState copyWith({
     BoolSetting? notifiedTomorrow,
     BoolSetting? darkMode,
     BoolSetting? alarmMode,
+    BoolSetting? vibrate,
   }) {
     return SettingState(
       notifiedTomorrow: notifiedTomorrow ?? this.notifiedTomorrow,
       darkMode: darkMode ?? this.darkMode,
       alarmMode: alarmMode ?? this.alarmMode,
+      vibrate: vibrate ?? this.vibrate,
     );
   }
 }

@@ -29,6 +29,10 @@ class SettingsScreen extends ConsumerWidget {
               settingName: ref.read(settingViewModel).alarmMode.name,
               settingText: AppLocalizations.of(context)!.alarmSetting,
               value: ref.watch(settingViewModel).alarmMode.value),
+          SettingContainer(
+              settingName: ref.read(settingViewModel).vibrate.name,
+              settingText: AppLocalizations.of(context)!.vibrateSetting,
+              value: ref.watch(settingViewModel).vibrate.value),
           const Spacer(),
           const Text("RecurAlarm - v0.1.0"),
         ]),

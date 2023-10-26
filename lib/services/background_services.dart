@@ -11,7 +11,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 class BackgroundService {
   Future updateReminders() async {
     // initialize
-
     initializeDateFormatting();
     await NotificationServices.initializeNotification();
 

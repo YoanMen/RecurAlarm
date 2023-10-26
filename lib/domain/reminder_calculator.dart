@@ -13,6 +13,7 @@ Future<List<DateTime>> calculateNextReminder(Reminder reminder) async {
   }
 }
 
+//* Daily Calculate
 Future<List<DateTime>> calculateDailyReminders(Reminder reminder) async {
   var reminderDateTime = DateTime(
     reminder.beginDate.year,
@@ -29,6 +30,7 @@ Future<List<DateTime>> calculateDailyReminders(Reminder reminder) async {
   return [reminderDateTime];
 }
 
+//* Weekly Calculate
 Future<List<DateTime>> calculateWeeklyReminders(Reminder reminder) async {
   List<DateTime> dates = [];
 
@@ -70,6 +72,7 @@ Future<List<DateTime>> calculateWeeklyReminders(Reminder reminder) async {
   return dates;
 }
 
+//* Monthly Calculate
 Future<List<DateTime>> calculateMonthlyReminders(Reminder reminder) async {
   List<DateTime> dates = [];
 
@@ -105,6 +108,7 @@ Future<List<DateTime>> calculateMonthlyReminders(Reminder reminder) async {
   return dates;
 }
 
+//* Search next week of begin date
 Future<DateTime> fetchNextWeek(DateTime beginDate) async {
   DateTime endWeekDate = beginDate;
 
@@ -115,6 +119,7 @@ Future<DateTime> fetchNextWeek(DateTime beginDate) async {
   return endWeekDate;
 }
 
+//* Search date = day selected.
 List<DateTime> searchValidDates(DateTime searchDate, Reminder reminder) {
   List<DateTime> dates = [];
 

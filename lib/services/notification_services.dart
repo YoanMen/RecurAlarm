@@ -19,7 +19,9 @@ class NotificationServices {
           defaultRingtoneType: DefaultRingtoneType.Alarm,
           defaultColor: Colors.transparent,
           locked: true,
-          enableVibration: true,
+          enableVibration:
+              await SharedPreferencesManager().loadBoolSettings("vibrate") ??
+                  true,
           onlyAlertOnce:
               await SharedPreferencesManager().loadBoolSettings("alarmMode") ??
                   true,
@@ -102,8 +104,7 @@ class NotificationServices {
             buttonLabels: {"clear-input": "EFFACER NOTIFICATION"},
             title: DateFormat.Hm("fr").format(reminder.date),
           ),
-        }).then(
-        (value) => debugPrint("Notification created for ${reminder.date}"));
+        });
   }
 
   static Future<void> cancelScheduledNotifications(String id) async {

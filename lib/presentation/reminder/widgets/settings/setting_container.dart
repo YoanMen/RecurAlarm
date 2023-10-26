@@ -17,27 +17,30 @@ class SettingContainer extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return SizedBox(
-      width: double.infinity,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(
-            child: Text(settingText),
-          ),
-          const SizedBox(
-            width: kDefaultPadding,
-          ),
-          Switch.adaptive(
-            value: value,
-            onChanged: (e) {
-              ref
-                  .read(settingViewModel.notifier)
-                  .saveBoolSetting(settingName, value);
-            },
-          )
-        ],
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 6),
+      child: SizedBox(
+        width: double.infinity,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: Text(settingText),
+            ),
+            const SizedBox(
+              width: kDefaultPadding,
+            ),
+            Switch.adaptive(
+              value: value,
+              onChanged: (e) {
+                ref
+                    .read(settingViewModel.notifier)
+                    .saveBoolSetting(settingName, value);
+              },
+            )
+          ],
+        ),
       ),
     );
   }
