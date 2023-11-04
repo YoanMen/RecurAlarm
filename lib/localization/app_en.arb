@@ -68,8 +68,6 @@
     "today": "Today",
     "tomorrow": "Tomorrow",
     "setting": "Settings",
-    "tomorrowSetting": "Notification of the number of alarms for the next day",
     "darkModeSetting": "Dark mode",
-    "alarmSetting": "Alarm mode for notification",
-    "vibrateSetting": "Vibrator"
+    "alarmSetting": "Alarm mode for notification"
 }

@@ -68,8 +68,6 @@
     "today": "Aujourd'hui",
     "tomorrow": "Demain",
     "setting": "Paramètres",
-    "tomorrowSetting": "Notification du nombre d'alarmes pour le lendemain",
     "darkModeSetting": "Mode sombre",
-    "alarmSetting": "Notification en mode alarme",
-    "vibrateSetting": "Vibreur"
+    "alarmSetting": "Notification en mode alarme"
 }

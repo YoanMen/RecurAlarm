@@ -18,10 +18,6 @@ class SettingsScreen extends ConsumerWidget {
         padding: const EdgeInsets.all(kDefaultPadding),
         child: Column(children: [
           SettingContainer(
-              settingName: ref.read(settingViewModel).notifiedTomorrow.name,
-              settingText: AppLocalizations.of(context)!.tomorrowSetting,
-              value: ref.watch(settingViewModel).notifiedTomorrow.value),
-          SettingContainer(
               settingName: ref.read(settingViewModel).darkMode.name,
               settingText: AppLocalizations.of(context)!.darkModeSetting,
               value: ref.watch(settingViewModel).darkMode.value),
@@ -29,12 +25,8 @@ class SettingsScreen extends ConsumerWidget {
               settingName: ref.read(settingViewModel).alarmMode.name,
               settingText: AppLocalizations.of(context)!.alarmSetting,
               value: ref.watch(settingViewModel).alarmMode.value),
-          SettingContainer(
-              settingName: ref.read(settingViewModel).vibrate.name,
-              settingText: AppLocalizations.of(context)!.vibrateSetting,
-              value: ref.watch(settingViewModel).vibrate.value),
           const Spacer(),
-          const Text("RecurAlarm - v0.1.0"),
+          const Text("RecurAlarm - v1.0.0"),
         ]),
       ),
     );

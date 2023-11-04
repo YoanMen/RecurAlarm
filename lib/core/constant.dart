@@ -1,8 +1,5 @@
 const kDefaultPadding = 16.0;
 
-const updateremindersTask = "service.updatereminders.simplePeriodicTask";
-const tomorrowRemindersTask = "service.remindersfortomorrow.simplePeriodicTask";
-
 enum ReminderType {
   daily,
   weekly,
@@ -33,6 +30,6 @@ const Map<int, int> monthCount = {
 // convert  to a specific day of the month
 const Map<String, int> whenInMonth = {
   "begin": 1,
-  "middle": 11,
-  "end": 22,
+  "middle": 8,
+  "end": 18,
 };

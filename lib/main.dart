@@ -2,7 +2,6 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:recurring_alarm/core/constant.dart';
 import 'package:recurring_alarm/presentation/settings/viewmodel/settings_viewmodel.dart';
 import 'package:recurring_alarm/services/notification_services.dart';
 import 'package:recurring_alarm/routing/app_routes.dart';
@@ -14,20 +13,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 @pragma('vm:entry-point')
 void callbackDispatcher() {
   Workmanager().executeTask((taskName, inputData) async {
-    if (taskName == updateremindersTask) {
-      try {
-        await BackgroundService().updateReminders();
-      } catch (err) {
-        throw Exception(err);
-      }
-    }
-
-    if (taskName == tomorrowRemindersTask) {
-      try {
-        await BackgroundService().numbersRemindersToTomorrow();
-      } catch (err) {
-        throw Exception(err);
-      }
+    try {
+      await BackgroundService().updateReminders();
+    } catch (err) {
+      throw Exception(err);
     }
 
     return Future.value(true);
@@ -57,6 +46,7 @@ class MainApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp.router(
+        debugShowCheckedModeBanner: false,
         localizationsDelegates: const [
           AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
@@ -81,13 +71,8 @@ void initWorkManager() async {
       .then((_) async {
     await Workmanager().registerPeriodicTask(
       "UpdateReminders",
-      updateremindersTask,
+      "service.updatereminders.simplePeriodicTask",
       frequency: const Duration(hours: 3),
-    );
-    await Workmanager().registerPeriodicTask(
-      "TomorrowReminders",
-      tomorrowRemindersTask,
-      frequency: const Duration(hours: 8),
     );
   });
 }

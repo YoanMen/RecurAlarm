@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:recurring_alarm/core/constant.dart';
@@ -37,9 +36,8 @@ class LandingScreen extends ConsumerWidget {
                             padding: const EdgeInsets.only(
                                 bottom: 80, top: kDefaultPadding),
                             itemCount: reminder.length,
-                            itemBuilder: (context, index) => Animate(
-                                effects: const [FadeEffect()],
-                                child: ReminderCard(reminder: reminder[index])),
+                            itemBuilder: (context, index) =>
+                                ReminderCard(reminder: reminder[index]),
                           )
                         : Center(
                             child: Text(

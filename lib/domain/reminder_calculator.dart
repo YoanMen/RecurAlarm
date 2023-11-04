@@ -27,7 +27,7 @@ Future<List<DateTime>> calculateDailyReminders(Reminder reminder) async {
     DateTime newDateTime = reminderDateTime.add(const Duration(days: 1));
 
     reminderDateTime = DateTime(newDateTime.year, newDateTime.month,
-        newDateTime.month, reminder.time.hour, reminder.time.minute);
+        newDateTime.day, reminder.time.hour, reminder.time.minute);
   }
 
   return [reminderDateTime];

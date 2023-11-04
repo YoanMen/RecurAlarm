@@ -5,28 +5,21 @@ import 'package:recurring_alarm/domain/entities/bool_setting.dart';
 
 @immutable
 class SettingState {
-  final BoolSetting notifiedTomorrow;
   final BoolSetting darkMode;
   final BoolSetting alarmMode;
-  final BoolSetting vibrate;
 
-  const SettingState(
-      {required this.notifiedTomorrow,
-      required this.darkMode,
-      required this.alarmMode,
-      required this.vibrate});
+  const SettingState({
+    required this.darkMode,
+    required this.alarmMode,
+  });
 
   SettingState copyWith({
-    BoolSetting? notifiedTomorrow,
     BoolSetting? darkMode,
     BoolSetting? alarmMode,
-    BoolSetting? vibrate,
   }) {
     return SettingState(
-      notifiedTomorrow: notifiedTomorrow ?? this.notifiedTomorrow,
       darkMode: darkMode ?? this.darkMode,
       alarmMode: alarmMode ?? this.alarmMode,
-      vibrate: vibrate ?? this.vibrate,
     );
   }
 }

@@ -19,9 +19,7 @@ class NotificationServices {
           defaultRingtoneType: DefaultRingtoneType.Alarm,
           defaultColor: Colors.transparent,
           locked: true,
-          enableVibration:
-              await SharedPreferencesManager().loadBoolSettings("vibrate") ??
-                  true,
+          enableVibration: true,
           onlyAlertOnce:
               await SharedPreferencesManager().loadBoolSettings("alarmMode") ??
                   true,
@@ -29,34 +27,6 @@ class NotificationServices {
         ),
       ],
     );
-  }
-
-  static Future<void> remindersForTomorrowNotification(
-      {required int nbReminders, required DateTime date}) async {
-    await AwesomeNotifications().createNotification(
-        content: NotificationContent(
-          groupKey: "tomorrowNotificationReminders",
-          id: 1,
-          channelKey: "recurring_alarm_app_channel",
-          body: "You have $nbReminders reminder(s) for tomorrow !",
-          category: NotificationCategory.Message,
-          notificationLayout: NotificationLayout.Default,
-          actionType: ActionType.Default,
-          backgroundColor: Colors.transparent,
-        ),
-        schedule: NotificationCalendar(
-          minute: 0,
-          hour: 20,
-          day: date.day,
-          month: date.month,
-          year: date.year,
-          allowWhileIdle: true,
-        ),
-        localizations: {
-          "fr-fr": NotificationLocalization(
-            body: "Vous avez $nbReminders rappel(s) pour demain !",
-          ),
-        });
   }
 
   static Future<void> scheduleNotification(

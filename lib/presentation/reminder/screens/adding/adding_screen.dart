@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recurring_alarm/core/common/widgets/material_button.dart';
 import 'package:recurring_alarm/presentation/reminder/widgets/error_validator_text.dart';
@@ -35,57 +34,51 @@ Future addReminderBottomSheet(BuildContext context) {
                 slivers: [
                   SliverFillRemaining(
                     hasScrollBody: false,
-                    child: Animate(
-                      effects: const [FadeEffect()],
-                      child: Column(
-                        children: [
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              AppLocalizations.of(context)!.newReminder,
-                              style: Theme.of(context).textTheme.headlineSmall,
-                            ),
+                    child: Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            AppLocalizations.of(context)!.newReminder,
+                            style: Theme.of(context).textTheme.headlineSmall,
                           ),
-                          const SizedBox(
-                            height: kDefaultPadding,
-                          ),
-                          if (reminderViewModelWatch
-                              .validatorErrorText.isNotEmpty)
-                            Animate(effects: const [
-                              ShakeEffect(rotation: 0.01),
-                              FadeEffect(duration: Duration(milliseconds: 100))
-                            ], child: const ErrorValidatorText()),
-                          TextFormFieldMaterial(
-                            onChanged: (value) =>
-                                reminderViewModelRead.updateText(value!),
-                            labelText: AppLocalizations.of(context)!.task,
-                            initialValue: reminderViewModelWatch.description,
-                            maxLength: 80,
-                          ),
-                          const SizedBox(
-                            height: kDefaultPadding,
-                          ),
-                          const ReminderTypeSelection(),
-                          switch (ref.watch(reminderViewModel).reminderType) {
-                            ReminderType.daily => const SizedBox.shrink(),
-                            ReminderType.weekly => Animate(
-                                child: const WeeklyWidget(),
-                              ),
-                            ReminderType.monthly => const MonthlyWidget(),
-                          },
-                          const SizedBox(
-                            height: kDefaultPadding,
-                          ),
-                          const SelectDate(),
-                          const SizedBox(
-                            height: kDefaultPadding,
-                          ),
-                          const SelectTime(),
-                          const SizedBox(
-                            height: kDefaultPadding,
-                          ),
-                          const Spacer(),
-                          Row(
+                        ),
+                        const SizedBox(
+                          height: kDefaultPadding,
+                        ),
+                        if (reminderViewModelWatch
+                            .validatorErrorText.isNotEmpty)
+                          const ErrorValidatorText(),
+                        TextFormFieldMaterial(
+                          onChanged: (value) =>
+                              reminderViewModelRead.updateText(value!),
+                          labelText: AppLocalizations.of(context)!.task,
+                          initialValue: reminderViewModelWatch.description,
+                          maxLength: 80,
+                        ),
+                        const SizedBox(
+                          height: kDefaultPadding,
+                        ),
+                        const ReminderTypeSelection(),
+                        switch (ref.watch(reminderViewModel).reminderType) {
+                          ReminderType.daily => const SizedBox.shrink(),
+                          ReminderType.weekly => const WeeklyWidget(),
+                          ReminderType.monthly => const MonthlyWidget(),
+                        },
+                        const SizedBox(
+                          height: kDefaultPadding,
+                        ),
+                        const SelectDate(),
+                        const SizedBox(
+                          height: kDefaultPadding,
+                        ),
+                        const SelectTime(),
+                        const SizedBox(
+                          height: kDefaultPadding,
+                        ),
+                        const Spacer(),
+                        SafeArea(
+                          child: Row(
                             children: [
                               SizedBox(
                                 width: 100,
@@ -108,11 +101,11 @@ Future addReminderBottomSheet(BuildContext context) {
                                 ),
                               ),
                             ],
-                          )
-                        ],
-                      ),
+                          ),
+                        )
+                      ],
                     ),
-                  )
+                  ),
                 ],
               ));
         },
