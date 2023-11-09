@@ -53,6 +53,7 @@ class NotificationServices {
           backgroundColor: Colors.transparent,
         ),
         schedule: NotificationCalendar(
+          timeZone: await AwesomeNotifications().getLocalTimeZoneIdentifier(),
           minute: reminder.date.minute,
           hour: reminder.date.hour,
           day: reminder.date.day,

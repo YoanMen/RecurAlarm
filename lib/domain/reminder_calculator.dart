@@ -51,7 +51,6 @@ Future<List<DateTime>> calculateWeeklyReminders(Reminder reminder) async {
   // use - 7 days for searching in begin of week.
   dates =
       searchValidDates(endOfWeekDate.add(const Duration(days: -7)), reminder);
-
   if (dates.isEmpty) {
     // if no dates founded in week date of begin search
     // add week and search valid dates
@@ -136,7 +135,10 @@ List<DateTime> searchValidDates(DateTime searchDate, Reminder reminder) {
         reminder.time.minute,
       );
 
-      if (day == i && reminderDateTime.isAfter(DateTime.now())) {
+      if (day == i &&
+          reminderDateTime.isAfter(DateTime.now()) &&
+          day == i &&
+          reminderDateTime.isAfter(reminder.beginDate)) {
         dates.add(reminderDateTime);
       }
     }

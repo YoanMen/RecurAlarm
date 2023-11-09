@@ -74,17 +74,15 @@ class ReminderUsecase {
   }
 
   Future manageNotification(Reminder reminder) async {
+    // Delete Scheduled Notifications before recreate notifications
+    NotificationServices.cancelScheduledNotifications(reminder.uuid.toString());
     for (var element in reminder.remindersDate!) {
       if (reminder.reminderEnable) {
         // CREATE NOTIFICATION
-
         NotificationServices.scheduleNotification(
             reminder: NotificationReminder(
                 uuid: reminder.uuid, task: reminder.description, date: element),
             id: reminder.remindersDate!.indexOf(element));
-      } else {
-        NotificationServices.cancelScheduledNotifications(
-            reminder.uuid.toString());
       }
     }
   }
