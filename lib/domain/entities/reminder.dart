@@ -56,10 +56,11 @@ class Reminder {
         days:
             days.toString().replaceAll("[", "").replaceAll("]", "").toString(),
         whenInMonth: whenInMonth.index,
-        remindersDate: remindersDate!.join(","),
+        remindersDate:
+            remindersDate!.map((date) => date.toIso8601String()).join(","),
         time: "${time.hour}:${time.minute}",
         uuid: uuid,
-        createAt: createAt.toString(),
+        createAt: createAt.toIso8601String(),
         reminderEnable: reminderEnable == false ? 0 : 1);
   }
 

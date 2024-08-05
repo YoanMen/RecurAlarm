@@ -26,7 +26,7 @@ String formatDatetoString(DateTime date, BuildContext context) {
 //  parse a list of DateTime string to DateTime list
 
 List<DateTime> formatMultipleDates(List<String> dates) {
-  return dates.map((e) => DateTime.parse(e)).toList();
+  return dates.map((dateStr) => DateTime.parse(dateStr)).toList();
 }
 
 List<String> formatDaysToList(String days) {

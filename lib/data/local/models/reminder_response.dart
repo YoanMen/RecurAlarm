@@ -19,6 +19,7 @@ class ReminderResponse {
   final int whenInMonth;
 
   const ReminderResponse({
+    required this.uuid,
     required this.description,
     required this.beginDate,
     required this.reminderType,
@@ -27,7 +28,6 @@ class ReminderResponse {
     required this.whenInMonth,
     required this.remindersDate,
     required this.time,
-    required this.uuid,
     required this.createAt,
     required this.reminderEnable,
   });
